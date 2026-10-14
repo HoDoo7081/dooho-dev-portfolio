@@ -5,6 +5,8 @@
 KAIST App 창업 프로그램에서 PMBA 동료 4인 팀(제하팀)으로 진행한 프로젝트이며, 이 폴더에는 **데이터 모델(PostgreSQL) · API 계약(OpenAPI) · 보안/운영/테스트 설계 · 업무 프로세스 모델 · NestJS API 스타터**가 들어 있습니다.
 팀 내 역할: **CEO · 전략 책임** (팀 IR 피치덱 기준) — 아래 「내 역할과 기여」 참고.
 
+> **TL;DR (EN)** — Backend design for an AI travel-companion platform for seniors: 31-table PostgreSQL schema with DB-enforced rules, OpenAPI 3 contract, role/PII/SLO design, 5 ADRs. Design-first; the NestJS starter is a skeleton (gaps listed in §10). I authored the artifacts and used AI as a reviewer.
+
 ---
 
 ## 케이스 스터디 요약

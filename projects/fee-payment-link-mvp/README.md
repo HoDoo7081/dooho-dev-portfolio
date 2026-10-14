@@ -4,6 +4,8 @@
 
 코드가 아니라 **문제 정의 → 요구사항 → 정책 → 상태 모델 → 백엔드 설계 원칙 → 출시 기준**까지를 한 벌로 정리한 제품·엔지니어링 문서입니다. 돈이 오가는 서비스에서 "무엇을 먼저 못 박아야 하는가"에 대한 제 접근을 보여주려는 목적으로 공개합니다.
 
+> **TL;DR (EN)** — Product & money-flow design for card-payment links for club treasurers: PRD, verified-webhook payment confirmation, append-only ledger, refund state machine, settlement snapshots, 6 ADRs. Documentation stage only — no implementation yet. I authored the documents and used AI as a reviewer.
+
 ---
 
 ## 케이스 스터디 요약
