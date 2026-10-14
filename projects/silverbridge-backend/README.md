@@ -27,6 +27,22 @@ KAIST App 창업 프로그램에서 PMBA 동료 4인 팀(제하팀)으로 진행
 
 ---
 
+## 한눈에 보기 — 팀 산출물 (직접 제작)
+
+> 설계 문서의 출발점이 된 문제 정의·솔루션·업무 프로세스 자료입니다. 팀 IR 피치덱(2025-11)과 Lucid 프로세스 맵에서 발췌했습니다.
+
+**업무 프로세스 L1 — 5개 주체(여행자·로컬 프렌드·플랫폼·파트너·관리자) × 7단계 스윔레인.** 이 흐름이 `sb` 스키마의 테이블과 API 엔드포인트로 이어집니다.
+
+![SilverBridge Process L1 swimlane](docs/images/00-process-L1-swimlane.png)
+
+| 문제 → 해결 | |
+|---|---|
+| ![문제 배경](docs/images/01-problem-background.png) | ![페르소나와 핵심 수치](docs/images/02-problem-personas.png) |
+| ![솔루션: 두려움 → 후회 방지](docs/images/03-solution.png) | ![MVP 핵심 기능 1](docs/images/04-mvp-features-1.png) |
+| ![MVP 핵심 기능 2: 로컬 메이트·콘텐츠·안전](docs/images/05-mvp-features-2-safety.png) | ![고객 검증 계획: 100명 인터뷰 + 50쌍 베타](docs/images/06-validation-plan.png) |
+
+---
+
 ## 1. 왜 만들었나 — 문제 정의
 
 팀 IR 피치덱(2025-11)에서 정리한 문제 구조입니다 (수치는 덱에 인용된 값).
