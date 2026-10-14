@@ -15,8 +15,8 @@
 | | |
 |---|---|
 | **Problem** | Static card images in a messaging feed are skimmed, not read. The client wanted the core clinical message to land through interaction, and to guide readers to the full article. |
-| **Approach** | Keep the designer's artwork pixel-faithful (cards exported as images), and add interaction as a thin code layer on top: a shine sweep, a pulsing highlight, a drag-to-reveal slider, a link hotspot. |
-| **What I produced** | The four-card Figma design; the interactive web app; a process report documenting the Figma-to-code workflow, decisions and device checks |
+| **Approach** | Keep the client designer's artwork pixel-faithful (cards exported as images), and add interaction as a thin code layer on top: a shine sweep, a pulsing highlight, a drag-to-reveal slider, a link hotspot. |
+| **What I produced** | The interactive web app built from the client's four-card Figma design; a process report documenting the Figma-to-code workflow, decisions and device checks. The visual design is the client's, not mine. |
 | **Stack** | React 18 · TypeScript · Vite · Tailwind CSS 3 (HSL design tokens) · React Router · shadcn/ui · hosted on Lovable |
 | **Evidence** | Live demo; ~450 lines of application code (the rest is generated UI-kit components); my process report (7 sections, device checklist) |
 | **Not claimed** | Audience reach or engagement results: I have none to cite |
@@ -60,12 +60,12 @@ I reviewed the code the way I would review a client's project.
 
 ## What this demonstrates
 
-- Turning a design into a working interaction without losing fidelity to the approved artwork
+- Turning a supplied design into a working interaction without losing fidelity to the approved artwork
 - Small, explicit engineering decisions (render order, ratio lock, pointer capture) documented with reasons
 - Cross-device testing discipline and a candid accessibility review of my own delivered work
 
 ## Honest scope
 
 - Client project in a regulated subject area. The card artwork, article references and clinical content are not reproduced here.
-- Built with an AI app builder from my Figma design; I direct and review, and I do not claim hand-typed application code.
+- The card design was supplied by the client in Figma. My contribution is the interaction design, implementation with an AI app builder, device testing and documentation; I do not claim the visual design or hand-typed application code.
 - No engagement or audience metrics are claimed.
