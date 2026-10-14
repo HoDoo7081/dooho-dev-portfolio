@@ -18,9 +18,10 @@
 - 상태 추가 시 마이그레이션이 필요
 - 허용되는 *전이 순서*까지는 CHECK로 강제하지 못함 (서비스 계층 규칙으로 보완)
 
-## Alternatives Considered (검토한 대안)
-- **애플리케이션 enum만 사용**: DB 직접 접근·버그에 무방비 → 기각
-- **PostgreSQL ENUM 타입**: 값 변경·삭제가 번거로움 → CHECK 선택
+## Alternatives (대안)
+공식적으로 비교하지는 않았습니다. 처음부터 **"규칙은 애플리케이션 코드만이 아니라 DB에서 강제한다"** 는 설계 원칙으로 정했습니다. 참고로 흔한 두 선택지와 CHECK가 맞는 이유는 사후에 정리한 것입니다(당시 평가한 것은 아님).
+- **애플리케이션 enum만 사용**: DB 직접 접근·버그에 무방비
+- **PostgreSQL ENUM 타입**: 값 변경·삭제가 번거로움 → CHECK가 변경에 유리
 
 ## Related
 [schema.sql](../../../design-package/02_SQL/schema.sql)

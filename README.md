@@ -72,7 +72,7 @@ flowchart LR
 | API contract design | [`openapi.yaml`](projects/silverbridge-backend/design-package/03_API/openapi.yaml) — idempotent bookings, signed webhooks |
 | Security & privacy by design | [`SECURITY.md`](projects/silverbridge-backend/design-package/04_Security/SECURITY.md) — role matrix, retention & encryption table |
 | Payments engineering judgment | [Payment confirmation flow](projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png) · [ADR-005 refund state machine](projects/fee-payment-link-mvp/docs/adr/ADR-005-refund-state-machine.md) |
-| Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, rejected alternatives |
+| Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, alternatives |
 
 ## 🧾 Honest scope
 
