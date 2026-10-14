@@ -109,6 +109,10 @@ flowchart LR
 
 Shopify 헤드리스 + Supabase, 4개 언어·다통화, 대만 통관 ID 단계, 인플루언서 할인 링크 추적. 고객사 코드는 비공개이며 구조·역할·개선점만 정리했습니다. [**→ 프로젝트 보기**](projects/minseoul-storefront/README.ko.md) · [minseoul.com](https://minseoul.com)
 
+### 4. [Ez-PAVE](projects/ez-pave-interactive-card/README.ko.md) — 인터랙티브 임상 카드뉴스 웹앱
+
+Figma 카드 4장을 탭·드래그 인터랙션 웹앱으로 구현. 배경 선로딩, 비율 고정 프레임, 드래그 슬라이더. 고객사 자료는 비공개. [**→ 프로젝트 보기**](projects/ez-pave-interactive-card/README.ko.md) · [라이브 데모](https://ez-pave.lovable.app)
+
 ## 읽는 순서
 
 | 시간 | 추천 경로 |

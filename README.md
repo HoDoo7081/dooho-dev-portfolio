@@ -35,7 +35,7 @@ flowchart LR
     E --> F[CI-validated]
 ```
 
-## 🧭 Three projects
+## 🧭 Four projects
 
 ### 🧭 SilverBridge — AI travel companion for seniors
 
@@ -74,6 +74,17 @@ flowchart LR
 
 **[Read the case study →](projects/minseoul-storefront/README.md)** · [minseoul.com (live)](https://minseoul.com)
 
+### 💊 Ez-PAVE — interactive clinical card-news web app
+
+| At a glance | |
+|---|---|
+| **Problem** | Static cards in a messaging feed are skimmed; the client wanted the key message to land through interaction. |
+| **Built** | Figma cards → React web app: ratio-locked frame, background-first rendering, drag-to-reveal slider, link to the full article |
+| **Key idea** | Keep the approved artwork pixel-faithful and add interaction as a thin overlay layer. |
+| **My role** | Design and AI-assisted build; process report; candid accessibility review. Client artwork not published. |
+
+**[Read the case study →](projects/ez-pave-interactive-card/README.md)** · [Live demo](https://ez-pave.lovable.app)
+
 ## 🔎 What this repo shows
 
 | Skill | Evidence (click) |
@@ -86,6 +97,7 @@ flowchart LR
 | Running evidence (not just docs) | [13 tests on PostgreSQL in CI](projects/silverbridge-backend/reference-impl/README.md): duplicate booking, seat race, idempotency, duplicate webhook, refund states — plus a mutation check |
 | Program management | [Fee Payment launch program](projects/fee-payment-link-mvp/program/README.md): gates, dependency map, RAID, RACI, go / no-go |
 | Shipping to production | [Min Seoul](projects/minseoul-storefront/README.md): a live cross-border storefront, with a ranked privacy and security review of my own delivered work |
+| Front-end craft and accessibility review | [Ez-PAVE](projects/ez-pave-interactive-card/README.md): render-order and ratio-lock decisions, plus a P1/P2 accessibility review of my own delivery |
 | Cloud architecture | [AWS reference architecture](projects/silverbridge-backend/aws-reference-architecture/README.md): security, scaling, cost assumptions, migration path |
 | Reading docs against code | [Stage 3 gap table](projects/silverbridge-backend/docs/STAGE3-MVP.md#4-honest-gap-table-documents-vs-code) |
 | Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, alternatives |
@@ -118,6 +130,7 @@ flowchart LR
     │   ├── 01-PRD.md … 04-FRONTEND-HANDOFF.md
     │   ├── program/               # launch plan, RAID, RACI, go / no-go
     │   └── docs/ (adr, images)
-    └── minseoul-storefront/       # case study only; client code not published
+    ├── minseoul-storefront/       # case study only; client code not published
+    └── ez-pave-interactive-card/  # case study only; client code not published
 ```
 </details>
