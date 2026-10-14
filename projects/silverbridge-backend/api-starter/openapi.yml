@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: SilverBridge API
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000
+paths:
+  /v1/listings:
+    get:
+      summary: Search listings
+      responses:
+        '200':
+          description: ok
+  /v1/bookings:
+    post:
+      summary: Create booking
+      responses:
+        '200':
+          description: ok
+  /v1/payments/sessions:
+    post:
+      summary: Create payment session
+      responses:
+        '200':
+          description: ok

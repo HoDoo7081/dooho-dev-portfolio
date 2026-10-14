@@ -1,0 +1,307 @@
+openapi: 3.0.3
+info:
+  title: SilverBridge Backend API
+  version: "2.0.0"
+  description: |
+    핵심 비즈니스(리스트/예약/결제/메시징/리뷰/안전/비서·컨시어지/관리) 전범위 스펙.
+servers:
+  - url: https://api.silverbridge.example.com
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Paging:
+      type: object
+      properties:
+        page: { type: integer, example: 1 }
+        size: { type: integer, example: 20 }
+        total: { type: integer, example: 100 }
+    User:
+      type: object
+      properties:
+        user_id: { type: integer }
+        email: { type: string }
+        full_name: { type: string }
+        role: { type: string, enum: [TRAVELER, HOST, ADMIN] }
+        status: { type: string, enum: [ACTIVE, SUSPENDED, DELETED] }
+    Listing:
+      type: object
+      properties:
+        listing_id: { type: integer }
+        title: { type: string }
+        type: { type: string, enum: [TOUR, EXPERIENCE, STAY] }
+        base_price: { type: number, format: float }
+        currency: { type: string }
+        status: { type: string }
+    Booking:
+      type: object
+      properties:
+        booking_id: { type: integer }
+        traveler_id: { type: integer }
+        listing_id: { type: integer }
+        slot_id: { type: integer, nullable: true }
+        status: { type: string, enum: [PENDING, CONFIRMED, CANCELLED, COMPLETED, DISPUTED] }
+        total_amount: { type: number }
+        currency: { type: string }
+    Payment:
+      type: object
+      properties:
+        payment_id: { type: integer }
+        booking_id: { type: integer }
+        amount: { type: number }
+        currency: { type: string }
+        method: { type: string }
+        status: { type: string }
+    Message:
+      type: object
+      properties:
+        message_id: { type: integer }
+        thread_id: { type: integer }
+        sender_user_id: { type: integer }
+        body: { type: string }
+        sent_at: { type: string, format: date-time }
+security:
+  - BearerAuth: []
+paths:
+  /v1/auth/login:
+    post:
+      summary: 로그인
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+  /v1/listings:
+    get:
+      summary: 리스트 검색
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+        - in: query
+          name: city
+          schema: { type: string }
+        - in: query
+          name: type
+          schema: { type: string, enum: [TOUR, EXPERIENCE, STAY] }
+        - in: query
+          name: priceMin
+          schema: { type: number }
+        - in: query
+          name: priceMax
+          schema: { type: number }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: size
+          schema: { type: integer, default: 20 }
+        - in: query
+          name: sort
+          schema: { type: string, example: "created_at,desc" }
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page: { type: integer }
+                  size: { type: integer }
+                  total: { type: integer }
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Listing" }
+  /v1/listings/{listingId}:
+    get:
+      summary: 리스트 상세
+      parameters:
+        - in: path
+          name: listingId
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: ok
+  /v1/availability/{listingId}:
+    get:
+      summary: 가용 슬롯 조회
+      parameters:
+        - in: path
+          name: listingId
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: ok
+  /v1/bookings:
+    post:
+      summary: 예약 생성
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ listingId, pax, currency ]
+              properties:
+                listingId: { type: integer }
+                slotId: { type: integer, nullable: true }
+                checkIn: { type: string, format: date-time, nullable: true }
+                checkOut: { type: string, format: date-time, nullable: true }
+                pax: { type: integer }
+                currency: { type: string }
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+  /v1/payments/sessions:
+    post:
+      summary: 결제 세션 생성
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ bookingId, amount, currency ]
+              properties:
+                bookingId: { type: integer }
+                amount: { type: number }
+                currency: { type: string }
+                method: { type: string, enum: [CARD, TOSS, PAYPAL, BANK] }
+      responses:
+        '200':
+          description: ok
+  /v1/payments/webhooks/{provider}:
+    post:
+      summary: 결제 웹훅
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200':
+          description: ok
+  /v1/messages/threads:
+    post:
+      summary: 스레드 생성(여행자-호스트/비서)
+      responses:
+        '200': { description: ok }
+  /v1/messages/{threadId}:
+    get:
+      summary: 메시지 조회
+      parameters:
+        - in: path
+          name: threadId
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: ok }
+    post:
+      summary: 메시지 전송
+      parameters:
+        - in: path
+          name: threadId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body: { type: string }
+      responses:
+        '200': { description: ok }
+  /v1/reviews:
+    post:
+      summary: 리뷰 생성
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ bookingId, rating ]
+              properties:
+                bookingId: { type: integer }
+                rating: { type: integer, minimum: 1, maximum: 5 }
+                comment: { type: string }
+      responses:
+        '200': { description: ok }
+  /v1/assistants/assign:
+    post:
+      summary: 여행 비서 배정
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ bookingId, role ]
+              properties:
+                bookingId: { type: integer }
+                role: { type: string, enum: [PRE_TRIP, IN_TRIP, POST_TRIP] }
+      responses:
+        '200': { description: ok }
+  /v1/concierge/sessions:
+    post:
+      summary: 컨시어지 세션 기록
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignmentId: { type: integer }
+                channel: { type: string, enum: [CALL, CHAT, VIDEO] }
+                startedAt: { type: string, format: date-time }
+                endedAt: { type: string, format: date-time }
+                transcript: { type: object }
+                resolution: { type: string }
+      responses:
+        '200': { description: ok }
+  /v1/safety/sos:
+    post:
+      summary: SOS 트리거
+      responses:
+        '200': { description: ok }
+  /v1/admin/audit:
+    get:
+      summary: 감사 로그 조회
+      responses:
+        '200': { description: ok }

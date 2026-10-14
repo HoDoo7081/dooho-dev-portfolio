@@ -1,0 +1,13 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/* NOTE: The full Prisma schema reflecting sb.* tables is large.
+   Replace this block with the full schema you already validated.
+   For convenience, keep the file and run `npm run prisma:generate` then `npm run prisma:migrate`.
+*/
