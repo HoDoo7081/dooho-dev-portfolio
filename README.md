@@ -41,7 +41,7 @@ flowchart LR
 
 <a href="projects/silverbridge-backend"><img src="projects/silverbridge-backend/docs/images/03-solution.png" alt="SilverBridge solution overview" width="100%"></a>
 
-| | |
+| At a glance | |
 |---|---|
 | **Problem** | Only ~12% of parents try independent travel. The blocker is *fear*, not demand. |
 | **Built** | PostgreSQL schema (**31 tables**), OpenAPI 3 contract (**14 paths**), role-permission matrix, PII retention table, SLOs, NestJS starter |
@@ -54,7 +54,7 @@ flowchart LR
 
 <a href="projects/fee-payment-link-mvp"><img src="projects/fee-payment-link-mvp/docs/images/03-refund-and-settlement-rules.png" alt="Refund and settlement rules" width="100%"></a>
 
-| | |
+| At a glance | |
 |---|---|
 | **Problem** | Club dues are still bank transfers and spreadsheets. |
 | **Built** | PRD, engineering guide, ledger / refund / settlement design, launch checklist |
