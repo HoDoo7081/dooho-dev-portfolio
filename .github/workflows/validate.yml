@@ -1,0 +1,49 @@
+name: validate-design-artifacts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  sql-schema:
+    name: PostgreSQL 15 schema loads (31 tables) + seed
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply schema
+        run: psql -v ON_ERROR_STOP=1 -f projects/silverbridge-backend/design-package/02_SQL/schema.sql
+      - name: Check migration equals schema
+        run: diff projects/silverbridge-backend/design-package/02_SQL/schema.sql projects/silverbridge-backend/design-package/02_SQL/migrations/001_init_sb.sql
+      - name: Check table count (README claims 31)
+        run: |
+          n=$(psql -Atc "select count(*) from information_schema.tables where table_schema='sb'")
+          echo "sb tables: $n"
+          test "$n" -eq 31
+      - name: Apply seed
+        run: psql -v ON_ERROR_STOP=1 -f projects/silverbridge-backend/design-package/02_SQL/seed.sql
+
+  openapi:
+    name: OpenAPI 3 contract is valid
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Lint API contract
+        run: npx --yes @redocly/cli@1.25.0 lint projects/silverbridge-backend/design-package/03_API/openapi.yaml --format=stylish --max-problems=1000

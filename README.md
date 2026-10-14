@@ -9,6 +9,7 @@
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?style=flat-square&logo=openapiinitiative&logoColor=white)
 ![NestJS](https://img.shields.io/badge/NestJS%20%2B%20Prisma-starter-E0234E?style=flat-square&logo=nestjs&logoColor=white)
 ![Mermaid](https://img.shields.io/badge/diagrams-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
+[![validate](https://github.com/HoDoo7081/dooho-dev-portfolio/actions/workflows/validate.yml/badge.svg)](https://github.com/HoDoo7081/dooho-dev-portfolio/actions/workflows/validate.yml)
 ![Status](https://img.shields.io/badge/status-design--first%20%C2%B7%20limits%20stated-555?style=flat-square)
 
 **Enterprise SaaS 프로젝트·솔루션 컨설팅 경력** 위에서 직접 기획·설계한 서비스의 산출물 모음<br>
@@ -22,9 +23,9 @@ KAIST PMBA (Data Science 부전공) · 📧 [dksengh7081@gmail.com](mailto:dksen
 
 ## 한눈에 보기
 
-| 31 | 14 | 2 | 6 |
+| 31 | 14 | 11 | 2 |
 |:---:|:---:|:---:|:---:|
-| PostgreSQL 테이블<br><sub>SilverBridge `sb` 스키마</sub> | OpenAPI 경로<br><sub>인증·예약·결제·안전 등</sub> | 설계 패키지<br><sub>SilverBridge · Fee Payment Link</sub> | 문서 영역<br><sub>데이터·API·보안·운영·테스트·PRD</sub> |
+| PostgreSQL 테이블<br><sub>CI가 31개 자동 검증</sub> | OpenAPI 경로<br><sub>인증·예약·결제·안전 등</sub> | 설계 결정 기록(ADR)<br><sub>배경·결정·결과·대안</sub> | 설계 패키지<br><sub>SilverBridge · Fee Payment Link</sub> |
 
 ## 이 저장소의 의도
 
@@ -49,6 +50,7 @@ flowchart LR
 | 보안·개인정보 | 권한 매트릭스, 보존·파기·암호화 표 |
 | 운영·신뢰성 | SLO, 파티셔닝, 백업/복구, 대사(reconciliation) |
 | 테스트 전략 | 계약·성능·보안 테스트, 동시성 시나리오 |
+| 설계 결정 기록 | 프로젝트별 `docs/adr/` — SilverBridge 5건, Fee Payment 6건 |
 | 한계의 명시 | 각 README 마지막의 "현재 상태와 한계" |
 
 ---
