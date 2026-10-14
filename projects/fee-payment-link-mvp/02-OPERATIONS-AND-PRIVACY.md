@@ -1,98 +1,99 @@
-# 운영·환불·정산·개인정보 가이드
+# Operations, refund, settlement and privacy guide
 
-## 1. 운영 원칙
+<sub>🌐 English · [한국어 원본](ko/02-OPERATIONS-AND-PRIVACY.md) · [← Project README](README.md)</sub>
 
-관리형 MVP의 자동화 부족은 의도된 선택이다. 운영자가 모든 신규 모임과 고위험 작업을 확인하면서 승인 가능한 모임 유형, 환불 빈도, 부정결제 패턴, 실제 총무 요구를 학습한다.
+## 1. Operating principle
 
-## 2. 신청 심사 체크리스트
+The lack of automation in a managed MVP is intentional. By having an operator review every new group and every high-risk action, we learn which group types can be approved, how often refunds happen, which fraudulent-payment patterns appear, and what real treasurers need.
 
-- 총무 휴대폰 본인 확인
-- 정산계좌 예금주 일치
-- 모임과 신청자의 관계 확인
-- 회비 목적과 금액의 합리성
-- 예상 인원과 총 거래액
-- 환불정책의 명확성
-- 자체 카드 반복결제·현금융통 가능성
-- 동일 연락처·계좌·기기와 기존 위험 신청의 연관성
+## 2. Application review checklist
 
-신규 모임에는 결제한도와 정산 유예기간을 둔다.
+- Treasurer's phone identity check
+- Account holder matches the settlement account
+- Relationship between the group and the applicant
+- Reasonableness of dues purpose and amount
+- Expected headcount and total transaction value
+- Clarity of the refund policy
+- Possibility of self-charging cards repeatedly or cash-out schemes
+- Links between the same contact, account or device and earlier risky applications
 
-## 3. 운영 SLA 초안
+New groups get a payment limit and a settlement grace period.
 
-- 신청 접수 확인: 자동 즉시
-- 1차 심사: 영업일 기준 1일 이내 목표
-- 추가자료 요청: 상태조회 페이지와 문자로 안내
-- 링크 발급: 승인 후 영업시간 내
-- 정산 전 단순 환불: 영업일 기준 1일 이내 목표
-- 명단 요청: 영업시간 내 생성
-- 정산: 내부 확인 완료 후 약정된 주기
+## 3. Draft operating SLA
 
-외부에 공개하기 전 실제 운영 역량에 맞게 확정한다.
+- Application receipt confirmation: automatic, immediate
+- First review: target within 1 business day
+- Request for additional documents: notify via a status page and text message
+- Link issuance: during business hours after approval
+- Simple refund before settlement: target within 1 business day
+- Member list request: generated during business hours
+- Settlement: on the agreed cycle after internal checks are complete
 
-## 4. 환불 규칙
+Finalize these to match real operating capacity before publishing externally.
 
-- 원 결제수단 전체 취소를 기본으로 한다.
-- 납부자와 총무 중 누가 요청할 수 있는지 캠페인별 환불정책에 표시한다.
-- 정산 전 환불은 주문·본인정보 확인 후 처리한다.
-- 정산 처리 중·완료 결제는 자동 환불하지 않는다.
-- 결제사 타임아웃 시 중복 취소하지 않고 상태를 재조회한다.
-- 카드 취소 성공을 확인한 뒤 내부 원장과 명단을 변경한다.
-- 모든 수동 결정에는 운영자, 시각, 사유를 기록한다.
+## 4. Refund rules
 
-## 5. 정산 규칙
+- The default is a full cancellation to the original payment method.
+- Show in each campaign's refund policy who can request a refund, the payer or the treasurer.
+- A refund before settlement is processed after checking the order and the person's identity.
+- A payment that is being settled or has been settled is not auto-refunded.
+- On a payment-provider timeout, do not cancel twice; look the status up again.
+- Change the internal ledger and the member list only after confirming the card cancellation succeeded.
+- Record operator, time and reason for every manual decision.
+
+## 5. Settlement rules
 
 ```text
-정산대상액 = PAID 결제의 총무 수령액 합계
-             - REFUNDED 결제의 총무 수령액
-             - 기존 정산 포함액
-             - 분쟁·환불 유보액
+Settlement target = sum of the treasurer's receivable on PAID payments
+                    − the treasurer's receivable on REFUNDED payments
+                    − amount already included in earlier settlements
+                    − amount held for disputes and refunds
 ```
 
-- 정산 생성 시 포함 결제를 스냅샷으로 고정한다.
-- 계좌 변경은 기존 연락처 재인증과 추가 검토를 거친다.
-- 지급 완료 기록에는 이체일, 금액, 은행거래 식별값, 처리 운영자를 남긴다.
-- 정산 후 환불은 총무 반환 또는 다음 정산 상계 규칙을 계약에 둔다.
+- When a settlement is created, freeze the included payments as a snapshot.
+- An account change goes through re-verification of the existing contact and additional review.
+- A payout record keeps the transfer date, amount, bank transaction identifier and processing operator.
+- For a refund after settlement, put a treasurer-return or offset-against-next-settlement rule in the contract.
 
-## 6. 개인정보 최소수집
+## 6. Minimal personal-data collection
 
-### 총무
+### Treasurer
 
-- 이름, 휴대폰, 본인확인 결과
-- 모임정보
-- 정산계좌와 예금주
-- 신청·동의·상담 이력
+- Name, mobile number, identity-check result
+- Group information
+- Settlement account and account holder
+- Application, consent and consultation history
 
-### 납부자
+### Payer
 
-- 이름
-- 모임에서 필요한 식별값 1개
-- 연락처
-- 결제·환불 기록
+- Name
+- One identifier the group needs
+- Contact
+- Payment and refund records
 
-주소, 생년월일, 성별, 카드정보는 기본적으로 수집하지 않는다.
+Address, date of birth, gender and card data are not collected by default.
 
-## 7. 접근과 전달
+## 7. Access and delivery
 
-- 총무에게는 자신이 신청한 캠페인의 명단만 전달한다.
-- 명단 연락처는 기본 마스킹한다.
-- 원본 조회와 다운로드는 운영자 권한을 분리할 수 있게 설계한다.
-- 다운로드 링크는 추측 불가능하고 만료돼야 한다.
-- 다운로드 생성·접근·재발급 이력을 기록한다.
-- 이메일 평문 첨부와 메신저 파일 직접 전달은 피한다.
+- Give a treasurer only the member list of campaigns they applied for.
+- Mask list contact details by default.
+- Design original-data lookup and download so operator permissions can be separated.
+- Download links must be unguessable and expire.
+- Log download creation, access and reissue.
+- Avoid plaintext email attachments and sending files directly through messengers.
 
-## 8. 보유와 파기
+## 8. Retention and disposal
 
-- 수집 목적별 보유기간을 개인정보처리방침에 명시한다.
-- 목적이 끝나고 법적 보존 근거가 없는 개인정보는 파기한다.
-- 법령상 보존하는 거래자료는 서비스용 개인정보와 분리한다.
-- 운영 DB뿐 아니라 백업·내보내기 파일·로그의 만료정책도 둔다.
-- 정확한 법정 보존기간과 국외이전·처리위탁 문구는 출시 전 전문가가 확정한다.
+- State the retention period for each purpose of collection in the privacy policy.
+- Destroy personal data whose purpose has ended and that has no legal retention basis.
+- Keep transaction records retained by law separate from service personal data.
+- Set expiry policies not only for the operating DB but also for backups, export files and logs.
+- Exact statutory retention periods and wording on overseas transfer and processing delegation are finalized by an expert before launch.
 
-## 9. Lovable 사용 기준
+## 9. Lovable usage rules
 
-- Lovable에는 가상 데이터만 넣는다.
-- 실제 신청·납부 개인정보를 프롬프트에 붙이지 않는다.
-- 실제 API 키와 Shopify Admin 토큰을 프론트에 넣지 않는다.
-- 고객용 프론트는 공개 API만 호출한다.
-- 관리자 기능과 개인정보 원본은 별도 백엔드 및 관리자 환경에서 처리한다.
-
+- Put only fictional data into Lovable.
+- Do not paste real application or payment personal data into prompts.
+- Do not put real API keys or the Shopify Admin token into the frontend.
+- The customer-facing frontend calls only public APIs.
+- Admin functions and original personal data are handled in a separate backend and admin environment.

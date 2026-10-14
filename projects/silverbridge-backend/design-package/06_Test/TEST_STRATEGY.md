@@ -1,19 +1,21 @@
-# 테스트 전략
+# Test strategy
 
-## 1) 단위 테스트
-- 서비스 레이어(예약 좌석 검증, 결제 금액 계산, 권한 검사) mock 기반
+<sub>🌐 English · [한국어 원본](../ko/06_Test/TEST_STRATEGY.md)</sub>
 
-## 2) 통합/계약 테스트
-- OpenAPI 스키마 기반 계약 테스트(프론트/백엔드)
-- 테스트 DB(Postgres) + 마이그레이션 적용 후 시나리오 실행
+## 1) Unit tests
+- Service layer (booking seat validation, payment amount calculation, permission checks), mock-based
 
-## 3) 성능 테스트
-- `/v1/bookings` 동시성 100~300 RPS, 슬롯 좌석 경합 시 오류율/락 대기 측정
-- `/v1/payments/sessions` RPS 스파이크 테스트
+## 2) Integration and contract tests
+- OpenAPI-schema-based contract tests (frontend / backend)
+- Run scenarios on a test DB (Postgres) after applying migrations
 
-## 4) 보안 테스트
-- JWT 위조, 권한 상승, 대량 요청(레이트 리밋), 웹훅 서명 위변조
+## 3) Performance tests
+- `/v1/bookings` at 100–300 concurrent RPS; measure error rate and lock wait under slot-seat contention
+- RPS spike test on `/v1/payments/sessions`
 
-## 5) 샘플 시나리오
-- 시나리오 A: 리스트 검색→예약 생성→결제 세션 생성→웹훅 처리→리뷰 작성
-- 시나리오 B: 동일 슬롯 중복 예약 경합→좌석 부족 에러 확인
+## 4) Security tests
+- JWT forgery, privilege escalation, request floods (rate limiting), webhook signature tampering
+
+## 5) Sample scenarios
+- Scenario A: search listings → create booking → create payment session → handle webhook → write review
+- Scenario B: contended duplicate booking of the same slot → confirm the "not enough seats" error

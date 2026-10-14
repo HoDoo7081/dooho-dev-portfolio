@@ -4,7 +4,7 @@ CREATE SCHEMA IF NOT EXISTS sb;
 SET search_path TO sb;
 
 -- =========================
--- A. 사용자/역할
+-- A. Users / roles
 -- =========================
 CREATE TABLE IF NOT EXISTS sb.users (
     user_id BIGSERIAL PRIMARY KEY,
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS sb.users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-COMMENT ON TABLE sb.users IS 'SilverBridge 사용자 기본 정보';
-COMMENT ON COLUMN sb.users.role IS '사용자 역할(TRAVELER, HOST, ADMIN)';
+COMMENT ON TABLE sb.users IS 'SilverBridge user base record';
+COMMENT ON COLUMN sb.users.role IS 'User role (TRAVELER, HOST, ADMIN)';
 
 CREATE TABLE IF NOT EXISTS sb.travelers (
     traveler_id BIGINT PRIMARY KEY REFERENCES sb.users(user_id) ON DELETE CASCADE,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS sb.verifications (
 );
 
 -- =========================
--- B. 위치/콘텐츠/리스트
+-- B. Locations / content / listings
 -- =========================
 CREATE TABLE IF NOT EXISTS sb.locations (
     location_id BIGSERIAL PRIMARY KEY,
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS sb.media_assets (
     position INT
 );
 
--- 확장: 콘텐츠
+-- Extension: content
 CREATE TABLE IF NOT EXISTS sb.contents (
     content_id BIGSERIAL PRIMARY KEY,
     listing_id BIGINT REFERENCES sb.listings(listing_id) ON DELETE CASCADE,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS sb.contents (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 확장: 코스
+-- Extension: courses
 CREATE TABLE IF NOT EXISTS sb.courses (
     course_id BIGSERIAL PRIMARY KEY,
     title VARCHAR(150),
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS sb.course_listings (
 );
 
 -- =========================
--- C. 추천/피드백
+-- C. Recommendations / feedback
 -- =========================
 CREATE TABLE IF NOT EXISTS sb.match_candidates (
     candidate_id BIGSERIAL PRIMARY KEY,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS sb.match_feedback (
 );
 
 -- =========================
--- D. 예약/결제/제휴
+-- D. Bookings / payments / partners
 -- =========================
 CREATE TABLE IF NOT EXISTS sb.bookings (
     booking_id BIGSERIAL PRIMARY KEY,
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS sb.partner_offers (
 );
 
 -- =========================
--- E. 메시징/리뷰
+-- E. Messaging / reviews
 -- =========================
 CREATE TABLE IF NOT EXISTS sb.threads (
     thread_id BIGSERIAL PRIMARY KEY,
@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS sb.reviews (
 );
 
 -- =========================
--- F. 안전/운영
+-- F. Safety / operations
 -- =========================
 CREATE TABLE IF NOT EXISTS sb.user_locations (
     loc_id BIGSERIAL PRIMARY KEY,
@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS sb.audit_logs (
 );
 
 -- =========================
--- 인덱스
+-- Indexes
 -- =========================
 CREATE INDEX IF NOT EXISTS idx_listings_host ON sb.listings(host_id);
 CREATE INDEX IF NOT EXISTS idx_slots_listing_time ON sb.availability_slots(listing_id, start_ts, end_ts);

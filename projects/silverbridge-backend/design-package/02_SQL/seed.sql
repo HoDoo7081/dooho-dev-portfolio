@@ -1,4 +1,4 @@
--- 최소 샘플 데이터
+-- Minimal sample data
 INSERT INTO sb.users(email, full_name, role, status) VALUES
   ('traveler1@example.com','Traveler One','TRAVELER','ACTIVE'),
   ('host1@example.com','Host One','HOST','ACTIVE'),
@@ -16,8 +16,8 @@ INSERT INTO sb.listings(host_id, type, title, description, location_id, base_pri
 VALUES (
   (SELECT host_id FROM sb.hosts LIMIT 1),
   'TOUR',
-  '한강 산책 & 카페 투어',
-  '시니어 맞춤 저강도 산책 코스',
+  'Han River walk & cafe tour',
+  'Low-intensity walking course tailored for seniors',
   (SELECT location_id FROM sb.locations LIMIT 1),
   30000, 'KRW', 6, 'ACTIVE'
 );

@@ -1,26 +1,26 @@
-# ADR-002: 결제 확정은 리디렉션이 아니라 검증된 웹훅으로
+# ADR-002: Confirm payment with a verified webhook, not a redirect
 
-- **상태**: Accepted (설계 단계 — 구현 전 합의된 결정)
-- **프로젝트**: 회비 결제 링크 MVP
+- **Status:** Accepted (design stage: agreed before implementation)
+- **Project:** Fee Payment Link MVP
 
-## Context (배경)
-결제 성공 URL(브라우저 리디렉션)은 사용자가 닫거나 조작할 수 있고, 웹훅은 재전송·중복·순서 뒤바뀜이 일어납니다. 돈이 오가는 서비스에서 "결제됨"의 기준이 흔들리면 중복 납부·누락이 생깁니다.
+## Context
+The payment-success URL (a browser redirect) can be closed or tampered with by the user, and webhooks can be redelivered, duplicated or arrive out of order. In a money-handling service, if the standard for "paid" wobbles, duplicate payments and omissions follow.
 
-## Decision (결정)
-브라우저 성공 URL은 **안내용**으로만 쓰고, 결제 확정은 **서명 검증된 웹훅**으로만 처리합니다. 처리 순서는 서명 검증 → 트랜잭션 시작 → `provider_event(event_id)` **먼저 삽입**(충돌 시 중복으로 보고 200 반환 후 종료) → 결제 행 잠금 → 금액·통화·캠페인 검증 → `PAID` 전이 + 원장 추가 → 커밋입니다. 공급자 주문 ID·거래 ID에는 유일 인덱스를 둡니다.
+## Decision
+Use the browser success URL **only to inform the user**, and confirm payment **only through a signature-verified webhook**. The order is: verify signature → begin transaction → **insert first** `provider_event(event_id)` (on conflict treat it as a duplicate, return 200 and stop) → lock the payment row → validate amount, currency and campaign → transition to `PAID` + append ledger entries → commit. Provider order ID and transaction ID get unique indexes.
 
-## Consequences (결과)
-**얻는 것**
-- 중복 웹훅이 와도 납부가 한 번만 반영됨 (성공 지표: 중복 납부 0건)
-- 확정 시점이 하나로 고정되어 감사·대사가 쉬움
+## Consequences
+**Gains**
+- A duplicate webhook is reflected as a payment only once (success metric: zero duplicate payments)
+- Confirmation happens at one fixed point, which makes audit and reconciliation easy
 
-**감수하는 것 / 리스크**
-- 웹훅 지연 시 사용자 화면과 상태가 잠시 어긋남 → "확인 중" 상태 안내 필요
-- 웹훅 원문을 감사용으로 저장하되 카드정보는 저장하지 않는 규율 필요
+**Costs and risks**
+- If the webhook is delayed, the user's screen and the state briefly disagree, so a "confirming" state message is needed
+- Needs the discipline of storing the raw webhook for audit but never storing card data
 
-## Alternatives Considered (검토한 대안)
-- **리디렉션 URL로 확정**: 조작·중단에 취약 → 기각
-- **주기적 폴링만 사용**: 지연이 크고 공급자 호출량 증가 → 보조 수단(대사)으로만 사용
+## Alternatives considered
+- **Confirm on the redirect URL:** vulnerable to tampering and interruption → rejected
+- **Periodic polling only:** large delay and more provider calls → used only as a supporting mechanism (reconciliation)
 
 ## Related
 [ADR-004](ADR-004-append-only-ledger.md) · [01-PRD.md](../../01-PRD.md)

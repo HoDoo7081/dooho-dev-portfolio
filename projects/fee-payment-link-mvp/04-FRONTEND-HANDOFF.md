@@ -1,106 +1,108 @@
-# 프론트엔드 병렬 개발 가이드
+# Frontend parallel-development guide
 
-## 1. 개발 원칙
+<sub>🌐 English · [한국어 원본](ko/04-FRONTEND-HANDOFF.md) · [← Project README](README.md)</sub>
 
-프론트엔드는 백엔드 완성을 기다리지 않고 `openapi.yaml`을 기준으로 개발한다. 화면 내부에서 수수료나 정산 가능액을 확정 계산하지 않고 서버 응답을 표시한다.
+## 1. Principles
 
-프론트에서 미리 계산한 5% 금액은 입력 보조용으로만 사용할 수 있으며, 회비 생성 응답의 `amounts`를 최종값으로 사용한다.
+The frontend develops against `openapi.yaml` without waiting for the backend to be finished. Screens must not finalize fees or settleable amounts themselves; they display the server response.
 
-## 2. 권장 화면
+A 5% amount pre-computed in the frontend may be used only as an input aid. The `amounts` in the dues-creation response are the final values.
 
-### 총무 영역
+## 2. Recommended screens
 
-| 화면 | 경로 예시 | 주요 API |
+### Treasurer area
+
+| Screen | Example path | Main API |
 |---|---|---|
-| 로그인 | `/login` | 과제에서는 demo token |
-| 모임 목록 | `/dashboard` | `GET /v1/organizations` |
-| 모임 생성 | `/organizations/new` | `POST /v1/organizations` |
-| 모임 상세 | `/organizations/:id` | `GET /v1/organizations/:id`, campaigns |
-| 회비 생성 | `/organizations/:id/campaigns/new` | `POST /v1/organizations/:id/campaigns` |
-| 회비 관리 | `/campaigns/:id` | `GET /v1/campaigns/:id`, payments |
-| 환불 확인 | `/payments/:id/refund` | `POST /v1/payments/:id/refunds` |
-| 정산 요청 | `/organizations/:id/settlements/new` | summary, settlements 목록·생성 |
+| Login | `/login` | demo token in the assignment |
+| Group list | `/dashboard` | `GET /v1/organizations` |
+| Create group | `/organizations/new` | `POST /v1/organizations` |
+| Group detail | `/organizations/:id` | `GET /v1/organizations/:id`, campaigns |
+| Create dues | `/organizations/:id/campaigns/new` | `POST /v1/organizations/:id/campaigns` |
+| Manage dues | `/campaigns/:id` | `GET /v1/campaigns/:id`, payments |
+| Confirm refund | `/payments/:id/refund` | `POST /v1/payments/:id/refunds` |
+| Request settlement | `/organizations/:id/settlements/new` | summary, settlements list and create |
 
-### 회원 영역
+### Member area
 
-| 화면 | 경로 예시 | 주요 API |
+| Screen | Example path | Main API |
 |---|---|---|
-| 공개 회비 페이지 | `/pay/:slug` | `GET /v1/public/campaigns/:slug` |
-| 납부자 정보 | `/pay/:slug/payer` | 로컬 폼 |
-| 결제 이동 | `/pay/:slug/checkout` | `POST /v1/public/campaigns/:slug/checkouts` |
-| 결제 결과 | `/pay/result` | `GET /v1/public/payments/:publicToken` |
+| Public dues page | `/pay/:slug` | `GET /v1/public/campaigns/:slug` |
+| Payer information | `/pay/:slug/payer` | local form |
+| Go to payment | `/pay/:slug/checkout` | `POST /v1/public/campaigns/:slug/checkouts` |
+| Payment result | `/pay/result` | `GET /v1/public/payments/:publicToken` |
 
-## 3. 핵심 컴포넌트
+## 3. Core components
 
-- `Money`: KRW 천 단위 표기, 입력값과 표시값 분리
+- `Money`: KRW thousands separators; keep input value and display value separate
 - `CampaignStatusBadge`
 - `PaymentStatusBadge`
 - `SettlementStatusBadge`
-- `FeeBreakdown`: 목표 정산액, 이용료, 최종 결제액
-- `PaymentTable`: 검색, 상태 필터, 페이지네이션
-- `RefundDialog`: 환불 가능 여부와 경고 표시
-- `SettlementSummary`: 가능액, 요청 중, 지급 완료
+- `FeeBreakdown`: target settlement amount, service fee, final charge
+- `PaymentTable`: search, status filter, pagination
+- `RefundDialog`: shows whether a refund is possible, with warnings
+- `SettlementSummary`: available, requested, paid out
 - `AsyncState`: loading, empty, error, retry
 
-## 4. 회비 생성 폼
+## 4. Dues creation form
 
-필드:
+Fields:
 
-- 모임 ID
-- 회비명
-- 설명
-- 총무 목표 정산액
-- 납부기한
-- 최대 납부 인원
-- 납부자에게 받을 추가 식별정보 라벨, 예: 학번
-- 환불정책 안내
+- Group ID
+- Dues name
+- Description
+- Treasurer's target settlement amount
+- Due date
+- Maximum number of payers
+- Label for an extra identifier to collect from payers, e.g. student number
+- Refund-policy notice
 
-금액 입력 예시:
-
-```text
-총무가 받을 금액     100,000원
-플랫폼 이용료          5,000원
-회원 최종 결제금액    105,000원
-```
-
-문구에서 `카드 수수료` 대신 `플랫폼 이용료`를 사용한다.
-
-## 5. 결제 결과 처리
-
-Shopify 성공 리디렉션 직후에도 내부 상태는 잠시 `PENDING`일 수 있다.
-
-권장 UX:
+Amount entry example:
 
 ```text
-결제를 확인하고 있습니다.
-→ 2초 간격으로 최대 5회 상태 조회
-→ PAID이면 완료 화면
-→ 계속 PENDING이면 "결제 확인 중"과 나중에 확인할 링크 제공
+Amount the treasurer receives     100,000 KRW
+Platform service fee                5,000 KRW
+Member's final payment            105,000 KRW
 ```
 
-프론트가 성공 URL만 보고 `PAID`로 표시해서는 안 된다.
+In copy, use "platform service fee" instead of "card fee".
 
-## 6. 환불 UX
+## 5. Handling the payment result
 
-상태별 버튼:
+Right after the Shopify success redirect, the internal state may still be `PENDING` for a moment.
 
-- `PAID` + 정산 미포함: 환불 요청 활성화
-- `REFUND_PENDING`: 버튼 비활성화, 처리 중 표시
-- `REFUNDED`: 환불 완료일 표시
-- 정산 포함: 자동 환불 버튼 대신 고객지원 안내
+Recommended UX:
 
-환불 요청에는 매번 새로운 `Idempotency-Key`를 생성한다. 네트워크 재시도에는 동일한 키를 재사용한다.
+```text
+"We are confirming your payment."
+→ poll the status up to 5 times, 2 seconds apart
+→ if PAID, show the completion screen
+→ if still PENDING, show "Payment being confirmed" and a link to check later
+```
 
-## 7. Mock 데이터 예시
+The frontend must not display `PAID` just because it saw the success URL.
 
-### 캠페인
+## 6. Refund UX
+
+Buttons by state:
+
+- `PAID` and not in a settlement: enable the refund request
+- `REFUND_PENDING`: disable the button and show "in progress"
+- `REFUNDED`: show the refund completion date
+- In a settlement: show customer-support guidance instead of an automatic refund button
+
+Generate a new `Idempotency-Key` for each refund request. Reuse the same key for network retries.
+
+## 7. Mock data examples
+
+### Campaign
 
 ```json
 {
   "id": "8a224e83-1d43-4e46-9d53-f4d98e24c920",
   "organizationId": "bd6f3e48-a465-4401-b471-c32b593346f8",
-  "name": "2026년 2학기 회비",
-  "description": "사진동아리 운영 및 전시 준비 비용",
+  "name": "2026 Fall Semester Dues",
+  "description": "Photography club operations and exhibition preparation costs",
   "slug": "photo-club-2026-fall-x7k2",
   "status": "ACTIVE",
   "amounts": {
@@ -116,12 +118,12 @@ Shopify 성공 리디렉션 직후에도 내부 상태는 잠시 `PENDING`일 �
 }
 ```
 
-### 납부 목록 항목
+### Payer list item
 
 ```json
 {
   "id": "6d87a317-edc4-4d51-af39-9534d38fd9b2",
-  "payerName": "홍길동",
+  "payerName": "Gildong Hong",
   "payerIdentifier": "20261234",
   "status": "PAID",
   "chargeAmount": 105000,
@@ -131,18 +133,18 @@ Shopify 성공 리디렉션 직후에도 내부 상태는 잠시 `PENDING`일 �
 }
 ```
 
-### 오류
+### Error
 
 ```json
 {
   "code": "CAMPAIGN_CAPACITY_EXCEEDED",
-  "message": "납부 가능 인원이 마감되었습니다.",
+  "message": "The maximum number of payers has been reached.",
   "requestId": "req_01J2ABCDXYZ",
   "details": {}
 }
 ```
 
-## 8. 반드시 처리할 오류 코드
+## 8. Error codes that must be handled
 
 - `VALIDATION_ERROR`
 - `UNAUTHORIZED`
@@ -157,21 +159,21 @@ Shopify 성공 리디렉션 직후에도 내부 상태는 잠시 `PENDING`일 �
 - `IDEMPOTENCY_CONFLICT`
 - `PAYMENT_PROVIDER_UNAVAILABLE`
 
-## 9. 접근성과 모바일 기준
+## 9. Accessibility and mobile criteria
 
-- 360px 폭에서 결제 핵심정보가 잘리지 않아야 한다.
-- 금액은 색상만으로 구분하지 않는다.
-- 상태 배지에 텍스트를 포함한다.
-- 입력 오류는 필드 옆과 상단 요약에 표시한다.
-- 결제 이동 버튼은 중복 클릭을 방지한다.
-- 외부 결제 화면으로 이동한다는 안내를 제공한다.
+- Core payment information must not be cut off at 360 px width.
+- Do not distinguish amounts by color alone.
+- Include text in status badges.
+- Show input errors next to the field and in a summary at the top.
+- Prevent double clicks on the go-to-payment button.
+- Tell the user they are being taken to an external payment screen.
 
-## 10. 프론트 완료 기준
+## 10. Frontend definition of done
 
-- Mock API로 전체 총무 흐름 실행 가능
-- 공개 링크에서 결제 이동까지 실행 가능
-- 모든 상태값에 대한 화면 확인 가능
-- 로딩·빈 목록·서버 오류·재시도 상태 존재
-- 서버 금액과 로컬 미리보기 불일치 시 서버 값을 사용
-- 모바일 화면 검증
-- API base URL과 demo token이 환경변수로 분리됨
+- The whole treasurer flow runs against a Mock API
+- The public link runs through to the move to payment
+- A screen exists for every state value
+- Loading, empty-list, server-error and retry states exist
+- When the server amount and the local preview disagree, the server value is used
+- Mobile screens verified
+- API base URL and demo token are separated into environment variables

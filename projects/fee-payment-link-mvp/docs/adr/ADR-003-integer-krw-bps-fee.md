@@ -1,26 +1,26 @@
-# ADR-003: 정수 원화 + bps 수수료, 금액은 서버만 계산
+# ADR-003: Integer KRW + bps fee; only the server computes amounts
 
-- **상태**: Accepted (설계 단계 — 구현 전 합의된 결정)
-- **프로젝트**: 회비 결제 링크 MVP
+- **Status:** Accepted (design stage: agreed before implementation)
+- **Project:** Fee Payment Link MVP
 
-## Context (배경)
-소수점 금액은 반올림 오차를 만들고, 클라이언트가 보낸 금액을 믿으면 변조 위험이 있습니다. 수수료 정책도 바뀔 수 있습니다.
+## Context
+Decimal amounts create rounding error, and trusting an amount sent by the client invites tampering. The fee policy may also change.
 
-## Decision (결정)
-모든 금액을 **정수 원화**로 저장하고, 수수료는 `platformFee = floor(netAmount × platformFeeRateBps ÷ 10,000)` (기본 500 bps), 결제액은 `netAmount + platformFee`로 **서버에서만** 계산합니다. 예: 100,000원 → 수수료 5,000원 → 결제액 105,000원. 결제 화면에는 "카드 수수료" 대신 서비스 포함 최종 결제금액을 표시합니다.
+## Decision
+Store every amount as **integer KRW**, and compute the fee as `platformFee = floor(netAmount × platformFeeRateBps ÷ 10,000)` (default 500 bps) and the charge as `netAmount + platformFee`, **on the server only**. Example: 100,000 KRW → fee 5,000 KRW → charge 105,000 KRW. The payment screen shows the final amount with the service included instead of a "card fee".
 
-## Consequences (결과)
-**얻는 것**
-- 반올림 오차 원천 제거, 정책 변경은 bps 값 변경으로 처리
-- 클라이언트 값 불신으로 금액 변조 차단
+## Consequences
+**Gains**
+- Rounding error is removed at the source, and a policy change is just a change of the bps value
+- Not trusting client values blocks amount tampering
 
-**감수하는 것 / 리스크**
-- 절사(floor)로 1원 미만 차이가 생기며, 이를 정책으로 문서화해야 함
-- PG 실비·부가세 표시는 별도 세무정책에 따라 추후 확장 필요(MVP는 `platformFee` 단일 값 기록)
+**Costs and risks**
+- Rounding down (floor) creates sub-1-KRW differences, which must be documented as policy
+- Actual PG cost and VAT display need later extension under a separate tax policy (the MVP records `platformFee` as a single value)
 
-## Alternatives Considered (검토한 대안)
-- **소수점 금액(decimal) 저장**: 계산·비교 규칙이 복잡해짐 → 기각
-- **클라이언트 계산값 수신**: 변조 위험 → 기각
+## Alternatives considered
+- **Storing decimal amounts:** calculation and comparison rules get complicated → rejected
+- **Accepting a client-computed value:** tampering risk → rejected
 
 ## Related
-[01-PRD.md](../../01-PRD.md) 금액 정책
+[01-PRD.md](../../01-PRD.md), amount policy

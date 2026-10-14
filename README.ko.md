@@ -2,7 +2,7 @@
 
 🌐 [English](README.md) · **한국어**
 
-<img src="docs/banner-v2.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio" width="100%">
+<img src="docs/banner-v3.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio" width="100%">
 
 <br>
 
@@ -59,11 +59,11 @@ flowchart LR
 
 ## 프로젝트
 
-### 1. [SilverBridge](projects/silverbridge-backend) — 시니어 부모님 자유여행 AI 동행 플랫폼
+### 1. [SilverBridge](projects/silverbridge-backend/README.ko.md) — 시니어 부모님 자유여행 AI 동행 플랫폼
 
 <table>
 <tr>
-<td width="46%"><a href="projects/silverbridge-backend"><img src="projects/silverbridge-backend/docs/images/00-process-L1-swimlane.png" alt="SilverBridge 업무 프로세스 L1"></a></td>
+<td width="46%"><a href="projects/silverbridge-backend/README.ko.md"><img src="projects/silverbridge-backend/docs/images/00-process-L1-swimlane.png" alt="SilverBridge 업무 프로세스 L1"></a></td>
 <td>
 
 **무엇** — 자유여행이 두려운 시니어를 위한 AI 동행 매칭 + 안전(SOS·위치 공유) 플랫폼의 백엔드 설계<br>
@@ -75,17 +75,17 @@ flowchart LR
 - 역할 × 엔드포인트 권한 매트릭스
 - 개인정보 보존·파기표, SLO 숫자 합의
 
-[**→ 프로젝트 보기**](projects/silverbridge-backend)
+[**→ 프로젝트 보기**](projects/silverbridge-backend/README.ko.md)
 
 </td>
 </tr>
 </table>
 
-### 2. [회비 결제 링크 MVP](projects/fee-payment-link-mvp) — 총무를 위한 카드 결제 링크
+### 2. [회비 결제 링크 MVP](projects/fee-payment-link-mvp/README.ko.md) — 총무를 위한 카드 결제 링크
 
 <table>
 <tr>
-<td width="46%"><a href="projects/fee-payment-link-mvp"><img src="projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png" alt="결제 확정 시퀀스"></a></td>
+<td width="46%"><a href="projects/fee-payment-link-mvp/README.ko.md"><img src="projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png" alt="결제 확정 시퀀스"></a></td>
 <td>
 
 **무엇** — 모임 회비를 링크 하나로 받고 환불·정산까지 관리하는 서비스의 제품·백엔드 설계<br>
@@ -97,7 +97,7 @@ flowchart LR
 - append-only 원장, 환불 상태 머신, 정산 스냅샷
 - 출시 승인 체크리스트
 
-[**→ 프로젝트 보기**](projects/fee-payment-link-mvp)
+[**→ 프로젝트 보기**](projects/fee-payment-link-mvp/README.ko.md)
 
 </td>
 </tr>

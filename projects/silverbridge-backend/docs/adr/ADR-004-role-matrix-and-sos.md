@@ -1,26 +1,26 @@
-# ADR-004: 역할×엔드포인트 권한 매트릭스, 단 SOS는 모든 역할 허용
+# ADR-004: Role × endpoint permission matrix, with SOS allowed for every role
 
-- **상태**: Accepted (설계 단계 — 구현 전 합의된 결정)
-- **프로젝트**: SilverBridge
+- **Status:** Accepted (design stage: agreed before implementation)
+- **Project:** SilverBridge
 
-## Context (배경)
-여행자·호스트·어시스턴트·관리자가 서로 다른 데이터를 다루고, 시니어를 대신해 자녀·어시스턴트가 이용하는 구조라 권한 오남용 위험이 큽니다. 반면 응급 상황에서는 권한 때문에 막히면 안 됩니다.
+## Context
+Travelers, hosts, assistants and admins handle different data, and because children and assistants use the service on a senior's behalf, the risk of permission abuse is high. In an emergency, however, permissions must never block the call.
 
-## Decision (결정)
-역할 × 엔드포인트 권한 매트릭스와 소유권 검사(본인 예약·메시지·후기만 접근)를 적용하고, 어시스턴트 배정은 **관리자 생성·어시스턴트 승인**으로 합니다. 예외로 `POST /v1/safety/sos`는 **모든 역할에 허용**합니다.
+## Decision
+Apply a role × endpoint permission matrix and ownership checks (users only access their own bookings, messages and reviews), with assistant assignment **created by an admin and approved by the assistant**. As an exception, `POST /v1/safety/sos` is **allowed for every role**.
 
-## Consequences (결과)
-**얻는 것**
-- 최소 권한 원칙, 대리 이용 시 권한 남용 방지
-- 안전 기능이 권한 설정 오류로 막히는 일 방지
+## Consequences
+**Gains**
+- Least privilege; prevents permission abuse when someone acts on a senior's behalf
+- The safety function cannot be blocked by a permission misconfiguration
 
-**감수하는 것 / 리스크**
-- 매트릭스와 가드 구현이 어긋나지 않도록 계약 테스트 필요
-- SOS 남용(허위 호출) 방지를 위한 별도 모니터링 필요
+**Costs and risks**
+- Contract tests are needed so the matrix and the guard implementation do not drift apart
+- Separate monitoring is needed to catch SOS abuse (false calls)
 
-## Alternatives Considered (검토한 대안)
-- **역할 구분 없이 로그인 여부만 확인**: 대리 이용 구조에서 위험 → 기각
-- **SOS도 역할별 제한**: 응급 시 접근 차단 위험 → 기각
+## Alternatives considered
+- **Check only whether the user is logged in:** dangerous in a proxy-use model → rejected
+- **Restrict SOS by role too:** risk of blocking access in an emergency → rejected
 
 ## Related
 [SECURITY.md](../../design-package/04_Security/SECURITY.md)

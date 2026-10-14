@@ -2,7 +2,7 @@
 
 🌐 **English** · [한국어](README.ko.md)
 
-<img src="docs/banner-v2.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio: 31 DB tables, 14 API paths, 11 ADRs, CI-validated" width="100%">
+<img src="docs/banner-v3.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio: 31 DB tables, 14 API paths, 11 ADRs, CI-validated" width="100%">
 
 [![validate](https://github.com/HoDoo7081/dooho-dev-portfolio/actions/workflows/validate.yml/badge.svg)](https://github.com/HoDoo7081/dooho-dev-portfolio/actions/workflows/validate.yml)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)
@@ -13,9 +13,9 @@
 
 </div>
 
-## I turn product problems into system design
+## Design first, code second
 
-Data model, API contract, security, and money flows — *before* anyone writes code.
+I design the data model, API contract, security and money flows *before* anyone writes code.
 
 > [!TIP]
 > **Short on time? Read these two things (2 minutes).**

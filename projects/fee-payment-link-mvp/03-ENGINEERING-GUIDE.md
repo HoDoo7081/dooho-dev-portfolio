@@ -1,8 +1,10 @@
-# 백엔드 엔지니어링 가이드
+# Backend engineering guide
 
-## 1. 권장 아키텍처
+<sub>🌐 English · [한국어 원본](ko/03-ENGINEERING-GUIDE.md) · [← Project README](README.md)</sub>
 
-초기에는 마이크로서비스가 아닌 모듈형 모놀리스를 권장한다.
+## 1. Recommended architecture
+
+Start with a modular monolith, not microservices.
 
 ```text
 API
@@ -23,20 +25,20 @@ Domain + Repository Interfaces
 PostgreSQL / Shopify Adapter / Mock Provider
 ```
 
-결제 공급자를 도메인에서 분리하면 MVP 이후 Shopify를 국내 PG 직접 연동으로 교체할 수 있다.
+Keeping the payment provider out of the domain lets you replace Shopify with a direct domestic PG integration after the MVP.
 
-## 2. Shopify 매핑
+## 2. Shopify mapping
 
-| 내부 개념 | Shopify 개념 | 비고 |
+| Internal concept | Shopify concept | Note |
 |---|---|---|
-| 회비 캠페인 | Product | 배송 불필요 상품 |
-| 회비 가격 | Product Variant | KRW 단일 가격 |
-| 납부 시도 | Cart/Checkout | 내부 payment ID를 attribute로 전달 |
-| 납부 완료 | Order + paid transaction | 웹훅으로 확정 |
-| 전액 환불 | Refund 또는 Order cancel | 원 결제수단 환불 |
-| 부분 환불 | Refund | MVP UI 범위 밖 |
+| Dues campaign | Product | A product that needs no shipping |
+| Dues price | Product Variant | Single KRW price |
+| Payment attempt | Cart/Checkout | Pass the internal payment ID as an attribute |
+| Payment completed | Order + paid transaction | Confirmed by webhook |
+| Full refund | Refund or Order cancel | Refund to the original payment method |
+| Partial refund | Refund | Outside the MVP UI scope |
 
-권장 메타데이터:
+Recommended metadata:
 
 ```text
 organization_id
@@ -47,35 +49,35 @@ platform_fee
 schema_version
 ```
 
-상품명에는 개인정보를 포함하지 않는다. 회원 이름이나 전화번호는 상품명, URL, Shopify 태그에 넣지 않는다.
+Do not put personal data in the product name. Never put a member's name or phone number in the product name, URL or Shopify tags.
 
-## 3. Shopify 생성 흐름
+## 3. Shopify creation flow
 
 ```text
-캠페인 DRAFT 생성
-→ 내부 금액 확정
+Create campaign as DRAFT
+→ finalize internal amounts
 → Provider.createProduct()
-→ providerProductId/providerVariantId 저장
-→ 캠페인 ACTIVE 전환
-→ 공개 링크 활성화
+→ store providerProductId/providerVariantId
+→ switch campaign to ACTIVE
+→ activate the public link
 ```
 
-외부 상품 생성은 DB 트랜잭션 안에서 장시간 기다리지 않는다. 권장 방식은 다음과 같다.
+Do not wait on external product creation for a long time inside a DB transaction. The recommended approach:
 
-1. 내부 캠페인을 `DRAFT`로 저장한다.
-2. 외부 상품 생성 작업을 수행한다.
-3. 성공하면 공급자 ID를 기록하고 `ACTIVE`로 전환한다.
-4. 실패하면 `DRAFT`를 유지하고 재시도 가능하게 한다.
+1. Save the internal campaign as `DRAFT`.
+2. Run the external product-creation job.
+3. On success, record the provider IDs and switch to `ACTIVE`.
+4. On failure, keep it `DRAFT` and make it retryable.
 
-## 4. 결제 확정 원칙
+## 4. Payment confirmation principles
 
-- 브라우저의 성공 URL은 사용자 안내용이다.
-- 결제 확정은 웹훅 서명 검증 후 처리한다.
-- 공급자 주문 ID와 거래 ID에 유일 인덱스를 둔다.
-- 웹훅 이벤트 ID를 먼저 삽입하고 중복이면 성공 응답 후 종료한다.
-- 이벤트 처리와 원장 반영은 하나의 DB 트랜잭션으로 묶는다.
+- The success URL in the browser is for informing the user.
+- Confirm payment after webhook signature verification.
+- Put unique indexes on provider order ID and transaction ID.
+- Insert the webhook event ID first; if it is a duplicate, return a success response and stop.
+- Bind event handling and ledger updates into one DB transaction.
 
-의사코드:
+Pseudocode:
 
 ```text
 verify signature
@@ -90,11 +92,11 @@ begin transaction
 commit
 ```
 
-## 5. 원장 설계
+## 5. Ledger design
 
-현재 잔액만 저장하지 말고 금액 사건을 추가형 원장으로 기록한다.
+Do not store only the current balance; record money events in an append-only ledger.
 
-예시 원장 유형:
+Example ledger types:
 
 - `PAYMENT_CAPTURED`
 - `PLATFORM_FEE_RECOGNIZED`
@@ -105,105 +107,104 @@ commit
 - `CHARGEBACK_RECORDED`
 - `MANUAL_ADJUSTMENT`
 
-원장 항목은 삭제·수정하지 않고 반대 항목을 추가한다. 수동 조정은 운영자, 사유, 관련 거래를 필수로 기록한다.
+Never delete or edit ledger entries; add reversing entries. A manual adjustment must record the operator, the reason and the related transaction.
 
-## 6. 환불 설계
+## 6. Refund design
 
-외부 API 호출과 DB 저장을 하나의 원자적 트랜잭션으로 만들 수 없으므로 상태 머신과 멱등키가 필요하다.
+An external API call and a DB write cannot be made into one atomic transaction, so you need a state machine and idempotency keys.
 
 ```text
 PAID
 → REFUND_PENDING
-→ 외부 환불 호출
-→ 성공 확인
-→ REFUNDED + 원장 반영
+→ external refund call
+→ success confirmed
+→ REFUNDED + ledger entry
 ```
 
-타임아웃 시 `FAILED`로 즉시 되돌리지 않는다. 공급자 환불 ID 조회 또는 대사 작업을 통해 최종 상태를 확인한다.
+On timeout, do not return to `FAILED` immediately. Confirm the final state through a provider refund ID lookup or a reconciliation job.
 
-2026-04 이후 Shopify GraphQL `refundCreate`는 멱등성 지시자가 필수이므로 사용 API 버전과 요구사항을 고정한다. 구현 당시 최신 Shopify 공식 문서를 재확인한다.
+From 2026-04, Shopify's GraphQL `refundCreate` requires an idempotency directive, so pin the API version in use and its requirements. Re-check the latest official Shopify documentation at implementation time.
 
-## 7. 정산 설계
+## 7. Settlement design
 
-정산 가능액을 단순 캐시 값으로만 관리하지 않는다.
+Do not manage the settleable amount only as a cached value.
 
 ```text
-정산가능액 = 결제 확정 순액
-            - 환불 완료/예약 순액
-            - 기존 정산 요청에 예약된 순액
-            - 운영상 유보액
+Settleable amount = net amount of confirmed payments
+                    − net amount of completed / reserved refunds
+                    − net amount reserved in earlier settlement requests
+                    − operational holds
 ```
 
-정산 생성 시:
+When creating a settlement:
 
-- 대상 payment 행을 잠근다.
-- 이미 다른 정산에 포함됐는지 확인한다.
-- settlement와 settlement_items를 함께 저장한다.
-- 원장에 `SETTLEMENT_RESERVED`를 추가한다.
-- 계산 결과와 항목 합계가 일치하지 않으면 전체 롤백한다.
+- Lock the target payment rows.
+- Check whether any is already included in another settlement.
+- Save the settlement and settlement_items together.
+- Append `SETTLEMENT_RESERVED` to the ledger.
+- If the computed result and the item total do not match, roll everything back.
 
-## 8. API 규칙
+## 8. API rules
 
-- 금액: 정수 KRW
-- ID: UUID
-- 날짜: ISO 8601 UTC
-- 목록: cursor 또는 page 기반 중 하나로 일관되게 사용
-- 오류 응답: `code`, `message`, `requestId`, `details`
-- 쓰기 요청: `Idempotency-Key` 지원
-- 추적: 모든 응답에 `X-Request-Id`
+- Amounts: integer KRW
+- IDs: UUID
+- Dates: ISO 8601 UTC
+- Lists: use either cursor-based or page-based pagination, consistently
+- Error response: `code`, `message`, `requestId`, `details`
+- Write requests: support `Idempotency-Key`
+- Tracing: `X-Request-Id` on every response
 
-클라이언트가 보내도 무시하거나 거절해야 하는 값:
+Values to ignore or reject even if the client sends them:
 
-- 플랫폼 수수료
-- 최종 결제금액
-- 결제 성공 상태
-- 정산 가능액
-- 환불 완료 상태
+- Platform fee
+- Final payment amount
+- Payment-success state
+- Settleable amount
+- Refund-completed state
 
-## 9. 보안
+## 9. Security
 
-- 카드번호, CVC, 카드 비밀번호를 서버에서 받거나 저장하지 않는다.
-- Shopify Admin 토큰과 웹훅 시크릿은 Secret Manager 또는 환경변수로 관리한다.
-- 웹훅 검증에는 파싱 전 raw request body를 사용한다.
-- 로그에서 이름, 전화번호, 계좌번호, 토큰을 마스킹한다.
-- 공개 링크 ID는 순차 번호가 아닌 추측 불가능한 토큰을 사용한다.
-- 운영자 수동 상태 변경은 감사 로그를 남긴다.
-- 환불, 정산, 공급자 재동기화 API에는 역할 검사를 적용한다.
+- Never receive or store card numbers, CVC or card PINs on the server.
+- Manage the Shopify Admin token and webhook secret in a secret manager or environment variables.
+- Use the raw request body, before parsing, for webhook verification.
+- Mask names, phone numbers, account numbers and tokens in logs.
+- Use unguessable tokens, not sequential numbers, for public link IDs.
+- Leave an audit log for manual operator status changes.
+- Apply role checks to the refund, settlement and provider-resync APIs.
 
-## 10. 장애 및 대사
+## 10. Failures and reconciliation
 
-최소 하루 한 번 다음 불일치를 찾는 대사 작업을 고려한다.
+Consider a reconciliation job, at least once a day, that finds these mismatches.
 
-- Shopify는 결제 완료지만 내부는 `PENDING`
-- Shopify는 환불 완료지만 내부는 `REFUND_PENDING`
-- 내부 결제금액과 Shopify 주문금액 불일치
-- 공급자 주문 ID가 없는 활성 캠페인
-- 정산 항목 합계와 정산 요청 금액 불일치
+- Shopify shows payment completed but the internal state is `PENDING`
+- Shopify shows refund completed but the internal state is `REFUND_PENDING`
+- Internal payment amount differs from the Shopify order amount
+- An active campaign has no provider order ID
+- Settlement item total differs from the settlement request amount
 
-MVP 과제에서는 실제 스케줄러 대신 관리자용 `reconcile` 서비스와 테스트로 표현해도 된다.
+For the MVP assignment, an admin `reconcile` service and its tests can stand in for a real scheduler.
 
-## 11. 환경 구분
+## 11. Environments
 
 ```text
 local: MockPaymentProvider
-test: MockPaymentProvider + 고정 시계
+test: MockPaymentProvider + fixed clock
 staging: Shopify development store
-production: 승인된 Shopify store + 국내 PG
+production: approved Shopify store + domestic PG
 ```
 
-개발·스테이징·운영은 Shopify 스토어와 웹훅 시크릿을 분리한다.
+Keep separate Shopify stores and webhook secrets for development, staging and production.
 
-## 12. 배포 전 확인표
+## 12. Pre-deployment checklist
 
-- DB 백업·복구 연습
-- 웹훅 재전송 도구
-- 중복 이벤트 테스트
-- Shopify API rate limit 처리
-- 환불 타임아웃 복구
-- 금액 및 통화 검증
-- 개인정보 마스킹
-- 관리자 권한 검사
-- 정산 후 환불 정책 적용
-- 상품/주문/내부 원장 대사
-- 운영 비밀키 미노출
-
+- DB backup and restore drill
+- Webhook replay tool
+- Duplicate-event test
+- Shopify API rate-limit handling
+- Refund timeout recovery
+- Amount and currency validation
+- Personal-data masking
+- Admin permission checks
+- Refund-after-settlement policy applied
+- Product / order / internal ledger reconciliation
+- Production secrets not exposed

@@ -1,31 +1,33 @@
-# 백엔드 개발 과제 안내
+# Backend developer assignment brief
 
-## 1. 과제 목적
+<sub>🌐 English · [한국어 원본](ko/02-BACKEND-ASSIGNMENT.md) · [← Project README](README.md)</sub>
 
-회비 결제 링크 서비스의 핵심 도메인과 외부 결제 연동 경계를 설계하고 구현한다. 평가의 중심은 프레임워크 숙련도가 아니라 금액 무결성, 상태 전이, 멱등성, 테스트 가능성, 협업 가능한 API 계약이다.
+## 1. Purpose
 
-예상 순수 작업시간: 12~16시간  
-권장 제출기간: 수령 후 5~7일  
-실제 운영 배포: 과제 범위 아님
+Design and implement the core domain of the Fee Payment Link service and the boundary to external payment integration. The evaluation centers not on framework fluency but on amount integrity, state transitions, idempotency, testability and an API contract others can work against.
 
-## 2. 구현 범위
+Estimated net working time: 12–16 hours
+Recommended submission window: 5–7 days after receipt
+Production deployment: out of scope
 
-### 필수 시나리오
+## 2. Scope
 
-1. 총무가 모임을 생성한다.
-2. 목표 정산액 100,000원인 회비 캠페인을 생성한다.
-3. 서버가 이용료 5,000원과 결제금액 105,000원을 계산한다.
-4. 캠페인을 활성화하며 결제 공급자 상품 ID를 연결한다.
-5. 회원 정보로 checkout을 생성한다.
-6. Mock 결제 성공 웹훅을 처리해 납부 상태를 `PAID`로 만든다.
-7. 중복 웹훅이 와도 납부와 원장이 중복 생성되지 않는다.
-8. 정산 전 납부를 전액 환불한다.
-9. 여러 납부의 정산 가능액을 계산하고 정산 요청을 만든다.
-10. 정산 요청에 포함된 납부는 자동 환불이 차단된다.
+### Required scenario
 
-### 결제 공급자
+1. The treasurer creates a group.
+2. Creates a dues campaign with a target settlement amount of 100,000 KRW.
+3. The server calculates a fee of 5,000 KRW and a payment amount of 105,000 KRW.
+4. Activates the campaign and links the payment provider's product ID.
+5. Creates a checkout with member information.
+6. Handles a Mock payment-success webhook so the payment status becomes `PAID`.
+7. Even if a duplicate webhook arrives, the payment and ledger are not created twice.
+8. Fully refunds a payment before settlement.
+9. Calculates the settleable amount across several payments and creates a settlement request.
+10. Payments included in a settlement request can no longer be auto-refunded.
 
-필수 구현은 `MockPaymentProvider`다. 아래 인터페이스 또는 동등한 추상화를 사용한다.
+### Payment provider
+
+`MockPaymentProvider` is the required implementation. Use the interface below or an equivalent abstraction.
 
 ```ts
 interface PaymentProvider {
@@ -36,145 +38,144 @@ interface PaymentProvider {
 }
 ```
 
-Shopify 개발 스토어 연동은 선택 가산점이다. 실제 운영 키나 실제 카드 결제를 사용하지 않는다.
+A Shopify development-store integration is optional bonus credit. Do not use real production keys or real card payments.
 
-## 3. 기술 선택
+## 3. Technology choices
 
-- 언어와 프레임워크는 자유다.
-- PostgreSQL 또는 동등한 관계형 데이터베이스를 권장한다.
-- 로컬 실행은 Docker Compose 또는 한 번의 명령으로 가능해야 한다.
-- DB 마이그레이션을 포함한다.
-- OpenAPI 계약의 경로·상태값·오류 형식을 준수한다.
+- Language and framework are free.
+- PostgreSQL or an equivalent relational database is recommended.
+- Running locally must be possible with Docker Compose or a single command.
+- Include DB migrations.
+- Follow the paths, state values and error format of the OpenAPI contract.
 
-## 4. 필수 데이터 모델
+## 4. Required data model
 
-구체적인 테이블 구조는 자유지만 아래 개념을 표현해야 한다.
+The exact table structure is free, but these concepts must be represented.
 
-- `users`: 총무와 운영자
-- `organizations`: 모임
-- `campaigns`: 회비 링크
-- `payer_profiles`: 캠페인별 납부자 입력정보
-- `payments`: 결제 시도와 확정 상태
-- `refunds`: 환불 요청과 공급자 결과
-- `settlements`: 정산 요청 스냅샷
-- `settlement_items`: 정산에 포함된 결제
-- `ledger_entries`: 금액 증감 원장
-- `provider_events`: 외부 웹훅 멱등 처리
-- `audit_logs`: 누가 무엇을 변경했는지 기록
+- `users`: treasurers and operators
+- `organizations`: groups
+- `campaigns`: dues links
+- `payer_profiles`: payer input per campaign
+- `payments`: payment attempts and confirmed state
+- `refunds`: refund requests and provider results
+- `settlements`: settlement-request snapshots
+- `settlement_items`: payments included in a settlement
+- `ledger_entries`: ledger of amount changes
+- `provider_events`: idempotent handling of external webhooks
+- `audit_logs`: who changed what
 
-금액은 `integer/bigint + KRW`로 저장한다. `float`, `double`은 사용하지 않는다.
+Store amounts as `integer/bigint + KRW`. Do not use `float` or `double`.
 
-## 5. 비즈니스 규칙
+## 5. Business rules
 
-- 수수료율은 서버 설정값이며 기본 500bps다.
-- 클라이언트가 보낸 `platformFee`, `chargeAmount`는 신뢰하지 않는다.
-- 활성 캠페인의 가격은 변경할 수 없다. 변경하려면 기존 캠페인을 닫고 새로 만든다.
-- 캠페인 정원을 초과하는 checkout 생성을 동시성 환경에서도 막는다.
-- 결제 완료는 성공 리디렉션이 아닌 검증된 웹훅으로 확정한다.
-- 웹훅 이벤트 ID는 유일해야 한다.
-- 환불과 정산 요청에는 `Idempotency-Key`를 사용한다.
-- 외부 환불 호출이 타임아웃되면 무조건 실패로 단정하지 말고 재조회 또는 재처리 가능한 상태로 둔다.
-- 정산 요청은 생성 시 포함 결제와 금액을 고정한다.
-- 정산 요청 이후 원 결제 환불은 수동 검토 대상으로 돌린다.
+- The fee rate is a server setting, 500 bps by default.
+- Do not trust `platformFee` or `chargeAmount` sent by the client.
+- The price of an active campaign cannot be changed. To change it, close the existing campaign and create a new one.
+- Prevent checkout creation beyond campaign capacity, including under concurrency.
+- Payment completion is confirmed by a verified webhook, not by a success redirect.
+- The webhook event ID must be unique.
+- Use an `Idempotency-Key` for refund and settlement requests.
+- If an external refund call times out, do not assume failure; leave it in a state that can be re-queried or retried.
+- A settlement request freezes its included payments and amounts at creation.
+- After a settlement request, refunding the original payment is routed to manual review.
 
-## 6. 인증 범위
+## 6. Authentication scope
 
-과제에서는 실제 소셜 로그인이나 휴대폰 인증이 필요 없다.
+The assignment needs no real social login or phone verification.
 
-- `Bearer demo-treasurer-token`: 총무
-- `Bearer demo-admin-token`: 운영자
-- 공개 캠페인 조회와 checkout 생성은 인증 없이 허용
-- 운영자 API는 역할 검사 필수
+- `Bearer demo-treasurer-token`: treasurer
+- `Bearer demo-admin-token`: operator
+- Public campaign lookup and checkout creation are allowed without authentication
+- Operator APIs must check the role
 
-프로덕션 인증으로 교체할 수 있도록 인증 로직을 비즈니스 로직과 분리한다.
+Keep authentication logic separate from business logic so it can be replaced with production authentication.
 
-## 7. 필수 테스트
+## 7. Required tests
 
-### 단위 테스트
+### Unit tests
 
-- 5% 금액 계산과 원 단위 내림
-- 허용 및 금지 상태 전이
-- 정산 가능액 계산
-- 정산 후 자동 환불 차단
+- 5% amount calculation and rounding down to the won
+- Allowed and forbidden state transitions
+- Settleable amount calculation
+- Auto-refund block after settlement
 
-### 통합 테스트
+### Integration tests
 
-- 캠페인 생성 → 활성화 → checkout → 결제 웹훅 → 납부 확인
-- 동일 웹훅 2회 수신 시 원장 1회 반영
-- 동일 `Idempotency-Key` 환불 요청 2회 시 공급자 호출 1회
-- 잘못된 웹훅 서명 거절
-- 동시 checkout 생성 시 정원 초과 방지
-- 정산 요청 금액과 포함 결제 합계 일치
+- Create campaign → activate → checkout → payment webhook → payment confirmed
+- Receiving the same webhook twice is reflected in the ledger once
+- Two refund requests with the same `Idempotency-Key` call the provider once
+- Invalid webhook signature is rejected
+- Concurrent checkout creation does not exceed capacity
+- Settlement request amount equals the sum of included payments
 
-## 8. 제출물
+## 8. Deliverables
 
-- 소스코드 저장소
+- Source code repository
 - `README.md`
 - `.env.example`
-- DB 마이그레이션
-- 실행 가능한 테스트
-- API 문서 또는 제공된 OpenAPI 구현 결과
-- 주요 설계 결정을 설명한 `DECISIONS.md`
-- 알려진 한계와 프로덕션 전 보완사항
+- DB migrations
+- Runnable tests
+- API documentation or the result of implementing the supplied OpenAPI
+- `DECISIONS.md` explaining key design decisions
+- Known limits and what must be fixed before production
 
-README에는 다음 명령을 명확히 적는다.
+The README must state these commands clearly.
 
 ```text
-의존성 설치
-DB 시작
-마이그레이션
-서버 실행
-테스트 실행
-Mock 결제 성공/환불 재현
+Install dependencies
+Start the DB
+Run migrations
+Start the server
+Run tests
+Reproduce Mock payment success / refund
 ```
 
-## 9. 하지 않아도 되는 것
+## 9. What you do not have to do
 
-- 실제 Shopify 운영 스토어 연결
-- 실제 국내 PG 계약 또는 카드 결제
-- 실제 본인인증
-- 실제 계좌 인증 및 송금
-- 관리자 프론트엔드
-- 정기 자동결제
-- 카카오톡 발송
-- Kubernetes 및 복잡한 클라우드 인프라
+- Connect a real Shopify production store
+- Sign a real domestic PG contract or take real card payments
+- Real identity verification
+- Real bank-account verification and transfers
+- An admin frontend
+- Recurring auto-payment
+- KakaoTalk sending
+- Kubernetes and complex cloud infrastructure
 
-## 10. 평가 기준
+## 10. Evaluation criteria
 
-총점 100점이다.
+100 points in total.
 
-| 항목 | 배점 | 확인 내용 |
+| Item | Points | What is checked |
 |---|---:|---|
-| 도메인 모델 | 20 | 결제·환불·정산의 관계와 상태 표현 |
-| 금액 무결성 | 20 | 서버 계산, 원장, 트랜잭션, 동시성 |
-| 외부연동 설계 | 15 | Provider 추상화, 장애·재시도 처리 |
-| API 품질 | 15 | OpenAPI 준수, 오류 일관성, 페이지네이션 |
-| 테스트 | 20 | 핵심 위험을 실제로 검증하는 테스트 |
-| 문서·가독성 | 10 | 실행법, 의사결정, 코드 구조 |
+| Domain model | 20 | Relationships and states of payment, refund and settlement |
+| Amount integrity | 20 | Server calculation, ledger, transactions, concurrency |
+| External integration design | 15 | Provider abstraction, failure and retry handling |
+| API quality | 15 | OpenAPI conformance, consistent errors, pagination |
+| Tests | 20 | Tests that actually verify the core risks |
+| Documentation and readability | 10 | How to run, decisions, code structure |
 
-### 감점 요소
+### Deductions
 
-- 카드정보를 직접 저장
-- 금액에 부동소수점 사용
-- 리디렉션만으로 결제 성공 처리
-- 웹훅 서명 또는 중복 처리 부재
-- 컨트롤러에 모든 비즈니스 로직 집중
-- 테스트가 정상 흐름만 확인
-- 운영 비밀키를 저장소에 커밋
+- Storing card data directly
+- Using floating point for amounts
+- Treating a redirect alone as payment success
+- No webhook signature or duplicate handling
+- All business logic concentrated in controllers
+- Tests that only check the happy path
+- Committing production secrets to the repository
 
-## 11. 리뷰 인터뷰 질문
+## 11. Review interview questions
 
-- 외부 환불은 성공했지만 응답을 받지 못하면 어떻게 복구하는가?
-- 동시에 마지막 한 자리를 결제하려는 요청 두 개를 어떻게 처리하는가?
-- Shopify에서 주문이 취소됐지만 내부 웹훅 처리가 실패하면 어떻게 대사하는가?
-- 정산 완료 후 차지백이 발생하면 어떤 원장 이벤트가 필요한가?
-- Shopify를 제거하고 국내 PG 직접 연동으로 바꿀 때 수정 범위는 어디까지인가?
-- 개인정보 삭제 요청과 회계·거래기록 보존 의무가 충돌하면 데이터를 어떻게 분리하는가?
+- If an external refund succeeds but the response is never received, how do you recover?
+- How do you handle two concurrent requests to pay for the last remaining seat?
+- If an order is cancelled in Shopify but internal webhook handling fails, how do you reconcile?
+- If a chargeback occurs after settlement is complete, which ledger events are needed?
+- When removing Shopify and integrating a domestic PG directly, how far does the change reach?
+- If a personal-data deletion request conflicts with the obligation to retain accounting and transaction records, how do you separate the data?
 
-## 12. 공정한 과제 운영
+## 12. Running the assignment fairly
 
-- 과제 범위를 넘어선 기능 구현을 요구하지 않는다.
-- 평가 전에 합격 기준과 예상 시간을 공개한다.
-- 제출 결과를 실제 제품에 사용한다면 사전에 고지하고 유급으로 진행한다.
-- 불합격자 코드의 복제·배포·상용 사용을 금지한다.
-
+- Do not require features beyond the assignment's scope.
+- Publish the passing criteria and estimated time before evaluation.
+- If a submission will be used in a real product, tell candidates in advance and make it paid work.
+- Copying, distributing or commercially using the code of rejected candidates is prohibited.

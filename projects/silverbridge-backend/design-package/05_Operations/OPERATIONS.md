@@ -1,25 +1,27 @@
-# 운영/성능/가용성 설계
+# Operations, performance and availability design
 
-## 1) SLO (초기)
-- API P95 응답시간 ≤ 300ms
-- 가용성 99.9%
-- 오류율 ≤ 0.1%
+<sub>🌐 English · [한국어 원본](../ko/05_Operations/OPERATIONS.md)</sub>
 
-## 2) 인덱스/파티셔닝
-- 인덱스: bookings(traveler_id), bookings(listing_id,status), messages(thread_id,sent_at), availability_slots(listing_id,start_ts,end_ts), user_locations(user_id,captured_at DESC)
-- 파티셔닝 후보:
-  - messages: 월 단위 range 파티션
-  - audit_logs: 월 단위 range 파티션
-  - user_locations: 월 단위 range 파티션
+## 1) SLOs (initial)
+- API P95 response time ≤ 300 ms
+- Availability 99.9%
+- Error rate ≤ 0.1%
 
-## 3) 확장성
-- 읽기 집중: 캐시(예: Redis)로 listings 검색 결과 캐싱
-- 비동기 처리: 결제 완료 후 영수증 발송, 보험 연계는 큐(Kafka/SQS) 처리
+## 2) Indexes and partitioning
+- Indexes: bookings(traveler_id), bookings(listing_id, status), messages(thread_id, sent_at), availability_slots(listing_id, start_ts, end_ts), user_locations(user_id, captured_at DESC)
+- Partitioning candidates:
+  - messages: monthly range partitions
+  - audit_logs: monthly range partitions
+  - user_locations: monthly range partitions
 
-## 4) 백업/복구
-- 일일 전체 백업 + 7일 PITR
-- RTO 1h / RPO 15m
+## 3) Scalability
+- Read-heavy: cache listing-search results (e.g. Redis)
+- Asynchronous work: receipt delivery and insurance sync after payment completion go through a queue (Kafka / SQS)
 
-## 5) 모니터링/알림
-- APM(요청 지연/에러), DB 지표(락/대기), 큐 적체, 웹훅 실패 재시도 경고
-- 주요 알림: 결제/예약 실패율 상승, 슬롯 동시성 실패 증가
+## 4) Backup and recovery
+- Daily full backup + 7-day PITR
+- RTO 1 h / RPO 15 min
+
+## 5) Monitoring and alerts
+- APM (request latency / errors), DB metrics (locks / waits), queue backlog, warnings on webhook-failure retries
+- Key alerts: rising payment / booking failure rate, rising slot-concurrency failures

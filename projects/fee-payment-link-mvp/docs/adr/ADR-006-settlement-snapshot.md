@@ -1,26 +1,26 @@
-# ADR-006: 정산은 스냅샷으로 고정하고, 정산 후 환불은 차단
+# ADR-006: Freeze settlements as a snapshot; block refunds after settlement
 
-- **상태**: Accepted (설계 단계 — 구현 전 합의된 결정)
-- **프로젝트**: 회비 결제 링크 MVP
+- **Status:** Accepted (design stage: agreed before implementation)
+- **Project:** Fee Payment Link MVP
 
-## Context (배경)
-정산 요청 후에도 환불이 가능하면 이미 총무에게 나간 돈과 장부가 어긋납니다. 또 정산 대상 목록이 요청 이후에 바뀌면 금액 분쟁이 생깁니다.
+## Context
+If refunds remain possible after a settlement request, the money already sent to the treasurer and the books diverge. And if the list of settlement targets changes after the request, amount disputes follow.
 
-## Decision (결정)
-정산 가능액은 `PAID − REFUNDED − 이미 정산에 포함된 금액`으로 계산하고, **정산 요청 생성 시 대상 결제 목록과 금액을 스냅샷으로 고정**합니다. `REQUESTED` 이상 정산에 묶인 결제는 **자동 환불하지 않습니다**(정산 후 환불 차단).
+## Decision
+Compute the settleable amount as `PAID − REFUNDED − amount already included in a settlement`, and **freeze the target payment list and amounts as a snapshot when the settlement request is created**. Payments bundled into a settlement at `REQUESTED` or beyond are **not auto-refunded** (refund after settlement is blocked).
 
-## Consequences (결과)
-**얻는 것**
-- 정산 금액에 대한 분쟁 여지 감소, 이중 지급 방지
-- 출시 승인 조건에 "정산 후 환불 차단 테스트"를 명시
+## Consequences
+**Gains**
+- Less room for disputes over settlement amounts, and no double payout
+- "Refund-after-settlement block test" is written into the launch-approval conditions
 
-**감수하는 것 / 리스크**
-- 정산 후 환불이 필요한 예외는 별도 운영 절차(수동 조정)로 처리해야 함
-- 정산 지연 시 환불 차단 기간이 길어질 수 있음
+**Costs and risks**
+- The exception where a refund is needed after settlement must be handled through a separate operating procedure (manual adjustment)
+- If settlement is delayed, the refund-blocked period can get long
 
-## Alternatives Considered (검토한 대안)
-- **정산 후에도 자동 환불 허용**: 장부 불일치·회수 문제 → 기각
-- **정산 시점 조회 시마다 대상 재계산**: 금액이 바뀔 수 있음 → 기각
+## Alternatives considered
+- **Allow auto-refund even after settlement:** ledger mismatch and clawback problems → rejected
+- **Recompute targets on every lookup after settlement:** the amount could change → rejected
 
 ## Related
-[ADR-005](ADR-005-refund-state-machine.md) · [01-PRD.md](../../01-PRD.md) 출시 승인 조건
+[ADR-005](ADR-005-refund-state-machine.md) · [01-PRD.md](../../01-PRD.md), launch-approval conditions

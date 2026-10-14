@@ -1,26 +1,26 @@
-# ADR-004: 추가 전용(append-only) 원장
+# ADR-004: Append-only ledger
 
-- **상태**: Accepted (설계 단계 — 구현 전 합의된 결정)
-- **프로젝트**: 회비 결제 링크 MVP
+- **Status:** Accepted (design stage: agreed before implementation)
+- **Project:** Fee Payment Link MVP
 
-## Context (배경)
-현재 잔액만 저장하면 "왜 이 금액인가"를 추적할 수 없고, 환불·정산·정정이 겹칠 때 분쟁 해결이 어렵습니다.
+## Context
+If only the current balance is stored, you cannot trace "why this amount", and disputes are hard to resolve when refunds, settlements and corrections overlap.
 
-## Decision (결정)
-금액 사건을 모두 원장에 **추가만** 합니다: `PAYMENT_CAPTURED`, `PLATFORM_FEE_RECOGNIZED`, `REFUND_RESERVED`, `REFUND_COMPLETED`, `SETTLEMENT_RESERVED`, `SETTLEMENT_PAID`, `CHARGEBACK_RECORDED`, `MANUAL_ADJUSTMENT`. 수정·삭제 없이 반대 항목으로 정정하고, 수동 조정에는 운영자·사유·관련 거래를 필수로 남깁니다.
+## Decision
+**Only append** every money event to the ledger: `PAYMENT_CAPTURED`, `PLATFORM_FEE_RECOGNIZED`, `REFUND_RESERVED`, `REFUND_COMPLETED`, `SETTLEMENT_RESERVED`, `SETTLEMENT_PAID`, `CHARGEBACK_RECORDED`, `MANUAL_ADJUSTMENT`. Correct with reversing entries, never edits or deletes, and require the operator, reason and related transaction on every manual adjustment.
 
-## Consequences (결과)
-**얻는 것**
-- 모든 금액 변경이 추적 가능, 공급자 기록과의 대사가 쉬움
-- 결제 후 상품 가격이 바뀌어도 기존 주문 원장은 불변
+## Consequences
+**Gains**
+- Every amount change is traceable, and reconciliation against provider records is easy
+- Existing order ledgers stay unchanged even if the product price changes after payment
 
-**감수하는 것 / 리스크**
-- 잔액 조회는 집계가 필요 (필요 시 스냅샷·뷰로 보완)
-- 정정 시 항목이 늘어남
+**Costs and risks**
+- Reading a balance requires aggregation (supplemented with snapshots or views when needed)
+- Corrections add more entries
 
-## Alternatives Considered (검토한 대안)
-- **잔액 컬럼 갱신(UPDATE)**: 이력이 사라져 분쟁·감사에 취약 → 기각
-- **이벤트 소싱 전면 도입**: MVP에는 과함 → 원장 테이블에 한정
+## Alternatives considered
+- **Updating a balance column (UPDATE):** history disappears, weak for disputes and audit → rejected
+- **Full event sourcing:** too much for an MVP → limited to the ledger table
 
 ## Related
 [ADR-002](ADR-002-verified-webhook-confirmation.md) · [ADR-005](ADR-005-refund-state-machine.md)

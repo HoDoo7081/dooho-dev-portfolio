@@ -3,7 +3,7 @@ info:
   title: SilverBridge Backend API
   version: "2.0.0"
   description: |
-    핵심 비즈니스(리스트/예약/결제/메시징/리뷰/안전/비서·컨시어지/관리) 전범위 스펙.
+    Full-scope spec of the core business (listings / bookings / payments / messaging / reviews / safety / assistant & concierge / admin).
 servers:
   - url: https://api.silverbridge.example.com
   - url: http://localhost:3000
@@ -69,7 +69,7 @@ security:
 paths:
   /v1/auth/login:
     post:
-      summary: 로그인
+      summary: Log in
       requestBody:
         required: true
         content:
@@ -90,7 +90,7 @@ paths:
                   token: { type: string }
   /v1/listings:
     get:
-      summary: 리스트 검색
+      summary: Search listings
       parameters:
         - in: query
           name: q
@@ -132,7 +132,7 @@ paths:
                     items: { $ref: "#/components/schemas/Listing" }
   /v1/listings/{listingId}:
     get:
-      summary: 리스트 상세
+      summary: Listing detail
       parameters:
         - in: path
           name: listingId
@@ -143,7 +143,7 @@ paths:
           description: ok
   /v1/availability/{listingId}:
     get:
-      summary: 가용 슬롯 조회
+      summary: Get available slots
       parameters:
         - in: path
           name: listingId
@@ -154,7 +154,7 @@ paths:
           description: ok
   /v1/bookings:
     post:
-      summary: 예약 생성
+      summary: Create booking
       parameters:
         - in: header
           name: Idempotency-Key
@@ -182,7 +182,7 @@ paths:
                 $ref: "#/components/schemas/Booking"
   /v1/payments/sessions:
     post:
-      summary: 결제 세션 생성
+      summary: Create payment session
       requestBody:
         required: true
         content:
@@ -200,7 +200,7 @@ paths:
           description: ok
   /v1/payments/webhooks/{provider}:
     post:
-      summary: 결제 웹훅
+      summary: Payment webhook
       parameters:
         - in: path
           name: provider
@@ -216,12 +216,12 @@ paths:
           description: ok
   /v1/messages/threads:
     post:
-      summary: 스레드 생성(여행자-호스트/비서)
+      summary: Create thread (traveler–host/assistant)
       responses:
         '200': { description: ok }
   /v1/messages/{threadId}:
     get:
-      summary: 메시지 조회
+      summary: List messages
       parameters:
         - in: path
           name: threadId
@@ -230,7 +230,7 @@ paths:
       responses:
         '200': { description: ok }
     post:
-      summary: 메시지 전송
+      summary: Send message
       parameters:
         - in: path
           name: threadId
@@ -248,7 +248,7 @@ paths:
         '200': { description: ok }
   /v1/reviews:
     post:
-      summary: 리뷰 생성
+      summary: Create review
       requestBody:
         required: true
         content:
@@ -264,7 +264,7 @@ paths:
         '200': { description: ok }
   /v1/assistants/assign:
     post:
-      summary: 여행 비서 배정
+      summary: Assign travel assistant
       requestBody:
         required: true
         content:
@@ -279,7 +279,7 @@ paths:
         '200': { description: ok }
   /v1/concierge/sessions:
     post:
-      summary: 컨시어지 세션 기록
+      summary: Record concierge session
       requestBody:
         required: true
         content:
@@ -297,11 +297,11 @@ paths:
         '200': { description: ok }
   /v1/safety/sos:
     post:
-      summary: SOS 트리거
+      summary: Trigger SOS
       responses:
         '200': { description: ok }
   /v1/admin/audit:
     get:
-      summary: 감사 로그 조회
+      summary: List audit logs
       responses:
         '200': { description: ok }

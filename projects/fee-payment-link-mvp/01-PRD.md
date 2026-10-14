@@ -1,119 +1,121 @@
-# 회비 결제 링크 MVP PRD
+# Fee Payment Link MVP: PRD
 
-문서 버전: 0.1  
-기준일: 2026-07-20  
-상태: 개발 과제 및 MVP 설계용 초안
+<sub>🌐 English · [한국어 원본](ko/01-PRD.md) · [← Project README](README.md)</sub>
 
-## 1. 제품 개요
+Document version: 0.1
+As of: 2026-07-20
+Status: draft for the development assignment and MVP design
 
-모임·동아리·학생회 총무가 회비 또는 행사 참가비를 설정하면 카드 결제가 가능한 링크를 발급하고, 납부 현황·환불·정산 예정액을 관리할 수 있는 서비스다.
+## 1. Product overview
 
-플랫폼은 Shopify를 주문 및 결제 상태 관리 엔진으로 활용한다. 서비스 고유의 모임, 회원, 회비, 수수료, 정산 장부는 자체 백엔드에서 관리한다.
+A service where the treasurer of a club, society or student council sets up dues or an event fee, gets a card-payable link, and manages payment status, refunds and expected settlement.
 
-## 2. 해결하려는 문제
+The platform uses Shopify as the order and payment-state engine. The service's own groups, members, dues, fees and settlement ledger are managed in our own backend.
 
-- 총무가 현금 또는 계좌이체 내역을 일일이 확인해야 한다.
-- 납부자가 카드로 회비를 낼 수 없다.
-- 누가 납부했고 누가 미납했는지 관리하기 어렵다.
-- 행사 취소 시 환불 기록과 정산 장부가 분리된다.
-- 총무가 바뀌면 과거 회비 및 납부 기록을 인수인계하기 어렵다.
+## 2. The problem
 
-## 3. 목표
+- The treasurer has to check cash or bank-transfer records one by one.
+- Payers cannot pay dues by card.
+- It is hard to manage who has paid and who has not.
+- When an event is cancelled, refund records and the settlement ledger are separate.
+- When the treasurer changes, past dues and payment records are hard to hand over.
 
-### 제품 목표
+## 3. Goals
 
-- 총무가 3분 이내에 일회성 회비 링크를 생성한다.
-- 회원은 가입 없이 모바일 웹에서 결제를 완료한다.
-- 결제 완료 후 1분 이내에 납부 목록에 반영한다.
-- 정산 전 결제는 총무가 전체 환불을 요청할 수 있다.
-- 모든 금액 변경은 변경 불가능한 원장 이벤트로 추적한다.
+### Product goals
 
-### MVP 성공지표
+- The treasurer creates a one-off dues link within 3 minutes.
+- Members complete payment on mobile web without signing up.
+- A completed payment appears in the payer list within 1 minute.
+- For payments before settlement, the treasurer can request a full refund.
+- Every amount change is tracked as an immutable ledger event.
 
-- 링크 생성 성공률 99% 이상
-- 결제 성공 웹훅 반영률 99.9% 이상
-- 중복 웹훅으로 인한 중복 납부 0건
-- 환불 요청과 결제사 환불 상태 불일치 0건
-- 총무가 납부자를 찾는 평균 시간 10초 이하
+### MVP success metrics
 
-## 4. 사용자
+- Link creation success rate ≥ 99%
+- Successful-payment webhook reflection rate ≥ 99.9%
+- Zero duplicate payments caused by duplicate webhooks
+- Zero mismatches between refund requests and payment-provider refund status
+- Average time for a treasurer to find a payer ≤ 10 seconds
 
-### 총무
+## 4. Users
 
-- 개인 사용자이며 사업자등록증이 없을 수 있다.
-- 모임과 회비를 만들고 링크를 공유한다.
-- 납부 현황을 확인하고 환불·정산을 요청한다.
+### Treasurer
 
-### 납부자
+- An individual user who may have no business registration.
+- Creates groups and dues, and shares the link.
+- Checks payment status and requests refunds and settlement.
 
-- 앱 가입 없이 결제 링크로 접속한다.
-- 이름, 연락처, 회원 식별정보를 입력하고 카드로 결제한다.
-- 결제 결과와 환불 상태를 확인한다.
+### Payer
 
-### 운영자
+- Opens the payment link without signing up for an app.
+- Enters name, contact and member identifier, and pays by card.
+- Checks the payment result and refund status.
 
-- 모임, 이상 결제, 환불, 정산 요청을 검토한다.
-- 필요하면 캠페인 또는 정산을 보류한다.
-- 결제사 주문과 내부 원장의 불일치를 확인한다.
+### Operator
 
-## 5. 핵심 사용자 흐름
+- Reviews groups, abnormal payments, refunds and settlement requests.
+- Holds a campaign or settlement when needed.
+- Checks mismatches between payment-provider orders and the internal ledger.
 
-### 5.1 총무 가입 및 모임 생성
+## 5. Core user flows
 
-1. 총무가 휴대폰 본인인증을 완료한다.
-2. 이름과 본인 명의 정산계좌 정보를 등록한다.
-3. 모임명, 모임 유형, 소속, 설명을 입력한다.
-4. 운영정책 및 정산·환불 약관에 동의한다.
-5. MVP 과제에서는 본인인증과 계좌 검증을 외부 연동하지 않고 `VERIFIED` 테스트 상태로 모사할 수 있다.
+### 5.1 Treasurer sign-up and group creation
 
-### 5.2 회비 링크 생성
+1. The treasurer completes mobile phone identity verification.
+2. Registers name and settlement-account information in their own name.
+3. Enters group name, group type, affiliation and description.
+4. Agrees to the operating policy and the settlement / refund terms.
+5. In the MVP assignment, identity verification and account verification need not be integrated externally and can be simulated with a `VERIFIED` test state.
 
-1. 총무가 회비명, 목표 정산액, 납부기한, 정원, 설명을 입력한다.
-2. 서버가 플랫폼 이용료와 회원 결제금액을 계산한다.
-3. 총무가 최종 결제금액을 확인한다.
-4. 서버가 Shopify 상품/Variant를 생성한다.
-5. 캠페인을 활성화하고 공유 링크를 반환한다.
+### 5.2 Creating a dues link
 
-### 5.3 회원 결제
+1. The treasurer enters the dues name, target settlement amount, due date, capacity and description.
+2. The server calculates the platform fee and the member's payment amount.
+3. The treasurer confirms the final payment amount.
+4. The server creates a Shopify product / variant.
+5. The campaign is activated and a share link is returned.
 
-1. 회원이 공개 결제 링크로 접속한다.
-2. 회비명, 모임명, 금액, 환불 기준을 확인한다.
-3. 이름, 연락처, 선택 식별값을 입력한다.
-4. 서버가 납부 시도를 만들고 Shopify checkout URL을 반환한다.
-5. 회원이 Shopify 및 국내 PG 화면에서 결제한다.
-6. Shopify 웹훅 수신 후 납부 상태가 `PAID`로 변경된다.
+### 5.3 Member payment
 
-### 5.4 환불
+1. The member opens the public payment link.
+2. Checks the dues name, group name, amount and refund terms.
+3. Enters name, contact and an optional identifier.
+4. The server creates a payment attempt and returns the Shopify checkout URL.
+5. The member pays on the Shopify and domestic PG screens.
+6. After the Shopify webhook arrives, the payment status changes to `PAID`.
 
-1. 총무가 납부 건을 선택한다.
-2. 서버가 정산 여부와 기존 환불 여부를 검사한다.
-3. 정산 전이면 `REFUND_PENDING`으로 변경하고 결제 공급자에 전체 환불을 요청한다.
-4. 성공 웹훅 또는 조회 결과를 근거로 `REFUNDED` 처리한다.
-5. 정산 후라면 자동 환불하지 않고 `MANUAL_REVIEW_REQUIRED`를 반환한다.
+### 5.4 Refund
 
-### 5.5 정산 요청
+1. The treasurer selects a payment.
+2. The server checks settlement status and any existing refund.
+3. Before settlement, it changes the status to `REFUND_PENDING` and requests a full refund from the payment provider.
+4. It marks the payment `REFUNDED` based on a success webhook or lookup result.
+5. After settlement, it does not refund automatically and returns `MANUAL_REVIEW_REQUIRED`.
 
-1. 총무가 정산 가능액을 확인한다.
-2. 정산 요청을 생성한다.
-3. 서버는 대상 납부 건을 정산 요청에 고정한다.
-4. 운영자가 승인 또는 반려한다.
-5. MVP에서는 실제 계좌 송금을 수행하지 않고 상태를 `PAID`로 수동 전환할 수 있다.
+### 5.5 Settlement request
 
-## 6. 금액 정책
+1. The treasurer checks the settleable amount.
+2. Creates a settlement request.
+3. The server freezes the target payments into the settlement request.
+4. The operator approves or rejects.
+5. In the MVP, no actual bank transfer is made; the status can be switched to `PAID` manually.
 
-모든 금액은 원화 정수로 저장하며 소수점을 사용하지 않는다.
+## 6. Amount policy
+
+All amounts are stored as integer KRW with no decimals.
 
 ```text
 platformFee = floor(netAmount × platformFeeRateBps ÷ 10,000)
 chargeAmount = netAmount + platformFee
 ```
 
-- 기본 `platformFeeRateBps`: 500
-- `netAmount`: 총무가 받기를 원하는 금액
-- `platformFee`: 플랫폼 이용료
-- `chargeAmount`: 회원에게 표시되는 최종 결제금액
+- Default `platformFeeRateBps`: 500
+- `netAmount`: the amount the treasurer wants to receive
+- `platformFee`: the platform service fee
+- `chargeAmount`: the final amount shown to the member
 
-예시:
+Example:
 
 ```json
 {
@@ -125,105 +127,104 @@ chargeAmount = netAmount + platformFee
 }
 ```
 
-결제 화면에서는 `카드 수수료`라는 표현을 사용하지 않는다. 최종 결제금액과 플랫폼 서비스가 포함된 가격을 명확하게 표시한다.
+The payment screen does not use the phrase "card fee". It clearly shows the final payment amount and a price that includes the platform service.
 
-PG 실비, Shopify 비용, 부가가치세의 최종 회계 표시는 별도 세무정책에 따른다. MVP에서는 `platformFee`를 하나의 값으로 기록한다.
+The final accounting presentation of actual PG cost, Shopify cost and VAT follows a separate tax policy. In the MVP, `platformFee` is recorded as a single value.
 
-## 7. 상태 모델
+## 7. State model
 
-### 캠페인
+### Campaign
 
-- `DRAFT`: 작성 중, 결제 불가
-- `ACTIVE`: 링크 결제 가능
-- `CLOSED`: 마감, 신규 결제 불가
-- `CANCELLED`: 운영자 또는 총무가 취소
+- `DRAFT`: being written, payment not possible
+- `ACTIVE`: link payment possible
+- `CLOSED`: closed, no new payments
+- `CANCELLED`: cancelled by the operator or the treasurer
 
-### 납부
+### Payment
 
-- `PENDING`: checkout 생성, 결제 확인 전
-- `PAID`: 결제 확정
-- `REFUND_PENDING`: 환불 요청됨
-- `PARTIALLY_REFUNDED`: 일부 환불됨, MVP UI에서는 생성하지 않음
-- `REFUNDED`: 전액 환불됨
-- `FAILED`: 결제 실패 또는 만료
+- `PENDING`: checkout created, payment not yet confirmed
+- `PAID`: payment confirmed
+- `REFUND_PENDING`: refund requested
+- `PARTIALLY_REFUNDED`: partly refunded; not created in the MVP UI
+- `REFUNDED`: fully refunded
+- `FAILED`: payment failed or expired
 
-### 정산
+### Settlement
 
-- `AVAILABLE`: 정산 요청 가능
-- `REQUESTED`: 총무 요청 완료
-- `PROCESSING`: 운영자 승인 및 처리 중
-- `PAID`: 지급 완료로 기록
-- `REJECTED`: 반려
-- `BLOCKED`: 환불·분쟁·운영정책으로 보류
+- `AVAILABLE`: can be requested
+- `REQUESTED`: requested by the treasurer
+- `PROCESSING`: approved by the operator and being processed
+- `PAID`: recorded as paid out
+- `REJECTED`: rejected
+- `BLOCKED`: held due to a refund, dispute or operating policy
 
-## 8. 기능 요구사항
+## 8. Functional requirements
 
-### 필수
+### Required
 
-- 총무 로그인과 최소 프로필
-- 모임 생성·조회
-- 회비 캠페인 생성·활성화·마감
-- 5% 이용료 서버 계산
-- 공개 캠페인 조회
-- checkout 생성
-- Shopify 또는 Mock 결제 공급자 어댑터
-- 결제 성공·실패·환불 웹훅
-- 납부 목록 및 검색
-- 전체 환불 요청
-- 정산 가능액 계산
-- 정산 요청 및 운영자 상태 변경
-- 감사 로그
-- OpenAPI 문서
-- 자동 테스트
+- Treasurer login and minimal profile
+- Group creation and lookup
+- Dues campaign creation, activation and closing
+- Server-side calculation of the 5% service fee
+- Public campaign lookup
+- Checkout creation
+- Shopify or Mock payment-provider adapter
+- Payment success, failure and refund webhooks
+- Payer list and search
+- Full refund request
+- Settleable amount calculation
+- Settlement request and operator status change
+- Audit log
+- OpenAPI documentation
+- Automated tests
 
-### 후속
+### Later
 
-- 정기 자동결제와 빌링키
-- 부분환불 UI
-- 실제 계좌 송금
-- 복수 총무 및 권한
-- 카카오톡 알림
-- 미납자 자동 독촉
-- 영수증 PDF
-- 공동구매·티켓 등 회비 외 상품
-- 네이티브 앱
+- Recurring auto-payment and billing keys
+- Partial-refund UI
+- Actual bank transfers
+- Multiple treasurers and permissions
+- KakaoTalk notifications
+- Automatic reminders to non-payers
+- PDF receipts
+- Products beyond dues, such as group buying and tickets
+- Native app
 
-## 9. 비기능 요구사항
+## 9. Non-functional requirements
 
-- 금액 계산은 서버만 신뢰한다.
-- 모든 생성/환불/정산 요청은 멱등성을 지원한다.
-- 웹훅 서명을 검증한다.
-- 웹훅 원문과 처리 결과를 감사 목적으로 기록한다. 카드정보는 저장하지 않는다.
-- 개인정보와 계좌번호는 로그에 평문으로 남기지 않는다.
-- 시간은 DB에서 UTC로 저장하고 API에서 ISO 8601로 반환한다.
-- 결제 완료 처리는 클라이언트 리디렉션이 아니라 검증된 웹훅을 기준으로 한다.
-- 외부 공급자 장애가 내부 트랜잭션을 손상시키지 않아야 한다.
+- Trust only the server for amount calculation.
+- Every creation, refund and settlement request supports idempotency.
+- Verify webhook signatures.
+- Record the raw webhook and its result for audit. Do not store card data.
+- Never leave personal data or bank account numbers in logs in plaintext.
+- Store time in UTC in the DB and return ISO 8601 from the API.
+- Payment completion is based on a verified webhook, not on a client redirect.
+- An outage at an external provider must not corrupt internal transactions.
 
-## 10. 환불 및 정산 규칙
+## 10. Refund and settlement rules
 
-- `PAID`인 결제만 환불 요청할 수 있다.
-- 동일 결제에 진행 중인 환불은 하나만 허용한다.
-- 정산 요청에 포함되지 않은 결제는 자동 환불 가능하다.
-- `REQUESTED` 이상 정산에 묶인 결제는 자동 환불하지 않는다.
-- 환불 성공 전에는 원장을 차감 완료 처리하지 않는다.
-- 정산 가능액은 `PAID - REFUNDED - 이미 정산에 포함된 금액`으로 계산한다.
-- 정산 요청 생성 시 대상 결제 목록과 금액을 스냅샷으로 고정한다.
+- Only a `PAID` payment can be refunded.
+- Only one in-flight refund is allowed per payment.
+- A payment not included in a settlement request can be refunded automatically.
+- A payment bundled into a settlement at `REQUESTED` or beyond is not auto-refunded.
+- The ledger is not marked as reduced before the refund succeeds.
+- Settleable amount is `PAID − REFUNDED − amount already included in a settlement`.
+- When a settlement request is created, the target payments and amounts are frozen as a snapshot.
 
-## 11. 운영 및 규정 전제
+## 11. Operating and regulatory assumptions
 
-- 대여금·예수금·수익 인식 등 최종 회계 계정은 기존 전문가 의견과 회사 회계정책을 따른다.
-- Shopify 및 국내 PG와 계약할 때 비사업자 개인 총무에 대한 회비 수납·정산 사업모델을 공개하고 승인을 받는다.
-- 실제 서비스 출시 전 이용약관, 개인정보처리방침, 환불정책, 총무 정산계약을 별도로 검토한다.
-- 본 PRD는 제품·기술 문서이며 법률 또는 세무 의견서를 대체하지 않는다.
+- Final accounting accounts (loans, deposits received, revenue recognition) follow existing expert opinion and the company's accounting policy.
+- When contracting with Shopify and a domestic PG, disclose the business model of collecting and settling dues for non-business individual treasurers and obtain approval.
+- Review the terms of service, privacy policy, refund policy and treasurer settlement contract separately before a real launch.
+- This PRD is a product and technical document and does not replace legal or tax advice.
 
-## 12. 출시 승인 조건
+## 12. Launch-approval conditions
 
-- Shopify 테스트 결제 성공
-- 전체 카드 취소 성공
-- 부분취소 가능 여부 확인 및 정책 결정
-- 중복 웹훅 테스트 통과
-- 결제 성공 후 상품 가격 변경에도 기존 주문 원장 불변
-- 정산 후 환불 차단 테스트 통과
-- PG 및 Shopify 수수료표 확인
-- 운영자 대사 화면 또는 CSV 확인 가능
-
+- Shopify test payment succeeds
+- Full card cancellation succeeds
+- Confirm whether partial cancellation is possible and decide the policy
+- Duplicate-webhook test passes
+- Existing order ledger stays unchanged even if the product price changes after a successful payment
+- Refund-after-settlement block test passes
+- PG and Shopify fee tables confirmed
+- Operator reconciliation screen or CSV is available

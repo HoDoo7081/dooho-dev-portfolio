@@ -1,26 +1,26 @@
-# ADR-005: 환불은 상태 머신 + 멱등키, 타임아웃은 대사로 확정
+# ADR-005: Refunds as a state machine with idempotency keys; timeouts settled by reconciliation
 
-- **상태**: Accepted (설계 단계 — 구현 전 합의된 결정)
-- **프로젝트**: 회비 결제 링크 MVP
+- **Status:** Accepted (design stage: agreed before implementation)
+- **Project:** Fee Payment Link MVP
 
-## Context (배경)
-환불은 외부 API 호출과 내 DB 저장을 하나의 트랜잭션으로 묶을 수 없습니다. 호출이 타임아웃 나면 실제로는 성공했을 수 있어, 바로 실패로 처리하면 이중 환불·불일치가 생깁니다.
+## Context
+An external API call and a write to our own DB cannot share one transaction. If the call times out it may actually have succeeded, so treating it as a failure immediately causes double refunds and mismatches.
 
-## Decision (결정)
-환불을 단계로 나눕니다: `PAID → REFUND_PENDING → (외부 환불 호출) → 성공 확인 → REFUNDED + 원장 반영`. 요청에는 **멱등키**를 쓰고, **타임아웃 시 즉시 FAILED로 되돌리지 않고** 공급자 환불 ID 조회·대사 작업으로 최종 상태를 확정합니다. 환불 성공 전에는 원장을 차감 완료로 처리하지 않으며, 동일 결제에 진행 중 환불은 하나만 허용합니다.
+## Decision
+Split the refund into steps: `PAID → REFUND_PENDING → (external refund call) → success confirmed → REFUNDED + ledger entry`. Use an **idempotency key** on the request, **do not return to FAILED immediately on timeout**, and settle the final state through a provider-refund-ID lookup and reconciliation job. The ledger is not marked as reduced before the refund succeeds, and only one in-flight refund is allowed per payment.
 
-## Consequences (결과)
-**얻는 것**
-- 환불 요청과 공급자 상태 불일치 0건을 목표로 설계 (성공 지표)
-- 장애 상황에서도 돈이 두 번 나가지 않음
+## Consequences
+**Gains**
+- Designed toward zero mismatches between refund requests and provider status (a success metric)
+- Money does not leave twice even during an outage
 
-**감수하는 것 / 리스크**
-- 중간 상태(`REFUND_PENDING`)가 길어질 수 있어 운영 화면·알림 필요
-- 대사 작업이 반드시 돌아야 함 (운영 책임)
+**Costs and risks**
+- The intermediate state (`REFUND_PENDING`) can last long, so an operator screen and alerts are needed
+- The reconciliation job must run without fail (an operational responsibility)
 
-## Alternatives Considered (검토한 대안)
-- **동기 호출 후 결과로 즉시 상태 확정**: 타임아웃·부분 실패에 취약 → 기각
-- **타임아웃 시 자동 실패 처리**: 이중 환불 위험 → 기각
+## Alternatives considered
+- **Decide the state right after a synchronous call:** weak against timeouts and partial failures → rejected
+- **Auto-fail on timeout:** risk of double refund → rejected
 
 ## Related
 [ADR-004](ADR-004-append-only-ledger.md) · [ADR-006](ADR-006-settlement-snapshot.md)
