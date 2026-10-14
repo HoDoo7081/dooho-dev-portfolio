@@ -81,9 +81,9 @@ flowchart LR
 | **Problem** | Static cards in a messaging feed are skimmed; the client wanted the key message to land through interaction. |
 | **Built** | Figma cards → React web app: ratio-locked frame, background-first rendering, drag-to-reveal slider, link to the full article |
 | **Key idea** | Keep the approved artwork pixel-faithful and add interaction as a thin overlay layer. |
-| **My role** | Interaction design and AI-assisted build from the client's Figma; device testing; process report; candid accessibility review. Client artwork not published. |
+| **My role** | Freelance, implementation only: AI-assisted build from the client's Figma and content; device testing; process report; candid accessibility review. Client and artwork not published. |
 
-**[Read the case study →](projects/ez-pave-interactive-card/README.md)** · [Live demo](https://ez-pave.lovable.app)
+**[Read the case study →](projects/ez-pave-interactive-card/README.md)**
 
 ## 🔎 What this repo shows
 

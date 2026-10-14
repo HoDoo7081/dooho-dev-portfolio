@@ -6,7 +6,7 @@
 |:-:|:-:|:-:|:-:|
 | **interactive cards** | **fixed card ratio on every device** | **lines of app code** | **device families checked** |
 
-> A mobile web app that turns a static four-card Figma design into a **tap-and-drag story** for a medical audience: the key message is revealed by the reader's own action, and the final card leads to the published journal article. Live demo: **[ez-pave.lovable.app](https://ez-pave.lovable.app)**. Client work; the source and card artwork are **not published** here.
+> A mobile web app that turns a static four-card Figma design into a **tap-and-drag story** for a medical audience: the key message is revealed by the reader's own action, and the final card leads to the published journal article. It was built as a **freelance, implementation-only commission** for a pharmaceutical company's internal contest. Design and content were supplied by the client; the source, artwork and demo link are **not published** here.
 
 > **TL;DR** — Figma (800×1280 cards) → React 18 + TypeScript + Vite + Tailwind + shadcn/ui, built with an AI app builder (Lovable). The interesting part is small and deliberate: a frame component that keeps the artwork ratio, a render order that guarantees "background first, motion second", and a drag-to-reveal slider built on pointer events.
 
@@ -16,9 +16,10 @@
 |---|---|
 | **Problem** | Static card images in a messaging feed are skimmed, not read. The client wanted the core clinical message to land through interaction, and to guide readers to the full article. |
 | **Approach** | Keep the client designer's artwork pixel-faithful (cards exported as images), and add interaction as a thin code layer on top: a shine sweep, a pulsing highlight, a drag-to-reveal slider, a link hotspot. |
-| **What I produced** | The interactive web app built from the client's four-card Figma design; a process report documenting the Figma-to-code workflow, decisions and device checks. The visual design is the client's, not mine. |
+| **Engagement** | Freelance, **implementation only**: the client supplied the Figma design and the content; I built and tested the web app and wrote the process report |
+| **What I produced** | The interactive web app built from the client's four-card Figma design; a process report documenting the Figma-to-code workflow, decisions and device checks. The visual design and content are the client's. |
 | **Stack** | React 18 · TypeScript · Vite · Tailwind CSS 3 (HSL design tokens) · React Router · shadcn/ui · hosted on Lovable |
-| **Evidence** | Live demo; ~450 lines of application code (the rest is generated UI-kit components); my process report (7 sections, device checklist) |
+| **Evidence** | ~450 lines of application code (the rest is generated UI-kit components); my process report (7 sections, device checklist) |
 | **Not claimed** | Audience reach or engagement results: I have none to cite |
 
 ## How it works
@@ -66,6 +67,7 @@ I reviewed the code the way I would review a client's project.
 
 ## Honest scope
 
-- Client project in a regulated subject area. The card artwork, article references and clinical content are not reproduced here.
-- The card design was supplied by the client in Figma. My contribution is the interaction design, implementation with an AI app builder, device testing and documentation; I do not claim the visual design or hand-typed application code.
+- Client project in a regulated subject area (a pharmaceutical company's internal contest). The card artwork, article references and clinical content are not reproduced here.
+- The card design and content were supplied by the client in Figma. My contribution is the implementation (with an AI app builder), device testing and documentation; I do not claim the visual design, the content, or hand-typed application code.
+- The client is not named and there is no public demo link, because it was built for an internal contest.
 - No engagement or audience metrics are claimed.
