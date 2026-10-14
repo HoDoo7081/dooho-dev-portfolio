@@ -1,4 +1,4 @@
-# Min Seoul — 헤드리스 K-뷰티 스토어프론트 (고객사 프로젝트, 운영 중)
+# Min Seoul — 헤드리스 K-뷰티 스토어프론트 (프리랜스 고객사 프로젝트, 운영 중)
 
 <sub>[English](README.md) · **한국어**<br>[← 포트폴리오 홈](../../README.ko.md)</sub>
 

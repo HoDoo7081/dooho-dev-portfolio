@@ -16,6 +16,7 @@
 
 | | |
 |---|---|
+| **Engagement** | Freelance. Proposal and 5-day build plan dated May 2026; maintenance and extra scope since |
 | **Client / product** | Min Seoul (formerly Purève Seoul): curated K-beauty brands plus an own-label line, sold cross-border |
 | **Problem** | Sell Korean skincare to overseas customers who read different languages, pay in different currencies and, in Taiwan, must provide a customs ID. Acquire customers through influencers and measure which ones work. |
 | **What shipped** | Product catalog and product-detail stories, cart, checkout hand-off to Shopify, customer accounts, order history and tracking, contact form, admin discount-link analytics, auth emails |
@@ -42,7 +43,7 @@
 | **Daily progress report (Day 1)** | Headline status tiles; a per-screen table (done / partial / planned, with notes); what was verified on each screen; the remaining days; and **five explicit asks of the client** (final product names, brand colours, real product photos, store access for the API, currency decision) | Status reporting that surfaces what blocks the next day |
 | **Influencer tracking user guide (6 pages)** | How to create a discount code, the exact link format to hand to an influencer, how clicks and the 30-day cookie work, where to read sales (Shopify discount performance and "Sales by discount" report), how to compute conversion (orders ÷ clicks), a FAQ, and a list of known limits | Hand-over documentation so non-engineers can run the funnel |
 
-Plan versus actual, stated plainly: the proposal's 5-day plan covered the **first storefront**. The Day 1 report shows six screens built with mock data, and the Shopify connection and real photos still pending. I do not have a Day 5 launch report, so I do not claim the launch hit its target date. The current site has since grown well beyond that plan (accounts, tracking, multi-language, a rebrand).
+Plan versus actual, stated plainly: the proposal's 5-day plan (May 2026) covered the **first storefront**. The Day 1 report shows six screens built with mock data, and the Shopify connection and real photos still pending. I do not have a Day 5 launch report, so I do not claim the launch hit its target date. The current site has since grown well beyond that plan (accounts, tracking, multi-language, a rebrand).
 
 ## Architecture
 
@@ -84,7 +85,7 @@ I reviewed the code snapshot as I would review a client's system. The first colu
 | Cart-level discount code applied server-trusted by Shopify (the client cannot invent a discount) | **P2 — Storefront token and store domain are hard-coded** in a proxy route that also allows any origin (CORS `*`). The Storefront token is designed to be public, but should still come from configuration, and the proxy should restrict origins. |
 | Input validation and clamping in server functions | **P2 — An admin user ID is hard-coded in a migration.** Seed admins out-of-band instead of in versioned SQL. |
 | Country-name normalisation before sending to Shopify (the Cart API rejects free-text countries) | **P3 — Exchange rates are constants in code** (calibrated to target display prices), so displayed prices drift from real rates and can differ from the amount charged at checkout. Use a daily-updated rate table, and show the checkout currency clearly. |
-| | **P3 — Conversion is a manual calculation.** By design the dashboard shows clicks and Shopify shows sales (the guide documents this split). An orders webhook that joins orders to codes would show conversion and ROI per influencer in one place. The guide also lists real limits: cookies fail in private mode and across devices, and a code created in Shopify must match the link's spelling. |
+| | **P3 — Conversion is a manual calculation.** (Update: tracking is now read in Shopify, per the site owner.) By design the dashboard shows clicks and Shopify shows sales (the guide documents this split). An orders webhook that joins orders to codes would show conversion and ROI per influencer in one place. The guide also lists real limits: cookies fail in private mode and across devices, and a code created in Shopify must match the link's spelling. |
 | | **P3 — Translation by dictionary** only covers known strings; untranslated product copy falls back to English. A managed translation workflow would scale better. |
 
 ## What this demonstrates
@@ -96,7 +97,7 @@ I reviewed the code snapshot as I would review a client's system. The first colu
 
 ## Honest scope
 
-- Client project: the code, store domain, tokens, customer data and revenue figures are not published.
+- Freelance client project: the code, store domain, tokens, customer data and revenue figures are not published.
 - Built with an AI app builder from the client's design. My contribution is direction, integration, payments, acquisition work and operations, not hand-typed application code.
 - Payment-provider setup, influencer contracts and the ingredient editor are described from my own work but are **not visible in the reviewed code snapshot**. The three documents above are the evidence I can show for planning, reporting and operations.
 - The proposal's success criteria were all marked "to be verified" at the time; I do not have a recorded result for them.
