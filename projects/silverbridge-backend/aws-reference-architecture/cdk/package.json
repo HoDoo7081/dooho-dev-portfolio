@@ -1,0 +1,22 @@
+{
+  "name": "silverbridge-aws-proof",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CDK stack that deploys the SilverBridge data plane (VPC, RDS PostgreSQL, Secrets Manager, SQS, S3) plus a one-off Fargate task that runs the reference-implementation tests against RDS",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.170.0",
+    "constructs": "10.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.6",
+    "aws-cdk": "2.170.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.6.3"
+  }
+}

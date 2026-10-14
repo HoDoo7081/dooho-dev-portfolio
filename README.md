@@ -98,7 +98,7 @@ flowchart LR
 | Program management | [Fee Payment launch program](projects/fee-payment-link-mvp/program/README.md): gates, dependency map, RAID, RACI, go / no-go |
 | Shipping to production | [Min Seoul](projects/minseoul-storefront/README.md): a live cross-border storefront, with a ranked privacy and security review of my own delivered work |
 | Front-end craft and accessibility review | [Ez-PAVE](projects/ez-pave-interactive-card/README.md): render-order and ratio-lock decisions, plus a P1/P2 accessibility review of my own delivery |
-| Cloud architecture | [AWS reference architecture](projects/silverbridge-backend/aws-reference-architecture/README.md): security, scaling, cost assumptions, migration path |
+| Cloud architecture | [AWS reference architecture](projects/silverbridge-backend/aws-reference-architecture/README.md): security, scaling, cost assumptions, Well-Architected self-review, migration path, plus a [CDK proof stack](projects/silverbridge-backend/aws-reference-architecture/cdk/README.md) (CI-synthesized; not yet run in a live account) |
 | Reading docs against code | [Stage 3 gap table](projects/silverbridge-backend/docs/STAGE3-MVP.md#4-honest-gap-table-documents-vs-code) |
 | Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, alternatives |
 

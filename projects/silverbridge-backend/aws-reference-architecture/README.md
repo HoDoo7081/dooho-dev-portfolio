@@ -3,10 +3,12 @@
 <sub>[← SilverBridge case study](../README.md) · [Stage 3 MVP](../docs/STAGE3-MVP.md) · [Operations design](../design-package/05_Operations/OPERATIONS.md) · [Security design](../design-package/04_Security/SECURITY.md)</sub>
 
 > [!IMPORTANT]
-> **A design for the production target, not a deployed system.** Costs are order-of-magnitude estimates from list-price assumptions I state below; verify them in the AWS Pricing Calculator before any commitment. The Stage 3 MVP actually runs on Supabase ([why](../docs/STAGE3-MVP.md)); this page shows where the design would go next and how to get there.
+> **A design for the production target, not a deployed system.** A [CDK proof deployment](cdk/README.md) of the network, data and async layers exists and is validated in CI; it has **not yet been run in a live AWS account**. Costs are order-of-magnitude estimates from list-price assumptions I state below; verify them in the AWS Pricing Calculator before any commitment. The Stage 3 MVP actually runs on Supabase ([why](../docs/STAGE3-MVP.md)); this page shows where the design would go next and how to get there.
 
 ![AWS reference architecture](../docs/images/10-aws-reference-architecture.png)
 <sub>Source: [`arch.mmd`](arch.mmd)</sub>
+
+> **Proof deployment:** [`cdk/`](cdk/README.md) deploys the VPC, RDS PostgreSQL, SQS, S3, alarms and a Fargate test runner. Public edge and API service are not included.
 
 ## 1. Deployment structure
 
@@ -68,6 +70,17 @@ Assumptions: Seoul region, on-demand list prices as I remember them, 730 hours, 
 | **Total** | | **≈ 270–400** |
 
 Cost levers, in order of size: RDS single-AZ for staging (−50%), NAT replacement with VPC endpoints for S3/SQS, Fargate Spot for the worker, Savings Plans after load is known. Cost drivers to watch as MAU grows: RDS size, NAT data processing, log volume.
+
+## 5a. Well-Architected review (self-assessment)
+
+| Pillar | What the design does | Gap I would close next |
+|---|---|---|
+| **Operational excellence** | Alarms for DLQ, RDS CPU and connections (in the CDK stack); runbook-driven restore; one-command deploy and destroy | Dashboards, structured-log queries, a deployment pipeline |
+| **Security** | Isolated data subnets, TLS to the database with CA verification, KMS encryption, Secrets Manager, least-privilege groups, signed webhooks | WAF and Cognito are designed but not in the proof stack; secret rotation; GuardDuty and CloudTrail alerting |
+| **Reliability** | Multi-AZ switch (`multiAz`), PITR backups, DLQ with retries, idempotent writes proven by tests | Restore drill not yet executed; single NAT is a single point of failure in the proof stack |
+| **Performance efficiency** | Indexed schema, pooling, RDS Proxy named as the first scaling move | No load test; p95 target of 300 ms is a target, not a measurement |
+| **Cost optimisation** | Single NAT, burstable database, tagged for cleanup, assumptions listed in §5 | No budget alarm in the stack yet; Savings Plans only after real load |
+| **Sustainability** | Managed, right-sized, destroyable infrastructure | Not assessed beyond right-sizing |
 
 ## 6. Migration path from the Stage 3 MVP (Supabase)
 

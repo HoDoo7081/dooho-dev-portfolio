@@ -76,3 +76,35 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run db:setup
       - run: npm test
+
+  cdk-and-image:
+    name: CDK stack synthesizes; test-runner image builds and passes
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: CDK synth
+        working-directory: projects/silverbridge-backend/aws-reference-architecture/cdk
+        run: |
+          npm install --no-audit --no-fund
+          npx tsc --noEmit
+          npx cdk synth -q
+      - name: Build test-runner image
+        working-directory: projects/silverbridge-backend
+        run: docker build -f reference-impl/Dockerfile -t sb-proof .
+      - name: Run image against PostgreSQL (container = what Fargate runs)
+        run: |
+          docker run --rm --network host \
+            -e PGHOST=localhost -e PGUSER=postgres -e PGPASSWORD=postgres -e PGDATABASE=postgres \
+            sb-proof
