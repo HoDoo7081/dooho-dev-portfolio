@@ -41,6 +41,14 @@ KAIST App 창업 프로그램에서 PMBA 동료 4인 팀(제하팀)으로 진행
 | ![솔루션: 두려움 → 후회 방지](docs/images/03-solution.png) | ![MVP 핵심 기능 1](docs/images/04-mvp-features-1.png) |
 | ![MVP 핵심 기능 2: 로컬 메이트·콘텐츠·안전](docs/images/05-mvp-features-2-safety.png) | ![고객 검증 계획: 100명 인터뷰 + 50쌍 베타](docs/images/06-validation-plan.png) |
 
+### UI 시안 (draft v1.0)
+
+온보딩 → 상품 상세 → 취향 선택(여행 목적·방식·유형·활동 강도) → 안전(GPS 위치·긴급 통화)으로 이어지는 시니어 대상 모바일 화면 흐름입니다. 취향 4문항은 매칭 알고리즘 입력값(`travel_style`·활동 수준 등)과 대응됩니다.
+
+![SilverBridge UI 시안](docs/images/07-ui-draft-screens.png)
+
+> **출처 표기**: 상용 모바일 UI 키트(Figma Community)를 기반으로 SilverBridge 서비스 흐름에 맞게 한글화·화면 구성한 **시안(draft)** 입니다. 제 디자인 역량을 보여주는 자료가 아니라, 설계 문서가 실제 화면 흐름으로 어떻게 이어지는지 보여주는 참고 자료로 넣었습니다.
+
 ---
 
 ## 1. 왜 만들었나 — 문제 정의

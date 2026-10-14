@@ -1,17 +1,44 @@
-# Doo Ho Ahn — Product & Backend Design Portfolio
+<div align="center">
 
-**Enterprise SaaS 프로젝트·솔루션 컨설팅 경력** 위에서 직접 기획·설계한 서비스의 산출물 모음입니다.
-KAIST PMBA(Data Science 부전공) 재학 중이며, 문제 정의부터 데이터 모델·API 계약·보안·운영·테스트 기준까지 **"만들기 전에 합의해야 할 것들"** 을 문서로 정리하는 데 강점이 있습니다.
+<img src="docs/banner.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio" width="100%">
 
-> **English summary** — Two end-to-end design packages: (1) *SilverBridge*, an AI-assisted travel companion platform for seniors — PostgreSQL schema (31 tables), OpenAPI 3 contract, security/ops/test strategy and a NestJS starter; (2) *Fee Payment Link*, a card-payment-link MVP for club treasurers — PRD, money/ledger/refund/settlement design with webhook-idempotency principles. Design-first work; implementation status is stated honestly in each README.
+<br>
 
-📧 dksengh7081@gmail.com
+![Design](https://img.shields.io/badge/focus-product%20%C2%B7%20backend%20design-1B3A7A?style=flat-square)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?style=flat-square&logo=openapiinitiative&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS%20%2B%20Prisma-starter-E0234E?style=flat-square&logo=nestjs&logoColor=white)
+![Mermaid](https://img.shields.io/badge/diagrams-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
+![Status](https://img.shields.io/badge/status-design--first%20%C2%B7%20limits%20stated-555?style=flat-square)
+
+**Enterprise SaaS 프로젝트·솔루션 컨설팅 경력** 위에서 직접 기획·설계한 서비스의 산출물 모음<br>
+KAIST PMBA (Data Science 부전공) · 📧 [dksengh7081@gmail.com](mailto:dksengh7081@gmail.com)
+
+</div>
+
+> **English summary** — Two end-to-end design packages. (1) **SilverBridge**: an AI-assisted travel companion platform for seniors — PostgreSQL schema (31 tables), OpenAPI 3 contract, security/ops/test strategy and a NestJS starter. (2) **Fee Payment Link**: a card-payment-link MVP for club treasurers — PRD and money/ledger/refund/settlement design built on webhook idempotency. Design-first work; implementation status is stated honestly in each README.
 
 ---
 
+## 한눈에 보기
+
+| 31 | 14 | 2 | 6 |
+|:---:|:---:|:---:|:---:|
+| PostgreSQL 테이블<br><sub>SilverBridge `sb` 스키마</sub> | OpenAPI 경로<br><sub>인증·예약·결제·안전 등</sub> | 설계 패키지<br><sub>SilverBridge · Fee Payment Link</sub> | 문서 영역<br><sub>데이터·API·보안·운영·테스트·PRD</sub> |
+
 ## 이 저장소의 의도
 
-코드 양을 보여주기보다, **제품 문제를 시스템 설계로 번역하는 과정**을 보여주려는 저장소입니다.
+코드 양을 보여주기보다 **제품 문제를 시스템 설계로 번역하는 과정**을 보여주려는 저장소입니다. "만들기 전에 합의해야 할 것들"을 문서로 못 박는 것이 제 강점입니다.
+
+```mermaid
+flowchart LR
+  A[문제 정의<br/>사용자·시장] --> B[요구사항·정책<br/>금액·상태·규칙]
+  B --> C[데이터 모델<br/>제약으로 규칙 강제]
+  C --> D[API 계약<br/>OpenAPI 3]
+  D --> E[보안·개인정보<br/>권한·보존·파기]
+  E --> F[운영·테스트<br/>SLO·대사·시나리오]
+  F --> G[구현 인수인계<br/>스타터·과제서]
+```
 
 | 단계 | 어디서 확인할 수 있나 |
 |---|---|
@@ -24,27 +51,82 @@ KAIST PMBA(Data Science 부전공) 재학 중이며, 문제 정의부터 데이�
 | 테스트 전략 | 계약·성능·보안 테스트, 동시성 시나리오 |
 | 한계의 명시 | 각 README 마지막의 "현재 상태와 한계" |
 
+---
+
 ## 프로젝트
 
 ### 1. [SilverBridge](projects/silverbridge-backend) — 시니어 부모님 자유여행 AI 동행 플랫폼
-- **무엇**: 자유여행이 두려운 시니어를 위한 AI 동행 매칭 + 안전(SOS·위치 공유) 플랫폼의 백엔드 설계
-- **산출물**: PostgreSQL 15 스키마(31 테이블) · OpenAPI 3 · 보안/운영/테스트 설계 · 업무 프로세스 모델 · NestJS+Prisma 스타터
-- **하이라이트**: DB 제약으로 상태·중복 예약 차단, 매칭 결과의 알고리즘 버전 관리, 역할×엔드포인트 권한 매트릭스, 개인정보 보존·파기표, SLO 숫자 합의
-- **성격**: KAIST App 창업 프로그램 팀 프로젝트 (팀 내 CEO·전략 책임, 설계 산출물 직접 작성 · AI는 검수자로 활용)
+
+<table>
+<tr>
+<td width="46%"><a href="projects/silverbridge-backend"><img src="projects/silverbridge-backend/docs/images/00-process-L1-swimlane.png" alt="SilverBridge 업무 프로세스 L1"></a></td>
+<td>
+
+**무엇** — 자유여행이 두려운 시니어를 위한 AI 동행 매칭 + 안전(SOS·위치 공유) 플랫폼의 백엔드 설계<br>
+**성격** — KAIST App 창업 프로그램 팀 프로젝트. 팀 내 CEO·전략 책임, 설계 산출물은 직접 작성하고 AI는 검수자로 활용<br>
+**산출물** — PostgreSQL 15 스키마 · OpenAPI 3 · 보안/운영/테스트 설계 · 업무 프로세스 모델 · NestJS+Prisma 스타터 · UI 시안<br><br>
+**하이라이트**
+- DB 제약으로 상태 값·중복 예약 차단
+- 매칭 결과의 알고리즘 버전 관리
+- 역할 × 엔드포인트 권한 매트릭스
+- 개인정보 보존·파기표, SLO 숫자 합의
+
+[**→ 프로젝트 보기**](projects/silverbridge-backend)
+
+</td>
+</tr>
+</table>
 
 ### 2. [회비 결제 링크 MVP](projects/fee-payment-link-mvp) — 총무를 위한 카드 결제 링크
-- **무엇**: 모임 회비를 링크 하나로 받고 환불·정산까지 관리하는 서비스의 제품·백엔드 설계
-- **산출물**: PRD · 백엔드 과제서 · 엔지니어링 가이드 · 프론트 핸드오프 · 운영·개인정보 기준
-- **하이라이트**: 정수 원화 + bps 수수료 정책, 검증된 웹훅 기반 결제 확정(이벤트 ID 선삽입 멱등), append-only 원장, 환불 상태 머신, 정산 스냅샷, 출시 승인 체크리스트
-- **성격**: 개인 제품 기획 (신규 사업 아이디어)
+
+<table>
+<tr>
+<td width="46%"><a href="projects/fee-payment-link-mvp"><img src="projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png" alt="결제 확정 시퀀스"></a></td>
+<td>
+
+**무엇** — 모임 회비를 링크 하나로 받고 환불·정산까지 관리하는 서비스의 제품·백엔드 설계<br>
+**성격** — 개인 제품 기획 (신규 사업 아이디어)<br>
+**산출물** — PRD · 백엔드 과제서 · 엔지니어링 가이드 · 프론트 핸드오프 · 운영·개인정보 기준<br><br>
+**하이라이트**
+- 정수 원화 + bps 수수료 정책
+- 검증된 웹훅 기반 결제 확정 (이벤트 ID 선삽입 멱등)
+- append-only 원장, 환불 상태 머신, 정산 스냅샷
+- 출시 승인 체크리스트
+
+[**→ 프로젝트 보기**](projects/fee-payment-link-mvp)
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 읽는 순서
 
-- **3분**: 이 README → 각 프로젝트 README의 "핵심 설계 결정" 표
-- **10분**: SilverBridge `SECURITY.md`·`OPERATIONS.md`, Fee Payment `03-ENGINEERING-GUIDE.md`
-- **30분**: `schema.sql`, `openapi.yaml`, `01-PRD.md` 전체
+| 시간 | 추천 경로 |
+|---|---|
+| ⏱ **3분** | 이 README → 각 프로젝트 README의 "핵심 설계 결정" 표 |
+| ⏱ **10분** | SilverBridge `SECURITY.md`·`OPERATIONS.md`, Fee Payment `03-ENGINEERING-GUIDE.md` |
+| ⏱ **30분** | `schema.sql`, `openapi.yaml`, `01-PRD.md` 전체 |
+
+## 저장소 구조
+
+```text
+.
+├── docs/                          # 저장소 공용 이미지
+└── projects/
+    ├── silverbridge-backend/
+    │   ├── design-package/        # ERD · SQL · OpenAPI · 보안 · 운영 · 테스트
+    │   ├── process-models/        # L1/L2 프로세스, 스윔레인, 테이블 사전(CSV)
+    │   ├── api-starter/           # NestJS + Prisma 골격
+    │   └── docs/images/           # 피치덱·프로세스·UI 시안
+    └── fee-payment-link-mvp/
+        ├── 01-PRD.md … 04-FRONTEND-HANDOFF.md
+        └── docs/images/           # 아키텍처·결제 확정·환불/정산 다이어그램
+```
 
 ## 저장소 원칙
 
 - 비밀값(API 키, 토큰, `.env`), 개인정보, 고객사·지원 회사 관련 자료는 포함하지 않았습니다.
 - 수치·정책은 각 문서에 실제로 적힌 값만 인용했고, 구현되지 않은 부분은 README에 "한계"로 적었습니다.
+- 외부 자료(UI 키트 등)를 쓴 경우 출처를 표기했습니다.
