@@ -3,7 +3,7 @@
 <sub>[← SilverBridge case study](../README.md) · [Stage 3 MVP](../docs/STAGE3-MVP.md) · [Operations design](../design-package/05_Operations/OPERATIONS.md) · [Security design](../design-package/04_Security/SECURITY.md)</sub>
 
 > [!IMPORTANT]
-> **A design for the production target, not a deployed system.** A [CDK proof deployment](cdk/README.md) of the network, data and async layers exists and is validated in CI; it has **not yet been run in a live AWS account**. Costs are order-of-magnitude estimates from list-price assumptions I state below; verify them in the AWS Pricing Calculator before any commitment. The Stage 3 MVP actually runs on Supabase ([why](../docs/STAGE3-MVP.md)); this page shows where the design would go next and how to get there.
+> **A design for the production target, not a deployed system.** A [CDK proof deployment](cdk/README.md) of the network, data and async layers exists and is validated in CI, and it was **deployed once to a live AWS account (Seoul, 2026-10-14), where the 13 reference tests passed against RDS** before the stack was destroyed ([result](cdk/README.md#result-one-real-run)). No production system is running. Costs are order-of-magnitude estimates from list-price assumptions I state below; verify them in the AWS Pricing Calculator before any commitment. The Stage 3 MVP actually runs on Supabase ([why](../docs/STAGE3-MVP.md)); this page shows where the design would go next and how to get there.
 
 ![AWS reference architecture](../docs/images/10-aws-reference-architecture.png)
 <sub>Source: [`arch.mmd`](arch.mmd)</sub>

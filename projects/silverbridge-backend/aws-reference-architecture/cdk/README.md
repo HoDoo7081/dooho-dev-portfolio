@@ -44,11 +44,15 @@ The NAT gateway and the database dominate. Rough list-price assumptions: NAT abo
 - The stack tags everything `purpose=portfolio-proof-delete-after-use`.
 - Credentials never appear in the template or the repo; the task reads them from Secrets Manager at start.
 
-## Result (fill in after a real run)
+## Result (one real run)
 
 | Item | Value |
 |---|---|
-| Date and region | _not yet run_ |
-| Tests passed | _not yet run_ |
-| Task log excerpt / screenshot | _not yet run_ |
-| Total cost | _not yet run_ |
+| Date and region | 2026-10-14 (UTC), `ap-northeast-2` (Seoul), run from AWS CloudShell |
+| Deploy | `cdk deploy` finished with CloudFormation status `CREATE_COMPLETE` |
+| Tests passed | **13 of 13** (`# tests 13`, `# pass 13`, `# fail 0`), ECS Fargate task exit code 0, PostgreSQL 15 on RDS over TLS (`verify-full`) |
+| Task log excerpt | From CloudWatch Logs: `ok 8 - the same webhook delivered 8 times in parallel is processed exactly once`, `ok 9 - a bad signature is rejected and nothing changes`, `ok 12 - database rejects illegal transitions even with raw SQL`, `ok 13 - two refunds racing for one payment: exactly one wins and seats are released once` |
+| Clean-up | `cdk destroy` finished (`SilverbridgeProof: destroyed`); `describe-stacks` then returned "does not exist" |
+| Total cost | Not yet read from the Billing console; the stack lived well under one hour (cost driver: NAT Gateway and RDS hours) |
+
+What this shows: the same 13 tests that run against a local PostgreSQL in CI also pass inside a container on Fargate against RDS, in private subnets, with credentials from Secrets Manager. What it does not show: load, multi-AZ failover, restore drills, or a deployed API behind the load balancer. The run was a one-time proof, and the stack was destroyed afterwards.
