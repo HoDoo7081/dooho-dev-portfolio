@@ -21,7 +21,7 @@ Not created: CloudFront, WAF, ALB and the API service. The NestJS starter is sti
 
 ## Deploy, test, delete
 
-Prerequisites: an AWS account and CLI credentials, Node 20, Docker (CDK builds the image), and `cdk bootstrap` run once per account and region.
+Prerequisites: an AWS account and CLI credentials, Node 22 (CloudShell ships Node 20: run `nvm install 22 && nvm use 22` first), Docker (CDK builds the image), and `cdk bootstrap` run once per account and region.
 
 ```bash
 cd projects/silverbridge-backend/aws-reference-architecture/cdk
