@@ -84,7 +84,7 @@ The design package above is Stage 2. These four additions close the "design only
 | **Stage 3 MVP** | What the team actually shipped (React + Capacitor APK on Supabase), implemented vs design-only, and a gap table where the team's documents overstate the code | [STAGE3-MVP.md](docs/STAGE3-MVP.md) |
 | **Running proof** | Duplicate booking, 10-way seat race, idempotency, 8× duplicate webhook, refund state machine: 13 tests on PostgreSQL, run in CI, with a mutation check | [reference-impl/](reference-impl/README.md) |
 | **AWS reference architecture** | Deployment, security, scaling, cost assumptions and a Supabase → AWS migration path | [aws-reference-architecture/](aws-reference-architecture/README.md) |
-| **Demo** | 90-second narrated run (`npm run demo`) and a 2-minute recording script | [DEMO-SCRIPT.md](reference-impl/DEMO-SCRIPT.md) |
+| **Demo** | 2-minute captioned walkthrough built from the real `npm run demo` output and the AWS test log (no narration), plus a script for a narrated recording | [demo-walkthrough.mp4](reference-impl/demo-walkthrough.mp4) · [DEMO-SCRIPT.md](reference-impl/DEMO-SCRIPT.md) |
 
 ![Stage 3 app screens](docs/images/08-stage3-app-screens.png)
 
