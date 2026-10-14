@@ -70,6 +70,19 @@ KAIST App 창업 프로그램에서 PMBA 동료 4인 팀(제하팀)으로 진행
 
 ---
 
+## 실제로 출시된 것과, 설계를 뒷받침하는 실행 증거
+
+위 설계 패키지는 2단계 산출물입니다. 아래 자료는 "설계만 했다"는 약점을 정직하게 메웁니다. (상세 문서는 영어 원문입니다.)
+
+| | 내용 | 링크 |
+|---|---|---|
+| **3단계 MVP** | 팀이 실제로 출시한 것(React + Capacitor APK, Supabase), 구현/설계만 된 항목 구분, 문서와 코드가 어긋난 지점 | [STAGE3-MVP.md](docs/STAGE3-MVP.md) |
+| **실행 증거** | 중복 예약, 10명 동시 3석 경쟁, 멱등키, 웹훅 8회 중복, 환불 상태 전이: PostgreSQL 위 테스트 13개, CI 실행, 뮤테이션 검증 | [reference-impl/](reference-impl/README.md) |
+| **AWS 참조 아키텍처** | 배포 구조, 보안, 확장, 비용 가정, Supabase → AWS 이전 경로 | [aws-reference-architecture/](aws-reference-architecture/README.md) |
+| **데모** | 2분 녹화 스크립트 | [DEMO-SCRIPT.md](reference-impl/DEMO-SCRIPT.md) |
+
+---
+
 ## 1. 왜 만들었나 — 문제 정의
 
 팀 IR 피치덱(2025-11)에서 정리한 문제 구조입니다 (수치는 덱에 인용된 값).

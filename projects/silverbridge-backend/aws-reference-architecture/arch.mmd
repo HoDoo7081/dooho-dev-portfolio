@@ -1,0 +1,29 @@
+flowchart LR
+  U[Mobile app<br/>Android / iOS] --> CF[CloudFront + WAF]
+  CF --> ALB[Application Load Balancer<br/>TLS, 2 AZ]
+  subgraph VPC[VPC ap-northeast-2]
+    subgraph PUB[Public subnets]
+      ALB
+      NAT[NAT gateway]
+    end
+    subgraph APP[Private subnets - app]
+      API[ECS Fargate: API service<br/>NestJS, 2+ tasks, autoscaling]
+      WRK[ECS Fargate: worker<br/>webhooks, receipts, notifications]
+    end
+    subgraph DATA[Private subnets - data]
+      RDS[(RDS PostgreSQL 15<br/>Multi-AZ, PITR 7d)]
+    end
+    ALB --> API
+    API --> RDS
+    WRK --> RDS
+  end
+  API --> SQS[[SQS queue + DLQ]]
+  SQS --> WRK
+  API --> S3[(S3: media, documents<br/>SSE-KMS)]
+  CF --> S3
+  COG[Cognito<br/>JWT, roles] -.-> API
+  PSP[Payment provider<br/>signed webhooks] --> ALB
+  WRK --> NAT --> EXT[Insurance / partner APIs]
+  API -.-> SM[Secrets Manager + KMS]
+  API -.-> CW[CloudWatch logs, metrics, alarms]
+  RDS -.-> BK[AWS Backup]

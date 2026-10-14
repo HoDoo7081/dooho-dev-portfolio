@@ -23,7 +23,7 @@ My role on the team: **CEO and strategy lead** (as listed in the team's IR pitch
 | **Approach** | AI companion matching, real-time safety infrastructure, and a senior-friendly UI. Four user roles (traveler, host, assistant, admin) designed in from day one. |
 | **What I built** | Process model → 31-table schema → OpenAPI 3 contract → permission / privacy / SLO / test design → NestJS starter |
 | **Key decision** | Enforce rules in **DB constraints and the API contract**, not only in application code. [Read the 5 ADRs](docs/adr/README.md) |
-| **Current status** | Design artifacts complete; implementation is at starter level (see the limits in §10). Schema and API contract are [validated automatically by CI](../../.github/workflows/validate.yml). |
+| **Current status** | Design artifacts complete; a Stage 3 Android MVP shipped on Supabase ([details](docs/STAGE3-MVP.md)); the booking and webhook rules are proven by [13 tests in CI](reference-impl/README.md). The NestJS starter is still skeleton-level (§10). Schema and API contract are [validated automatically by CI](../../.github/workflows/validate.yml). |
 | **Validation plan** | 100 interviews (seniors and their children), then a 50-pair beta test (targets: satisfaction ≥ 75%, matching accuracy ≥ 80%). *These are plans, not achieved results.* |
 
 ## My role and contribution
@@ -72,6 +72,21 @@ A mobile screen flow for seniors: onboarding → product detail → preference s
 ![SilverBridge UI draft](docs/images/07-ui-draft-screens.png)
 
 > **Source note.** This is a **draft** adapted from a commercial mobile UI kit (Figma Community), localized into Korean and arranged for the SilverBridge service flow. I include it as a reference for how the design documents connect to real screen flows, **not as evidence of my visual design skill**.
+
+---
+
+## What actually shipped, and the proof behind the design
+
+The design package above is Stage 2. These four additions close the "design only" gap honestly:
+
+| | What | Link |
+|---|---|---|
+| **Stage 3 MVP** | What the team actually shipped (React + Capacitor APK on Supabase), implemented vs design-only, and a gap table where the team's documents overstate the code | [STAGE3-MVP.md](docs/STAGE3-MVP.md) |
+| **Running proof** | Duplicate booking, 10-way seat race, idempotency, 8× duplicate webhook, refund state machine: 13 tests on PostgreSQL, run in CI, with a mutation check | [reference-impl/](reference-impl/README.md) |
+| **AWS reference architecture** | Deployment, security, scaling, cost assumptions and a Supabase → AWS migration path | [aws-reference-architecture/](aws-reference-architecture/README.md) |
+| **Demo** | 90-second narrated run (`npm run demo`) and a 2-minute recording script | [DEMO-SCRIPT.md](reference-impl/DEMO-SCRIPT.md) |
+
+![Stage 3 app screens](docs/images/08-stage3-app-screens.png)
 
 ---
 
@@ -177,6 +192,8 @@ sequenceDiagram
 - **Scenario B:** concurrent bookings on the same slot, confirming a "not enough seats" error
 
 ## 8. Folder structure
+
+> Also see `reference-impl/` (tests on PostgreSQL), `aws-reference-architecture/`, and `docs/STAGE3-MVP.md`.
 
 ```
 silverbridge-backend/

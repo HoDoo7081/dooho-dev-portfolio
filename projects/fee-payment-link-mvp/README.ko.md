@@ -191,6 +191,7 @@ stateDiagram-v2
 | [02-OPERATIONS-AND-PRIVACY.md](ko/02-OPERATIONS-AND-PRIVACY.md) | 운영·개인정보 기준 |
 | [03-ENGINEERING-GUIDE.md](ko/03-ENGINEERING-GUIDE.md) | 아키텍처, Shopify 매핑, 결제 확정·원장·환불·정산 설계, 보안, 장애·대사 |
 | [04-FRONTEND-HANDOFF.md](ko/04-FRONTEND-HANDOFF.md) | 프론트엔드 병렬 개발 가이드, 화면별 API 매핑 |
+| [program/](program/README.md) | **TPM 산출물(영문)**: 출시 계획, 마일스톤·게이트, 의존성 맵, RAID 로그, RACI, go/no-go (실행 기록이 아닌 계획) |
 
 ## 9. 범위와 전제
 

@@ -44,11 +44,11 @@ flowchart LR
 | At a glance | |
 |---|---|
 | **Problem** | Only ~12% of parents try independent travel. The blocker is *fear*, not demand. |
-| **Built** | PostgreSQL schema (**31 tables**), OpenAPI 3 contract (**14 paths**), role-permission matrix, PII retention table, SLOs, NestJS starter |
+| **Built** | PostgreSQL schema (**31 tables**), OpenAPI 3 contract (**14 paths**), role-permission matrix, PII retention table, SLOs, NestJS starter, **13 CI-run tests** proving the booking / webhook rules, AWS reference architecture, and the team's Stage 3 Android MVP write-up |
 | **Key idea** | Enforce rules in the DB and the contract, not just in code |
 | **My role** | CEO / strategy lead of a 4-person team. I designed the artifacts myself and used AI as a reviewer. |
 
-**[Read the case study →](projects/silverbridge-backend)** · [5 design decisions (ADR)](projects/silverbridge-backend/docs/adr/README.md)
+**[Read the case study →](projects/silverbridge-backend)** · [Stage 3 MVP: shipped vs designed](projects/silverbridge-backend/docs/STAGE3-MVP.md) · [Running proof](projects/silverbridge-backend/reference-impl/README.md) · [AWS architecture](projects/silverbridge-backend/aws-reference-architecture/README.md) · [5 design decisions (ADR)](projects/silverbridge-backend/docs/adr/README.md)
 
 ### 💳 Fee Payment Link — card-payment links for club treasurers
 
@@ -57,11 +57,11 @@ flowchart LR
 | At a glance | |
 |---|---|
 | **Problem** | Club dues are still bank transfers and spreadsheets. |
-| **Built** | PRD, engineering guide, ledger / refund / settlement design, launch checklist |
+| **Built** | PRD, engineering guide, ledger / refund / settlement design, launch checklist, **launch program: milestones, dependency map, RAID log, RACI, go / no-go** |
 | **Key idea** | A payment is confirmed only by a *verified webhook*. Every money event is an append-only ledger entry. |
 | **My role** | Sole product and design author. AI as a reviewer. |
 
-**[Read the case study →](projects/fee-payment-link-mvp)** · [6 design decisions (ADR)](projects/fee-payment-link-mvp/docs/adr/README.md)
+**[Read the case study →](projects/fee-payment-link-mvp)** · [Launch program (TPM)](projects/fee-payment-link-mvp/program/README.md) · [6 design decisions (ADR)](projects/fee-payment-link-mvp/docs/adr/README.md)
 
 ## 🔎 What this repo shows
 
@@ -72,12 +72,18 @@ flowchart LR
 | API contract design | [`openapi.yaml`](projects/silverbridge-backend/design-package/03_API/openapi.yaml) — idempotent bookings, signed webhooks |
 | Security & privacy by design | [`SECURITY.md`](projects/silverbridge-backend/design-package/04_Security/SECURITY.md) — role matrix, retention & encryption table |
 | Payments engineering judgment | [Payment confirmation flow](projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png) · [ADR-005 refund state machine](projects/fee-payment-link-mvp/docs/adr/ADR-005-refund-state-machine.md) |
+| Running evidence (not just docs) | [13 tests on PostgreSQL in CI](projects/silverbridge-backend/reference-impl/README.md): duplicate booking, seat race, idempotency, duplicate webhook, refund states — plus a mutation check |
+| Program management | [Fee Payment launch program](projects/fee-payment-link-mvp/program/README.md): gates, dependency map, RAID, RACI, go / no-go |
+| Cloud architecture | [AWS reference architecture](projects/silverbridge-backend/aws-reference-architecture/README.md): security, scaling, cost assumptions, migration path |
+| Reading docs against code | [Stage 3 gap table](projects/silverbridge-backend/docs/STAGE3-MVP.md#4-honest-gap-table-documents-vs-code) |
 | Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, alternatives |
 
 ## 🧾 Honest scope
 
-- **Design-first.** The NestJS starter is a skeleton (no Prisma models yet, auth and webhook verification not implemented); each README lists the gaps.
+- **Design-first, with a small running proof.** The NestJS starter is a skeleton (no Prisma models yet, auth and webhook verification not implemented); each README lists the gaps.
 - Targets and validation plans (e.g. interviews, beta test) are **plans, not results**.
+- The Stage 3 Android MVP was built by the team with an AI design-to-code tool; I document what it does and does not do, and do not claim its code.
+- AWS costs and the launch program are estimates and plans, labelled as such.
 - UI screens are a **UI-kit-based draft** and are labeled as such.
 - No secrets, personal data, or employer/customer material is included.
 

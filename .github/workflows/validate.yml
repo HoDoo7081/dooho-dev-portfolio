@@ -47,3 +47,32 @@ jobs:
           node-version: 20
       - name: Lint API contract
         run: npx --yes @redocly/cli@1.25.0 lint projects/silverbridge-backend/design-package/03_API/openapi.yaml --format=stylish --max-problems=1000
+
+  reference-impl:
+    name: Reference implementation tests (13) on PostgreSQL 15
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: postgres
+    defaults:
+      run:
+        working-directory: projects/silverbridge-backend/reference-impl
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - run: npm run db:setup
+      - run: npm test

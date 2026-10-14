@@ -1,0 +1,14 @@
+{
+  "name": "silverbridge-reference-impl",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal working proof: duplicate-booking, overbooking, idempotency, duplicate-webhook and state-transition rules enforced against PostgreSQL",
+  "type": "module",
+  "scripts": {
+    "db:setup": "bash scripts/setup.sh",
+    "test": "node --test --test-concurrency=1 test/booking.test.js test/payment.test.js",
+    "demo": "node scripts/demo.js"
+  },
+  "dependencies": { "pg": "8.13.1" },
+  "license": "MIT"
+}

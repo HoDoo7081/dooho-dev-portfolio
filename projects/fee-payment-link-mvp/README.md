@@ -191,6 +191,7 @@ Idempotency (creation, refund and settlement alike), webhook signature verificat
 | [02-OPERATIONS-AND-PRIVACY.md](02-OPERATIONS-AND-PRIVACY.md) | Operations and privacy criteria |
 | [03-ENGINEERING-GUIDE.md](03-ENGINEERING-GUIDE.md) | Architecture, Shopify mapping, payment confirmation, ledger, refund and settlement design, security, failure and reconciliation |
 | [04-FRONTEND-HANDOFF.md](04-FRONTEND-HANDOFF.md) | Parallel frontend development guide, screen-to-API mapping |
+| [program/](program/README.md) | **TPM view**: launch plan, milestones with exit gates, dependency map, [RAID log](program/RAID-LOG.md), [RACI and go / no-go](program/LAUNCH-READINESS.md) (a plan, not an execution record) |
 
 > Korean originals of documents 01–04 are kept in [`ko/`](ko/).
 

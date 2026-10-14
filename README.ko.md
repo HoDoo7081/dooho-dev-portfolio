@@ -75,7 +75,7 @@ flowchart LR
 - 역할 × 엔드포인트 권한 매트릭스
 - 개인정보 보존·파기표, SLO 숫자 합의
 
-[**→ 프로젝트 보기**](projects/silverbridge-backend/README.ko.md)
+[**→ 프로젝트 보기**](projects/silverbridge-backend/README.ko.md) · [3단계 MVP: 출시 vs 설계](projects/silverbridge-backend/docs/STAGE3-MVP.md) · [실행 증거(테스트 13개, CI)](projects/silverbridge-backend/reference-impl/README.md) · [AWS 참조 아키텍처](projects/silverbridge-backend/aws-reference-architecture/README.md)
 
 </td>
 </tr>
