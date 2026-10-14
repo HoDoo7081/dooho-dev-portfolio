@@ -82,6 +82,8 @@ PostgreSQL / Shopify Adapter / Mock Provider
 - Shopify는 주문·결제 상태 엔진으로만 쓰고, 모임·회원·회비·수수료·정산 장부는 **자체 백엔드가 소유**
 - 결제 공급자를 도메인에서 분리해 두어, MVP 이후 국내 PG 직접 연동으로 **어댑터만 교체**할 수 있음
 
+![아키텍처: 모듈형 모놀리스와 결제 공급자 어댑터](docs/images/01-architecture.png)
+
 ### 4-3. 결제 확정은 "리디렉션"이 아니라 "검증된 웹훅"
 
 브라우저의 성공 URL은 사용자 안내용일 뿐입니다. 확정 처리는 아래 순서로 한 트랜잭션에서 수행합니다.
@@ -102,6 +104,10 @@ commit
 - 공급자 주문 ID·거래 ID에 유일 인덱스, 이벤트 ID를 **먼저 삽입**해 중복 처리 방지
 - 웹훅 원문과 처리 결과는 감사용으로 기록하되 **카드정보는 저장하지 않음**
 
+**결제 확정 시퀀스** — 성공 화면은 안내용이고, 확정은 서명 검증된 웹훅 + 이벤트 ID 선삽입(멱등)으로만 일어납니다.
+
+![결제 확정 흐름](docs/images/02-payment-confirmation-flow.png)
+
 ### 4-4. 추가형(append-only) 원장
 
 현재 잔액만 저장하지 않고 금액 사건을 모두 원장에 남깁니다: `PAYMENT_CAPTURED` · `PLATFORM_FEE_RECOGNIZED` · `REFUND_RESERVED` · `REFUND_COMPLETED` · `SETTLEMENT_RESERVED` · `SETTLEMENT_PAID` · `CHARGEBACK_RECORDED` · `MANUAL_ADJUSTMENT`.
@@ -119,6 +125,10 @@ commit
 - 정산 요청 생성 시 대상 결제 목록과 금액을 **스냅샷으로 고정**
 - `REQUESTED` 이상 정산에 묶인 결제는 자동 환불하지 않음 (정산 후 환불 차단)
 - 동일 결제에 진행 중인 환불은 하나만 허용
+
+**환불 상태 머신과 정산 규칙 한눈에 보기**
+
+![환불·정산 규칙](docs/images/03-refund-and-settlement-rules.png)
 
 ## 5. 상태 모델
 
