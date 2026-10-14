@@ -76,7 +76,7 @@ This repo holds two end-to-end design packages. Each README states plainly what 
 ## Honest scope
 
 - **Design-first.** The NestJS starter is a skeleton (no Prisma models yet, auth and webhook verification not implemented); each README lists the gaps.
-- Numbers target/validation plans (e.g. interviews, beta) are **plans, not results**.
+- Targets and validation plans (e.g. interviews, beta test) are **plans, not results**.
 - UI screens are a **UI-kit-based draft** and are labeled as such.
 - No secrets, personal data, or employer/customer material is included.
 
