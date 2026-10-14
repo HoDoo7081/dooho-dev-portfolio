@@ -105,6 +105,10 @@ flowchart LR
 
 ---
 
+### 3. [Min Seoul](projects/minseoul-storefront/README.ko.md) — 운영 중인 크로스보더 K-뷰티 스토어
+
+Shopify 헤드리스 + Supabase, 4개 언어·다통화, 대만 통관 ID 단계, 인플루언서 할인 링크 추적. 고객사 코드는 비공개이며 구조·역할·개선점만 정리했습니다. [**→ 프로젝트 보기**](projects/minseoul-storefront/README.ko.md) · [minseoul.com](https://minseoul.com)
+
 ## 읽는 순서
 
 | 시간 | 추천 경로 |

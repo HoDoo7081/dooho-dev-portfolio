@@ -35,7 +35,7 @@ flowchart LR
     E --> F[CI-validated]
 ```
 
-## 🧭 Two projects
+## 🧭 Three projects
 
 ### 🧭 SilverBridge — AI travel companion for seniors
 
@@ -63,6 +63,17 @@ flowchart LR
 
 **[Read the case study →](projects/fee-payment-link-mvp)** · [Launch program (TPM)](projects/fee-payment-link-mvp/program/README.md) · [6 design decisions (ADR)](projects/fee-payment-link-mvp/docs/adr/README.md)
 
+### 🛍️ Min Seoul — live cross-border K-beauty storefront
+
+| At a glance | |
+|---|---|
+| **Problem** | Sell Korean skincare to customers in Taiwan and Asia: four languages, several currencies, customs ID, influencer-driven acquisition. |
+| **Built** | Headless storefront (React 19 + TanStack Start on Cloudflare, Shopify Storefront API, Supabase), payments via Toss / PayPal / Airwallex / Payoneer, discount-link click analytics |
+| **Key idea** | Let Shopify own checkout and compliance; own the market-specific front end. |
+| **My role** | Integration and delivery lead on a client-designed build made with an AI app builder; payments, influencer acquisition, operations. Client code not published. |
+
+**[Read the case study →](projects/minseoul-storefront/README.md)** · [minseoul.com (live)](https://minseoul.com)
+
 ## 🔎 What this repo shows
 
 | Skill | Evidence (click) |
@@ -74,6 +85,7 @@ flowchart LR
 | Payments engineering judgment | [Payment confirmation flow](projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png) · [ADR-005 refund state machine](projects/fee-payment-link-mvp/docs/adr/ADR-005-refund-state-machine.md) |
 | Running evidence (not just docs) | [13 tests on PostgreSQL in CI](projects/silverbridge-backend/reference-impl/README.md): duplicate booking, seat race, idempotency, duplicate webhook, refund states — plus a mutation check |
 | Program management | [Fee Payment launch program](projects/fee-payment-link-mvp/program/README.md): gates, dependency map, RAID, RACI, go / no-go |
+| Shipping to production | [Min Seoul](projects/minseoul-storefront/README.md): a live cross-border storefront, with a ranked privacy and security review of my own delivered work |
 | Cloud architecture | [AWS reference architecture](projects/silverbridge-backend/aws-reference-architecture/README.md): security, scaling, cost assumptions, migration path |
 | Reading docs against code | [Stage 3 gap table](projects/silverbridge-backend/docs/STAGE3-MVP.md#4-honest-gap-table-documents-vs-code) |
 | Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, alternatives |
@@ -85,6 +97,7 @@ flowchart LR
 - The Stage 3 Android MVP was built by the team with an AI design-to-code tool; I document what it does and does not do, and do not claim its code.
 - AWS costs and the launch program are estimates and plans, labelled as such.
 - UI screens are a **UI-kit-based draft** and are labeled as such.
+- Client work (Min Seoul) is documented without its source code, tokens or customer data.
 - No secrets, personal data, or employer/customer material is included.
 
 <details>
@@ -101,8 +114,10 @@ flowchart LR
     │   ├── process-models/        # L1/L2 process, swimlane, table dictionary (CSV)
     │   ├── api-starter/           # NestJS + Prisma skeleton
     │   └── docs/ (adr, images)
-    └── fee-payment-link-mvp/
-        ├── 01-PRD.md … 04-FRONTEND-HANDOFF.md
-        └── docs/ (adr, images)
+    ├── fee-payment-link-mvp/
+    │   ├── 01-PRD.md … 04-FRONTEND-HANDOFF.md
+    │   ├── program/               # launch plan, RAID, RACI, go / no-go
+    │   └── docs/ (adr, images)
+    └── minseoul-storefront/       # case study only; client code not published
 ```
 </details>
