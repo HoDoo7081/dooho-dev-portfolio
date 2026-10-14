@@ -2,6 +2,9 @@
 
 <sub>[← Fee Payment Link](../README.md) · [RAID log](RAID-LOG.md) · [Go / no-go & RACI](LAUNCH-READINESS.md)</sub>
 
+> [!NOTE]
+> This plan was written against the PRD, where treasurers create links themselves. The later [build spec v1.0](../05-BUILD-SPEC-v1.0.md) switched to operator-issued links with manual settlement, which removes treasurer sign-up from scope and adds operator review; milestones M1–M7 still apply, with M3 and M4 gaining the operator approval steps.
+
 > [!IMPORTANT]
 > **This is a plan, not an execution record.** The product is at documentation stage. Durations are relative weeks (W0 = kickoff) and are estimates for a small team of ~1 PM, 1–2 backend, 1 frontend, 1 part-time operator. I wrote it to show how I would run the program; none of it has been executed.
 

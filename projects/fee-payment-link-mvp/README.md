@@ -4,13 +4,13 @@
 
 | 6 | 3 | 7 | Docs stage |
 |:-:|:-:|:-:|:-:|
-| **ADRs** | **flow diagrams** | **launch-gate items** | **no code yet** |
+| **ADRs** | **flow diagrams** | **launch-gate items** | **spec v1.0** |
 
 > A documentation package for the MVP of a service that lets a club treasurer **create a card-payment link in 3 minutes** and manage payment status, refunds and settlement in one place.
 
 This is not code. It is a set of product and engineering documents that runs from **problem definition → requirements → policy → state model → backend design principles → launch criteria**. I am publishing it to show my approach to a question that matters most in money-handling services: *what has to be nailed down first?*
 
-> **TL;DR** — Product & money-flow design for card-payment links for club treasurers: PRD, verified-webhook payment confirmation, append-only ledger, refund state machine, settlement snapshots, 6 ADRs. Documentation stage only, no implementation yet. I authored the documents and used AI as a reviewer.
+> **TL;DR** — Product & money-flow design for card-payment links for club treasurers: PRD, verified-webhook payment confirmation, append-only ledger, refund state machine, settlement snapshots, 6 ADRs. Documentation stage; the later [build spec v1.0](05-BUILD-SPEC-v1.0.md) reports a Shopify adapter and a Lovable front end, not published here. I authored the documents and used AI as a reviewer.
 
 ---
 
@@ -22,7 +22,7 @@ This is not code. It is a set of product and engineering documents that runs fro
 | **Approach** | The treasurer creates a payment link in 3 minutes; members pay by card **without signing up**. Refunds and settlement are managed in the same place. |
 | **What I built** | PRD · policies for amounts, states, refunds and settlement · engineering guide · backend assignment · frontend handoff · operations and privacy criteria |
 | **Key decisions** | Payment confirmed only by a verified webhook, integer KRW + bps, append-only ledger, refund state machine, settlement snapshot. [Read the 6 ADRs](docs/adr/README.md) |
-| **Current status** | Documentation (design) stage. There is no implementation code and no real-usage metric; the 7 launch-approval conditions below are the validation criteria once it is built. |
+| **Current status** | Documentation (design) stage plus a build spec v1.0 (2026-07-20) that moved to operator-issued links. The spec states a Shopify adapter and front end exist; that code is not published here and there is no real-usage metric. No domestic PG contract yet; the 7 launch-approval conditions below are the validation criteria once it is built. |
 | **Target metrics** | Link creation within 3 min at ≥ 99% success; webhook reflection ≥ 99.9%; zero duplicate payments. *These are targets, not achieved numbers.* |
 
 ## My role and way of working
@@ -191,12 +191,13 @@ Idempotency (creation, refund and settlement alike), webhook signature verificat
 | [02-OPERATIONS-AND-PRIVACY.md](02-OPERATIONS-AND-PRIVACY.md) | Operations and privacy criteria |
 | [03-ENGINEERING-GUIDE.md](03-ENGINEERING-GUIDE.md) | Architecture, Shopify mapping, payment confirmation, ledger, refund and settlement design, security, failure and reconciliation |
 | [04-FRONTEND-HANDOFF.md](04-FRONTEND-HANDOFF.md) | Parallel frontend development guide, screen-to-API mapping |
+| [05-BUILD-SPEC-v1.0.md](05-BUILD-SPEC-v1.0.md) | **Latest baseline (2026-07-20)**: operator-issued links, fee tiers, locked pricing snapshots, provider adapter, 8 E2E scenarios, release-block rules; how it differs from the PRD |
 | [program/](program/README.md) | **TPM view**: launch plan, milestones with exit gates, dependency map, [RAID log](program/RAID-LOG.md), [RACI and go / no-go](program/LAUNCH-READINESS.md) (a plan, not an execution record) |
 
 > Korean originals of documents 01–04 are kept in [`ko/`](ko/).
 
 ## 9. Scope and assumptions
 
-- The current deliverable is **documentation (design)** and includes no implementation code.
+- The current deliverable is **documentation (design)**; no implementation code is published here (the build spec says a Shopify adapter and front end exist).
 - Accounting treatment (loans, deposits received, revenue recognition), approval of the collection and settlement model for non-business treasurers under PG and Shopify contracts, and terms of service, privacy policy and refund policy all need separate review before launch. These documents do not replace legal or tax advice.
 - The same design principles (idempotency, webhook verification, state machines) connect to the payment and booking design of [SilverBridge](../silverbridge-backend).

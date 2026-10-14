@@ -4,7 +4,7 @@
 
 | 6 | 3 | 7 | Docs stage |
 |:-:|:-:|:-:|:-:|
-| **ADRs** | **flow diagrams** | **launch-gate items** | **no code yet** |
+| **ADRs** | **flow diagrams** | **launch-gate items** | **spec v1.0** |
 
 > 모임 총무가 **3분 안에 카드 결제 링크**를 만들고, 납부 현황·환불·정산을 한 곳에서 관리하게 하는 서비스의 MVP 설계 문서 패키지입니다.
 
