@@ -2,7 +2,7 @@
 
 🌐 [English](README.md) · **한국어**
 
-<img src="docs/banner.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio" width="100%">
+<img src="docs/banner-v2.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio" width="100%">
 
 <br>
 
