@@ -2,62 +2,68 @@
 
 🌐 **English** · [한국어](README.ko.md)
 
-<img src="docs/banner.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio" width="100%">
+<img src="docs/banner.png" alt="Doo Ho Ahn — Product & Backend Design Portfolio: 31 DB tables, 14 API paths, 11 ADRs, CI-validated" width="100%">
 
 [![validate](https://github.com/HoDoo7081/dooho-dev-portfolio/actions/workflows/validate.yml/badge.svg)](https://github.com/HoDoo7081/dooho-dev-portfolio/actions/workflows/validate.yml)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?style=flat-square&logo=openapiinitiative&logoColor=white)
-![NestJS](https://img.shields.io/badge/NestJS%20%2B%20Prisma-starter-E0234E?style=flat-square&logo=nestjs&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-starter-E0234E?style=flat-square&logo=nestjs&logoColor=white)
+
+**[Projects](#-two-projects) · [Evidence](#-what-this-repo-shows) · [Honest scope](#-honest-scope) · [Contact](mailto:dksengh7081@gmail.com)**
 
 </div>
 
-### I turn product problems into system design — data model, API contract, security, and money flows — *before* anyone writes code.
+## I turn product problems into system design
 
-Enterprise SaaS project & solutions-consulting background · KAIST PMBA (Data Science minor) · Korean / English / Mandarin
-This repo holds two end-to-end design packages. Each README states plainly what is designed, what is built, and what is not.
+Data model, API contract, security, and money flows — *before* anyone writes code.
 
-📧 [dksengh7081@gmail.com](mailto:dksengh7081@gmail.com)
+> [!TIP]
+> **Short on time? Read these two things (2 minutes).**
+> 1. [How duplicate webhooks never double-charge](projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png) — one diagram
+> 2. [Why the database, not the app, enforces booking rules](projects/silverbridge-backend/docs/adr/ADR-001-db-enforced-states.md) — one decision record
 
----
+Enterprise SaaS project and solutions-consulting background · KAIST PMBA (Data Science minor) · Korean / English / Mandarin.
 
-## Start here — two projects
+### How I work
 
-<table>
-<tr>
-<td width="50%" valign="top">
+```mermaid
+flowchart LR
+    A[Problem] --> B[Requirements]
+    B --> C[Data model<br/>+ API contract]
+    C --> D[Security<br/>+ money rules]
+    D --> E[Decisions<br/>as ADRs]
+    E --> F[CI-validated]
+```
 
-### 🧭 SilverBridge
-**AI travel-companion platform for seniors** — backend design
+## 🧭 Two projects
 
-<a href="projects/silverbridge-backend"><img src="projects/silverbridge-backend/docs/images/03-solution.png" alt="SilverBridge solution"></a>
+### 🧭 SilverBridge — AI travel companion for seniors
 
-- **Problem:** only ~12% of parents try independent travel — the blocker is *fear*, not demand
-- **Built:** PostgreSQL schema (**31 tables**), OpenAPI 3 contract (**14 paths**), role-permission matrix, PII retention table, SLOs, NestJS starter
-- **Key idea:** enforce rules in the DB and the contract, not just in code
-- **Role:** CEO / strategy lead of a 4-person team; designed the artifacts myself, used AI as reviewer
+<a href="projects/silverbridge-backend"><img src="projects/silverbridge-backend/docs/images/03-solution.png" alt="SilverBridge solution overview" width="100%"></a>
 
-[**Read the case study →**](projects/silverbridge-backend) · [5 design decisions (ADR)](projects/silverbridge-backend/docs/adr/README.md)
+| | |
+|---|---|
+| **Problem** | Only ~12% of parents try independent travel. The blocker is *fear*, not demand. |
+| **Built** | PostgreSQL schema (**31 tables**), OpenAPI 3 contract (**14 paths**), role-permission matrix, PII retention table, SLOs, NestJS starter |
+| **Key idea** | Enforce rules in the DB and the contract, not just in code |
+| **My role** | CEO / strategy lead of a 4-person team. I designed the artifacts myself and used AI as a reviewer. |
 
-</td>
-<td width="50%" valign="top">
+**[Read the case study →](projects/silverbridge-backend)** · [5 design decisions (ADR)](projects/silverbridge-backend/docs/adr/README.md)
 
-### 💳 Fee Payment Link
-**Card-payment links for club treasurers** — product & money-flow design
+### 💳 Fee Payment Link — card-payment links for club treasurers
 
-<a href="projects/fee-payment-link-mvp"><img src="projects/fee-payment-link-mvp/docs/images/03-refund-and-settlement-rules.png" alt="Refund and settlement rules"></a>
+<a href="projects/fee-payment-link-mvp"><img src="projects/fee-payment-link-mvp/docs/images/03-refund-and-settlement-rules.png" alt="Refund and settlement rules" width="100%"></a>
 
-- **Problem:** club dues are still bank transfers + spreadsheets
-- **Built:** PRD, engineering guide, ledger / refund / settlement design, launch checklist
-- **Key idea:** a payment is confirmed only by a *verified webhook*; every money event is an append-only ledger entry
-- **Role:** sole product & design author; AI as reviewer
+| | |
+|---|---|
+| **Problem** | Club dues are still bank transfers and spreadsheets. |
+| **Built** | PRD, engineering guide, ledger / refund / settlement design, launch checklist |
+| **Key idea** | A payment is confirmed only by a *verified webhook*. Every money event is an append-only ledger entry. |
+| **My role** | Sole product and design author. AI as a reviewer. |
 
-[**Read the case study →**](projects/fee-payment-link-mvp) · [6 design decisions (ADR)](projects/fee-payment-link-mvp/docs/adr/README.md)
+**[Read the case study →](projects/fee-payment-link-mvp)** · [6 design decisions (ADR)](projects/fee-payment-link-mvp/docs/adr/README.md)
 
-</td>
-</tr>
-</table>
-
-## What this repo shows
+## 🔎 What this repo shows
 
 | Skill | Evidence (click) |
 |---|---|
@@ -68,12 +74,7 @@ This repo holds two end-to-end design packages. Each README states plainly what 
 | Payments engineering judgment | [Payment confirmation flow](projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png) · [ADR-005 refund state machine](projects/fee-payment-link-mvp/docs/adr/ADR-005-refund-state-machine.md) |
 | Decision-making & trade-offs | 11 [ADRs](projects/fee-payment-link-mvp/docs/adr/README.md) — context, decision, consequences, rejected alternatives |
 
-### ⏱ 3-minute path
-1. [Payment confirmation sequence](projects/fee-payment-link-mvp/docs/images/02-payment-confirmation-flow.png) — how duplicate webhooks never double-charge
-2. [SilverBridge case-study table](projects/silverbridge-backend/README.md) — problem → approach → what I built
-3. [ADR index](projects/fee-payment-link-mvp/docs/adr/README.md) — how I record trade-offs
-
-## Honest scope
+## 🧾 Honest scope
 
 - **Design-first.** The NestJS starter is a skeleton (no Prisma models yet, auth and webhook verification not implemented); each README lists the gaps.
 - Targets and validation plans (e.g. interviews, beta test) are **plans, not results**.

@@ -1,5 +1,11 @@
 # 회비 결제 링크 (Fee Payment Link) — MVP 제품 & 백엔드 설계
 
+<sub>[← Portfolio home](../../README.md) · [← SilverBridge](../silverbridge-backend/README.md) · **Fee Payment Link** · [ADRs](docs/adr/README.md) · [PRD](01-PRD.md) · [Engineering guide](03-ENGINEERING-GUIDE.md)</sub>
+
+| 6 | 3 | 7 | Docs stage |
+|:-:|:-:|:-:|:-:|
+| **ADRs** | **flow diagrams** | **launch-gate items** | **no code yet** |
+
 > 모임 총무가 **3분 안에 카드 결제 링크**를 만들고, 납부 현황·환불·정산을 한 곳에서 관리하게 하는 서비스의 MVP 설계 문서 패키지입니다.
 
 코드가 아니라 **문제 정의 → 요구사항 → 정책 → 상태 모델 → 백엔드 설계 원칙 → 출시 기준**까지를 한 벌로 정리한 제품·엔지니어링 문서입니다. 돈이 오가는 서비스에서 "무엇을 먼저 못 박아야 하는가"에 대한 제 접근을 보여주려는 목적으로 공개합니다.

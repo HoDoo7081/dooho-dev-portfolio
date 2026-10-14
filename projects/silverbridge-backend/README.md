@@ -1,5 +1,11 @@
 # SilverBridge — 시니어 부모님 자유여행 AI 동행 플랫폼 (Backend 설계 & API 스타터)
 
+<sub>[← Portfolio home](../../README.md) · **SilverBridge** · [Fee Payment Link →](../fee-payment-link-mvp/README.md) · [ADRs](docs/adr/README.md) · [Schema](design-package/02_SQL/schema.sql) · [OpenAPI](design-package/03_API/openapi.yaml)</sub>
+
+| 31 | 14 | 5 | CI ✓ |
+|:-:|:-:|:-:|:-:|
+| **DB tables** | **API paths** | **ADRs** | **schema + API validated** |
+
 > "패키지는 힘들고, 자유여행은 두렵다." 시니어의 이 두려움을 **AI 동행 매칭 + 실시간 안전 인프라**로 줄이는 여행 플랫폼의 백엔드 설계 산출물입니다.
 
 KAIST App 창업 프로그램에서 PMBA 동료 4인 팀(제하팀)으로 진행한 프로젝트이며, 이 폴더에는 **데이터 모델(PostgreSQL) · API 계약(OpenAPI) · 보안/운영/테스트 설계 · 업무 프로세스 모델 · NestJS API 스타터**가 들어 있습니다.
