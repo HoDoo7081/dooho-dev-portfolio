@@ -10,3 +10,7 @@ These are newly authored, reusable samples showing how I would structure an enga
 4. [Implementation handoff checklist](implementation-handoff-checklist.md): transfer commitments, technical context and unresolved decisions into delivery.
 
 Each template can be adapted to a customer-facing SaaS, AI, integration or enterprise transformation engagement.
+
+## See the templates applied
+
+[Travel marketplace: completed fictional discovery-to-PoC case](worked-example-travel-marketplace.md) connects customer questions, assumptions, architecture decisions, acceptance criteria, delivery gates and risks to the existing technical proof. [Five-minute customer demo](../docs/CUSTOMER-DEMO.md) provides a presentation talk track and objection handling.

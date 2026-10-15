@@ -17,6 +17,8 @@
 
 I connect customer needs with technical decisions and implementation: enterprise SaaS delivery and solutions consulting across APAC, supported by hands-on data, API and cloud proof projects.
 
+**Start here:** [Evidence for your role](docs/ROLE-EVIDENCE.md) · [Discovery-to-PoC worked example](playbooks/worked-example-travel-marketplace.md) · [Five-minute customer demo talk track](docs/CUSTOMER-DEMO.md).
+
 ## Enterprise delivery experience
 
 | Experience | My contribution | Scale / evidence |

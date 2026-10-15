@@ -25,6 +25,8 @@ KAIST PMBA (Data Science 부전공) · 📧 [dksengh7081@gmail.com](mailto:dksen
 
 ## 엔터프라이즈 구축·솔루션 컨설팅 경험
 
+**빠르게 보기:** [직무별 경력·기술 증빙](docs/ROLE-EVIDENCE.md) · [가상 고객 Discovery → PoC → 구축 계획 예시](playbooks/worked-example-travel-marketplace.md) · [5분 영문 고객 데모 발표안](docs/CUSTOMER-DEMO.md). 가상 사례와 발표안은 공개용으로 작성했으며 실제 고객 수행·발표 실적으로 주장하지 않습니다.
+
 고객 요구사항을 기술 설계와 실행 계획으로 전환하고, APAC 고객·글로벌 조직과 함께 도입 및 활용을 지원한 경험입니다.
 
 | 경력 사례 | 담당 영역 | 규모 및 근거 |
