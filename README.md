@@ -9,11 +9,27 @@
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?style=flat-square&logo=openapiinitiative&logoColor=white)
 ![NestJS](https://img.shields.io/badge/NestJS-starter-E0234E?style=flat-square&logo=nestjs&logoColor=white)
 
-**[Projects](#-two-projects) · [Evidence](#-what-this-repo-shows) · [Honest scope](#-honest-scope) · [Contact](mailto:dksengh7081@gmail.com)**
+**[Enterprise experience](#enterprise-delivery-experience) · [Projects](#-four-projects) · [Playbooks](playbooks/README.md) · [Evidence](#-what-this-repo-shows) · [Honest scope](#-honest-scope) · [Contact](mailto:dksengh7081@gmail.com)**
 
 </div>
 
-## Design first, code second
+## Technical solutions & enterprise delivery
+
+I connect customer needs with technical decisions and implementation: enterprise SaaS delivery and solutions consulting across APAC, supported by hands-on data, API and cloud proof projects.
+
+## Enterprise delivery experience
+
+| Experience | My contribution | Scale / evidence |
+|---|---|---|
+| [Medidata — APAC SaaS implementation](enterprise-case-studies/medidata-apac-saas-implementation.md) | Implementation planning, delivery governance, UAT, go-live and customer enablement | 50+ customer programs; approximately 25–30 new implementations; up to 11 concurrent projects; approximately 97% monthly PS labor forecast accuracy |
+| [Clarivate — solution consulting](enterprise-case-studies/clarivate-solution-consulting.md) | Discovery, demos, PoCs, data/integration and SSO requirements, scoping and delivery handoff | Customer-facing technical and business alignment; AI readiness briefings |
+| [Johnson & Johnson — transformation and enablement](enterprise-case-studies/jnj-digital-transformation-enablement.md) | AI platform adoption, CRM/ERP implementation support, UAT, training and stakeholder coordination | Regional AI platform across eight Asian markets; SAP ECC-to-Ariba change management across four Korean affiliates; 30–40 medical events/advisory boards annually |
+
+These are anonymized, self-reported professional experience summaries. They contain no employer documents, customer identities or proprietary implementation details. [Read the cases and scope notes](enterprise-case-studies/README.md).
+
+**How I approach the next engagement:** [Discovery questions](playbooks/discovery-questionnaire.md) · [60-minute workshop](playbooks/solution-workshop-agenda.md) · [PoC success criteria](playbooks/poc-success-framework.md) · [Implementation handoff](playbooks/implementation-handoff-checklist.md). These are newly authored sample templates, not former employer artifacts.
+
+### Technical design approach
 
 I design the data model, API contract, security and money flows *before* anyone writes code.
 

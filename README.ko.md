@@ -23,6 +23,20 @@ KAIST PMBA (Data Science 부전공) · 📧 [dksengh7081@gmail.com](mailto:dksen
 
 ---
 
+## 엔터프라이즈 구축·솔루션 컨설팅 경험
+
+고객 요구사항을 기술 설계와 실행 계획으로 전환하고, APAC 고객·글로벌 조직과 함께 도입 및 활용을 지원한 경험입니다.
+
+| 경력 사례 | 담당 영역 | 규모 및 근거 |
+|---|---|---|
+| [Medidata](enterprise-case-studies/medidata-apac-saas-implementation.md) | SaaS 구축, UAT, go-live, 리스크·리소스 관리, 고객 교육 | 50개 이상 고객 프로그램, 약 25–30건 신규 구현, 최대 11개 동시 프로젝트, 월 PS labor forecast 정확도 약 97% |
+| [Clarivate](enterprise-case-studies/clarivate-solution-consulting.md) | Discovery, demo, PoC, 데이터·연계·SSO 요구사항, 범위 정의와 구축 인계 | 고객·영업·제품·기술·구축 조직 조율 및 AI 도입 준비 브리핑 |
+| [Johnson & Johnson](enterprise-case-studies/jnj-digital-transformation-enablement.md) | AI 활용 확대, CRM/ERP 도입 지원, UAT, 교육·변경관리 | 아시아 8개 시장 AI 플랫폼, 한국 4개 법인 SAP ECC-to-Ariba 변경관리, 연 30–40개 medical event/advisory board |
+
+[경력 사례 및 공개 범위 안내](enterprise-case-studies/README.md) · [Discovery·워크숍·PoC·구축 인계 템플릿](playbooks/README.md)
+
+경력 사례는 본인 경험에 근거한 요약이며 고객명·내부 문서·독점 구현정보를 포함하지 않습니다. 템플릿은 공개용으로 새로 작성한 예시입니다.
+
 ## 한눈에 보기
 
 | 31 | 14 | 11 | 2 |
