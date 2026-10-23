@@ -19,6 +19,16 @@ I connect customer needs with technical decisions and implementation: enterprise
 
 **Start here:** [Evidence for your role](docs/ROLE-EVIDENCE.md) · [Discovery-to-PoC worked example](playbooks/worked-example-travel-marketplace.md) · [Five-minute customer demo talk track](docs/CUSTOMER-DEMO.md).
 
+## Three implementation examples — problem, ownership, evidence
+
+| Example | What I personally owned | Where to inspect |
+|---|---|---|
+| **Customer solution: Min Seoul** | Figma-to-web delivery, AI-assisted build review, commerce integration and handover | [Architecture and integration details](projects/minseoul-storefront/README.md#implementation-walkthrough) · [live site](https://minseoul.com) |
+| **Technical learning: AWS proof** | A bounded infrastructure proof connecting a Fargate runner to private RDS, with credentials and TLS configured | [Learning objective and verification](projects/silverbridge-backend/aws-reference-architecture/cdk/README.md#learning-objective-and-verification) |
+| **AI-assisted application: SilverBridge** | Screen/data-flow alignment, Make prompting, backend integration and UAT; a separate backend rules proof | [Personal contribution and stages](projects/silverbridge-backend/docs/STAGE3-MVP.md#personal-contribution-and-ai-assisted-workflow) · [concurrency and retry tests](projects/silverbridge-backend/reference-impl/README.md#one-rule-from-problem-to-test) |
+
+**Reusable presales workflow:** [Fieldwork](projects/fieldwork-discovery-workbench/README.md) connects reviewed discovery notes, open questions, project documentation and reusable playbooks. It is a separate personal implementation, not published employer code.
+
 ## Enterprise delivery experience
 
 | Experience | My contribution | Scale / evidence |

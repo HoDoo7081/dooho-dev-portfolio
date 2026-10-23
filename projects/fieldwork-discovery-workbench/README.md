@@ -81,6 +81,14 @@ That result tests review and Notion synchronization. It does **not** establish l
 
 *Personal app screenshot with a clearly labelled synthetic inventory case. The result is not a real customer outcome.*
 
+## A concrete review-and-sync example
+
+In the synthetic-data UAT, imported proposals started pending. Five source-backed facts were selected for approval while four questions stayed pending; the questions were reviewed separately before project creation. Applying the reviewed set produced seven structured Notion documents and four linked tasks.
+
+Re-sync preserved the existing document/task IDs. The four unresolved questions still prevented PoC drafting: approving a question for tracking did not mean its answer had been confirmed. This distinction keeps a complete-looking document from being mistaken for readiness to proceed.
+
+**Why the playbook matters:** the reusable asset is the problem pattern, approach, verified outcome and limitations—not an old customer's transcript, approval or target metric. I keep that boundary explicit when applying a case to a new engagement.
+
 ## Read the code
 
 - [Review and workflow rules](src/core.mjs)

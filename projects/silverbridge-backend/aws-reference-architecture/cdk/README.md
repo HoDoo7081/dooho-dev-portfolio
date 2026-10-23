@@ -5,7 +5,21 @@
 A TypeScript CDK stack that deploys the **network, data and async layers** of the [reference architecture](../README.md) and runs the 13 reference-implementation tests against **Amazon RDS** from a one-off Fargate task. Goal: turn "designed for AWS" into "ran on AWS" in one afternoon, for a few dollars, then delete it.
 
 > [!IMPORTANT]
-> **Status, stated plainly.** The stack is validated in CI (`cdk synth`, and the test-runner image is built and run against PostgreSQL). **I have not deployed it to a live AWS account yet.** Do not read this page as evidence of a running deployment until the "Result" section below is filled with a real run.
+> **Status:** deployed once to a live AWS account in Seoul on 2026-10-14. All 13 reference tests passed against RDS from a Fargate task, and the temporary stack was then destroyed. The [recorded result](#result-one-real-run) below documents that bounded proof. No production application is currently running. CI separately validates synthesis and the test-runner image.
+
+## Learning objective and verification
+
+**Goal:** turn the architecture into a bounded, observable result: execute the database reference tests from Fargate against a private RDS instance.
+
+| Learning area | Question to answer | Implementation / evidence |
+|---|---|---|
+| Networking | Which workload can reach the database? | Isolated RDS subnets; inbound PostgreSQL access restricted to the runner's security group |
+| Permissions and credentials | How does the task obtain database credentials? | Generated RDS credentials in Secrets Manager, supplied to the task |
+| Encrypted connection | Is the endpoint identity verified? | RDS CA bundle and `verify-full` TLS settings |
+| Reproducible execution | How do I know the rules actually ran? | CDK provisioning, Fargate exit status and recorded 13/13 test results |
+| Scope and cleanup | What remains after the experiment? | Stack destroyed; no complete API service, failover drill or production uptime claim |
+
+The useful distinction is that IAM permissions, network reachability, database authentication and TLS verification address different requirements. The proof connects them through executable configuration and an observable test result.
 
 ## What it creates
 

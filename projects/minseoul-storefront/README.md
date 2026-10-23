@@ -6,9 +6,9 @@
 |:-:|:-:|:-:|:-:|
 | **K-beauty brands + own line** | **UI languages** | **display currencies** | **live production site** |
 
-> A real, **live** cross-border e-commerce site for Korean skincare brands, aimed at customers in Taiwan and other Asian markets: **[minseoul.com](https://minseoul.com)**. Unlike the other two projects in this portfolio, this one ships to real customers. It is client work, so the source code is **not published**; this page documents the architecture, what I did, and what I would fix.
+> A real, **live** cross-border e-commerce site for Korean skincare brands, aimed at customers in Taiwan and other Asian markets: **[minseoul.com](https://minseoul.com)**. It is client work, so the source code is **not published**; this page documents the architecture, what I did, and what I would fix.
 
-> **TL;DR** — Headless storefront: React 19 + TanStack Start on Cloudflare, Shopify Storefront API for catalog and checkout, Supabase for accounts and analytics. Multi-language, multi-currency, a Taiwan customs-ID flow, and an influencer discount-link funnel. Built with an AI app builder (Lovable) from the client's Figma; I directed the build, integrated payments and Shopify, and operate it.
+> **TL;DR** — Headless storefront: React 19 + TanStack Start on Cloudflare, Shopify Storefront API for catalog and checkout, Supabase for accounts and analytics. Multi-language, multi-currency, a Taiwan customs-ID flow, and an influencer discount-link funnel. Built with an AI app builder (Lovable) from the client's Figma; I directed the build and integrated payments and Shopify. My project work is complete; the customer site remains publicly accessible.
 
 ---
 
@@ -16,7 +16,7 @@
 
 | | |
 |---|---|
-| **Engagement** | Freelance. Proposal and 5-day build plan dated May 2026; maintenance and extra scope since |
+| **Engagement** | Completed freelance engagement. Proposal and initial build plan dated May 2026; subsequent maintenance and added scope are part of the delivered project history |
 | **Client / product** | Min Seoul (formerly Purève Seoul): curated K-beauty brands plus an own-label line, sold cross-border |
 | **Problem** | Sell Korean skincare to overseas customers who read different languages, pay in different currencies and, in Taiwan, must provide a customs ID. Acquire customers through influencers and measure which ones work. |
 | **What shipped** | Product catalog and product-detail stories, cart, checkout hand-off to Shopify, customer accounts, order history and tracking, contact form, admin discount-link analytics, auth emails |
@@ -33,7 +33,22 @@
 | Payments | Set up cross-border payment acceptance: Toss as the card provider, plus PayPal, Airwallex and Payoneer (including routing PayPal through a US entity). This is configured on the Shopify and provider side and is **not in the code snapshot**. |
 | Planning and reporting | Wrote the proposal with its acceptance criteria and 5-day plan, and the daily status report to the client (see the documents above) |
 | Customer acquisition | Built a Taiwan Instagram influencer list, ran outreach and meetings, negotiated terms, issued influencer-specific discount codes, and set up the click tracking plus the user guide described below. Counts (influencers contacted, contracts, orders per code) are **not stated here** because I have no figures to cite yet. |
-| Maintenance | Ongoing support; a later signed scope added an **ingredient editor** (not part of the snapshot I reviewed for this page) |
+| Maintenance history | Provided support; a later signed scope added an **ingredient editor** (not part of the reviewed snapshot). This does not describe a currently active engagement. |
+
+## Implementation walkthrough
+
+**Customer problem → connected workflow → outcome.** The client supplied the Figma design; I led its AI-assisted implementation and integration so overseas customers could browse products, use accounts and proceed to Shopify checkout. Lovable generated code; my work was directing, reviewing and refining the build, connecting systems, configuring services and handling delivery issues.
+
+| Integration boundary | Concrete implementation | Why it matters |
+|---|---|---|
+| UI input → Shopify Cart API | Normalize country-name values before submitting them to Shopify | A readable UI label is not automatically a valid API value |
+| Influencer link → cart | Capture the code, retain it in a 30-day cookie, and apply it when creating the Shopify cart | Connect referral entry with the customer's purchase flow |
+| Custom account → Shopify customer | Find or create the customer by email and synchronize the profile on the server | Connect the application account with commerce records |
+| Shopper-facing → privileged operations | Storefront API for products/cart/checkout; server-side Admin API for customer sync and order retrieval | Keep privileged credentials out of the browser |
+
+**Demonstrable result:** the delivered storefront and connected shopping workflows, plus proposal, progress-report and handover materials summarized below. Revenue uplift, conversion improvement and the original five-day delivery target are not verified results.
+
+The domain/CORS resolution is part of my delivery history. This public case does not contain a request-level incident log, so it does not invent a particular error response or header change. The snapshot review below separately identifies remaining CORS hardening work.
 
 ## Delivery documents I wrote (summarised; originals are the client's)
 

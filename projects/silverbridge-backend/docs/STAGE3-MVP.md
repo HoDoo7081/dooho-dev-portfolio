@@ -7,6 +7,14 @@ The design package in this repo (31-table schema, OpenAPI contract, NestJS start
 > [!NOTE]
 > Source for this page: the team's final submission package (app test report, backend guide, final result report, pitch deck) and a read-through of the MVP source. Credentials, project URLs and keys, the APK and keystore, team member names and the expense ledger are **intentionally not published**.
 
+## Personal contribution and AI-assisted workflow
+
+The MVP was a team project. My contribution included aligning screens and data flow with teammates, specifying target-user choices such as font and button sizes, turning them into Figma Make prompts, and iterating on the generated interface. I used Claude Code through MCP and Cursor to help connect the interface to the prepared backend, review the output and make adjustments. I checked interactions, navigation, missing functionality and core flows during UAT.
+
+**Why these tools:** Make helped turn agreed interaction ideas into something the team could inspect together. Supabase reduced backend hosting/setup work within the deadline; Capacitor packaged the web-based client as an Android APK. This was an AI-assisted implementation, not a claim to have hand-written the whole application.
+
+**A concrete validation finding:** a functioning booking interface did not establish duplicate-booking or seat-capacity protection. The source review in §4 makes that gap explicit. A [separate PostgreSQL reference implementation](../reference-impl/README.md#one-rule-from-problem-to-test) tests the missing rules using idempotency keys, uniqueness constraints and atomic seat updates. It is not an integrated upgrade to the submitted Supabase MVP.
+
 ## 1. Result in one table
 
 | | Stage 2 design (this repo) | Stage 3 MVP (shipped) |

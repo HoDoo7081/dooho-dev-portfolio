@@ -6,6 +6,16 @@ The design package says *"duplicate bookings, overbooking and duplicate webhooks
 
 ![npm test and npm run demo output](../docs/images/09-reference-impl-proof.png)
 
+## One rule: from problem to test
+
+**Problem:** a successful booking screen does not prove that retries or concurrent users cannot reserve too many seats.
+
+**Implementation:** [createBooking](src/bookings.js) runs in a database transaction. It first records an idempotency key with a request hash. A matching retry returns the existing booking; reusing the key for a different payload is rejected. Seat reservation is one conditional update, with the capacity check in the same statement. A separate uniqueness constraint rejects a second booking for the same traveler/listing/slot; failure rolls back the transaction.
+
+**Verification:** [booking.test.js](test/booking.test.js) sends ten concurrent requests for three seats and asserts three successes, seven sold-out responses and a final reserved count of three. It also tests simultaneous retries with one key and checks that a rejected duplicate does not consume extra seats. The mutation-check results below distinguish tests that detect missing protections from tests that only exercise a happy path.
+
+This is an AI-assisted, focused rules implementation after the MVP review. The same rules are not claimed to be integrated into the Supabase Android MVP. Its concurrency test is a correctness example, not a production load benchmark.
+
 ## What is proven
 
 | Rule | Where it is enforced | Test |
