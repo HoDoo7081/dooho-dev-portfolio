@@ -129,6 +129,10 @@ Shopify 헤드리스 + Supabase, 4개 언어·다통화, 대만 통관 ID 단계
 
 Figma 카드 4장을 탭·드래그 인터랙션 웹앱으로 구현. 배경 선로딩, 비율 고정 프레임, 드래그 슬라이더. 제약사 내부 공모전 구현 의뢰(프리랜스), 고객사 자료는 비공개. [**→ 프로젝트 보기**](projects/ez-pave-interactive-card/README.ko.md)
 
+### 5. [Fieldwork](projects/fieldwork-discovery-workbench/README.ko.md) — Discovery·후속 작업·플레이북 에이전트 도구
+
+고객 미팅 내용의 근거 검토와 승인부터 프로젝트 문서·질문 작업·재사용 사례까지 연결한 개인 로컬 앱입니다. Node.js·SQLite·AI 구조화 출력·Notion API로 구현했고, 전 직장 코드·데이터는 포함하지 않았습니다. [**→ 코드·실행·검증 보기**](projects/fieldwork-discovery-workbench/README.ko.md)
+
 ## 읽는 순서
 
 | 시간 | 추천 경로 |
@@ -158,3 +162,4 @@ Figma 카드 4장을 탭·드래그 인터랙션 웹앱으로 구현. 배경 선
 - 비밀값(API 키, 토큰, `.env`), 개인정보, 고객사·지원 회사 관련 자료는 포함하지 않았습니다.
 - 수치·정책은 각 문서에 실제로 적힌 값만 인용했고, 구현되지 않은 부분은 README에 "한계"로 적었습니다.
 - 외부 자료(UI 키트 등)를 쓴 경우 출처를 표기했습니다.
+

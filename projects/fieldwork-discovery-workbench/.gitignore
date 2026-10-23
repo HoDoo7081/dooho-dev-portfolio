@@ -1,0 +1,8 @@
+.env*
+!.env.example
+.local-data/
+*.sqlite*
+node_modules/
+*.log
+*evidence*.json
+

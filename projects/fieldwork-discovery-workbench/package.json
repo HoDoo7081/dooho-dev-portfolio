@@ -1,0 +1,1 @@
+{"name":"fieldwork-discovery-workbench","private":true,"type":"module","scripts":{"start":"node src/local.mjs","test":"node --test test/*.test.mjs","check":"node --check src/local.mjs && node --check src/core.mjs && node --check src/app.js"},"engines":{"node":">=24"}}

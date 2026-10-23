@@ -9,7 +9,7 @@
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-6BA539?style=flat-square&logo=openapiinitiative&logoColor=white)
 ![NestJS](https://img.shields.io/badge/NestJS-starter-E0234E?style=flat-square&logo=nestjs&logoColor=white)
 
-**[Enterprise experience](#enterprise-delivery-experience) · [Projects](#-four-projects) · [Playbooks](playbooks/README.md) · [Evidence](#-what-this-repo-shows) · [Honest scope](#-honest-scope) · [Contact](mailto:dksengh7081@gmail.com)**
+**[Enterprise experience](#enterprise-delivery-experience) · [Projects](#-five-projects) · [Playbooks](playbooks/README.md) · [Evidence](#-what-this-repo-shows) · [Honest scope](#-honest-scope) · [Contact](mailto:dksengh7081@gmail.com)**
 
 </div>
 
@@ -53,7 +53,7 @@ flowchart LR
     E --> F[CI-validated]
 ```
 
-## 🧭 Four projects
+## 🧭 Five projects
 
 ### 🧭 SilverBridge — AI travel companion for seniors
 
@@ -102,6 +102,12 @@ flowchart LR
 | **My role** | Freelance, implementation only: AI-assisted build from the client's Figma and content; device testing; process report; candid accessibility review. Client and artwork not published. |
 
 **[Read the case study →](projects/ez-pave-interactive-card/README.md)**
+
+### ⚙️ Fieldwork — AI-assisted discovery and reusable playbooks
+
+A runnable personal presales workbench: meeting notes → reviewed proposals → project documents and follow-up tasks → reusable cases. Node.js 24, SQLite, structured AI output and Notion API integration. Built with AI coding assistance; no former employer code or data is included.
+
+**[Read the case study and run the app →](projects/fieldwork-discovery-workbench/README.md)** · [Validation evidence](projects/fieldwork-discovery-workbench/docs/VALIDATION.md)
 
 ## 🔎 What this repo shows
 
@@ -152,3 +158,4 @@ flowchart LR
     └── ez-pave-interactive-card/  # case study only; client code not published
 ```
 </details>
+
